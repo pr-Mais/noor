@@ -11,6 +11,8 @@ import 'package:provider/provider.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../components/close_button.dart';
+
 class AthkarList extends StatefulWidget {
   const AthkarList({Key key, this.index}) : super(key: key);
   final index;
@@ -88,50 +90,33 @@ class _AthkarListState extends State<AthkarList> with SingleTickerProviderStateM
       body: Column(
         mainAxisSize: MainAxisSize.max,
         children: <Widget>[
-           Container(
-             width: double.infinity,
-              height: 70.0,
-              margin: EdgeInsets.only(top: 30),
-              child: Stack(
+          SafeArea(
+            bottom: false,
+            child: Container(
+              width: double.infinity,
+              margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.only(left: 80.0, right: 80.0, bottom: 0.0, top: 18.0),
-                    child: Consumer<DataProvider>(
-                      builder: (context, value, child) {
-                        return AnimatedSwitcher(
-                          child: Text(
-                            value.list[pagePosition + 2].sectionName,
-                            textAlign: TextAlign.center,
-                            key: ValueKey(value.list[pagePosition + 2].sectionName),
-                            style: TextStyle(
-                              color: Theme.of(context).accentColor,
-                              height: 1.2,
-                              fontSize: 18,
-                            ),
-                          ),
-                          duration: const Duration(milliseconds: 250),
-                        );
-                      },
-                    ),
+                  SizedBox(width: 45),
+                  Consumer<DataProvider>(
+                    builder: (context, value, child) {
+                      return AnimatedSwitcher(
+                        child: Text(
+                          value.list[pagePosition + 2].sectionName,
+                          textAlign: TextAlign.center,
+                          key: ValueKey<String>(value.list[pagePosition + 2].sectionName),
+                          style: Theme.of(context).textTheme.headline1,
+                        ),
+                        duration: const Duration(milliseconds: 250),
+                      );
+                    },
                   ),
-                  Positioned(
-                    child: IconButton(
-                      icon: Icon(
-                        Icons.close_rounded,
-                        color: Theme.of(context).accentColor,
-                      ),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                    ),
-                    left: 15.0,
-                    top: 15.0,
-                  ),
+                  NoorCloseButton(color: Theme.of(context).accentColor),
                 ],
-                alignment: Alignment.center,
               ),
             ),
-          
+          ),
           Expanded(
             child: Consumer<DataProvider>(
               builder: (_, DataProvider provider, __) {

@@ -133,30 +133,34 @@ class _SettingsState extends State<Settings> with TickerProviderStateMixin, Auto
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         subTitle(title, icon),
-        Container(
-          margin: EdgeInsets.symmetric(horizontal: 30.0),
-          child: CupertinoSlidingSegmentedControl(
-            padding: EdgeInsets.all(3),
-            thumbColor: Theme.of(context).primaryColor,
-            children: <String, Widget>{
-              'strong': Text(
-                'قوي',
-                style: TextStyle(
-                    color: value == 'strong' ? Colors.white : Colors.grey, fontSize: 11, fontFamily: 'SST Roman'),
-              ),
-              'light': Text(
-                'خفيف',
-                style: TextStyle(
-                    color: value == 'light' ? Colors.white : Colors.grey, fontSize: 11, fontFamily: 'SST Roman'),
-              ),
-              'none': Text(
-                'إيقاف',
-                style: TextStyle(
-                    color: value == 'none' ? Colors.white : Colors.grey, fontSize: 11, fontFamily: 'SST Roman'),
-              )
-            },
-            groupValue: value,
-            onValueChanged: onChanged,
+        Flexible(
+          fit: FlexFit.loose,
+          child: Container(
+            width: 130,
+            margin: EdgeInsets.symmetric(horizontal: 30.0),
+            child: CupertinoSlidingSegmentedControl<String>(
+              padding: EdgeInsets.all(3),
+              thumbColor: Theme.of(context).primaryColor,
+              children: <String, Widget>{
+                'strong': Text(
+                  'قوي',
+                  style: TextStyle(
+                      color: value == 'strong' ? Colors.white : Colors.grey, fontSize: 11, fontFamily: 'SST Roman'),
+                ),
+                'light': Text(
+                  'خفيف',
+                  style: TextStyle(
+                      color: value == 'light' ? Colors.white : Colors.grey, fontSize: 11, fontFamily: 'SST Roman'),
+                ),
+                'none': Text(
+                  'إيقاف',
+                  style: TextStyle(
+                      color: value == 'none' ? Colors.white : Colors.grey, fontSize: 11, fontFamily: 'SST Roman'),
+                )
+              },
+              groupValue: value,
+              onValueChanged: onChanged,
+            ),
           ),
         ),
       ],

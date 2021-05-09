@@ -63,15 +63,16 @@ ThemeData lightTheme = ThemeData(
     highlightColor: Colors.black.withOpacity(0.1),
     splashColor: Colors.black.withOpacity(0.1),
     textTheme: TextTheme(
-      bodyText1: TextStyle(
-        fontSize: 16,
-        height: 1.8,
-        color: Colors.black,
-        fontWeight: FontWeight.normal
-      ),
+      bodyText1: TextStyle(fontSize: 16, height: 1.8, color: Colors.black, fontWeight: FontWeight.normal),
       subtitle1: TextStyle(
         color: Colors.black87,
         fontSize: 13,
+      ),
+      headline1: TextStyle(
+        fontSize: 16,
+        height: 1.8,
+        color: Color(0xff6f85d5),
+        fontWeight: FontWeight.bold,
       ),
     ),
     iconTheme: IconThemeData(color: Colors.grey[400], size: 30),
@@ -100,12 +101,23 @@ ThemeData darkTheme = ThemeData(
     hintStyle: TextStyle(color: Colors.white38),
   ),
   textTheme: TextTheme(
-      body1: TextStyle(fontSize: 16, height: 1.8, color: Colors.white),
-      subtitle: TextStyle(
-        color: Colors.white,
-        fontSize: 13,
-        fontFamily: 'SST Roman',
-      )),
+    bodyText1: TextStyle(
+      fontSize: 16,
+      height: 1.8,
+      color: Colors.black,
+      fontWeight: FontWeight.normal,
+    ),
+    subtitle1: TextStyle(
+      color: Colors.black87,
+      fontSize: 13,
+    ),
+    headline1: TextStyle(
+      fontSize: 16,
+      height: 1.8,
+      color: Colors.white,
+      fontWeight: FontWeight.bold,
+    ),
+  ),
   accentColor: Colors.white,
   buttonColor: Color(0xff6f85d5),
   splashColor: Colors.black.withOpacity(0.1),

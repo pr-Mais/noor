@@ -52,7 +52,7 @@ class _Ad3yahListState extends State<Ad3yahList> {
             bottom: false,
             child: Container(
               width: double.infinity,
-              margin: EdgeInsets.symmetric(horizontal: 20),
+              margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
@@ -60,11 +60,7 @@ class _Ad3yahListState extends State<Ad3yahList> {
                   Text(
                     title[widget.section],
                     textAlign: TextAlign.center,
-                    style: TextStyle(
-                        color: Theme.of(context).accentColor,
-                        fontFamily: 'SST Roman',
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold),
+                   style: Theme.of(context).textTheme.headline1,
                   ),
                   NoorCloseButton(color: Theme.of(context).accentColor),
                 ],

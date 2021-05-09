@@ -100,7 +100,7 @@ class _AllahNamesListState extends State<AllahNamesList> with SingleTickerProvid
             bottom: false,
             child: Container(
               width: double.infinity,
-              margin: EdgeInsets.symmetric(horizontal: 20),
+              margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
@@ -115,11 +115,7 @@ class _AllahNamesListState extends State<AllahNamesList> with SingleTickerProvid
                             names[position.value].name,
                             textAlign: TextAlign.center,
                             key: ValueKey<String>(names[position.value].name),
-                            style: TextStyle(
-                              color: Theme.of(context).accentColor,
-                              height: 1.2,
-                              fontSize: 18,
-                            ),
+                            style: Theme.of(context).textTheme.headline1,
                           ),
                         );
                       },
