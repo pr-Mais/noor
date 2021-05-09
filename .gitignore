@@ -53,8 +53,9 @@ app.*.map.json
 # Original assets
 assets/*
 
-# Exclude the data file
+# Exclude some assets
 !assets/noor-data/
+!assets/fonts/
 
 # Google Service File
 android/app/google-services.json
