@@ -1,0 +1,60 @@
+# Miscellaneous
+*.class
+*.log
+*.pyc
+*.swp
+.DS_Store
+.atom/
+.buildlog/
+.history
+.svn/
+*.classpath
+*.project
+*.prefs
+
+# IntelliJ related
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# Flutter/Dart/Pub related
+**/doc/api/
+.dart_tool/
+.flutter-plugins
+.packages
+.pub-cache/
+.pub/
+/build/
+
+# Android related
+/android/**/gradle-wrapper.jar
+/android/.gradle
+/android/captures/
+/android/gradlew
+/android/gradlew.bat
+/android/local.properties
+/android/**/GeneratedPluginRegistrant.java
+
+# Web related
+lib/generated_plugin_registrant.dart
+
+# Symbolication related
+app.*.symbols
+
+# Obfuscation related
+app.*.map.json
+
+# Exceptions to above rules.
+!/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
+.flutter-plugins-dependencies
+.DS_Store
+
+# Original assets
+assets/*
+
+# Exclude the data file
+!assets/noor-data/
+
+# Google Service File
+android/app/google-services.json
