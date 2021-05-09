@@ -19,6 +19,16 @@ This project contains the codebase for the Android version that is on Play Store
 
 The assets were replaced by placeholders, so the version you will run locally is different in look than the version in stores.
 
+### Firebase Setup
+Noor uses 2 services from Firebase: Remote Config and Messaging.
+To run the project and experminet remote config, follow these steps:
+
+1. Create a new Firebase project.
+2. Add a new Android App and follow the configuration steps to connect Noor to your Firebase project.
+3. Go to Remote Config page.
+4. Add a new parameter with name `noorThekr`, with any value of your choice.
+### Run
+
 1. Clone the project:
 
 ```bash
