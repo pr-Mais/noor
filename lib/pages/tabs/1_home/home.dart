@@ -10,7 +10,7 @@ import 'package:noor/models/thekr.dart';
 import 'package:noor/pages/tabs/1_home/ad3yah.dart';
 import 'package:noor/pages/tabs/1_home/allah_names.dart';
 import 'package:noor/pages/tabs/1_home/athkar.dart';
-import 'package:noor/providers/data_provider.dart';
+import 'package:noor/providers/data_controller.dart';
 import 'package:noor/providers/theme_provider.dart';
 import 'package:noor/components/card.dart';
 import 'package:noor/components/glowing_stars.dart';
@@ -20,7 +20,7 @@ import 'package:noor/utils/remove_tashkeel.dart';
 import 'package:provider/provider.dart';
 import 'package:noor/services/prefs.dart';
 
-import '../../../constants/images.dart';
+import 'package:noor/constants/images.dart';
 
 class Home extends StatefulWidget {
   Home({
@@ -71,7 +71,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin, AutomaticKee
   loadRemoteConfig() async {
     RemoteConfig remoteConfig = await setupRemoteConfig();
     if (remoteConfigNotifier == null) {
-      remoteConfigNotifier = ValueNotifier(remoteConfig);
+      remoteConfigNotifier = ValueNotifier<RemoteConfig>(remoteConfig);
       print(remoteConfigNotifier.value);
     } else {
       remoteConfigNotifier.value = remoteConfig;
@@ -81,7 +81,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin, AutomaticKee
   Future<RemoteConfig> setupRemoteConfig() async {
     final RemoteConfig remoteConfig = await RemoteConfig.instance;
 
-    var expiration = const Duration(seconds: 3600);
+    Duration expiration = const Duration(seconds: 3600);
     remoteConfig.setConfigSettings(RemoteConfigSettings());
 
     remoteConfig.setDefaults(<String, dynamic>{
@@ -117,7 +117,10 @@ class _HomeState extends State<Home> with TickerProviderStateMixin, AutomaticKee
   }
 
   setupCloudAnimation() {
-    cloudController = AnimationController(duration: Duration(seconds: 15), vsync: this)..forward();
+    cloudController = AnimationController(duration: Duration(seconds: 15), vsync: this)
+      ..forward()
+      ..reverse()
+      ..repeat();
 
     _topCloudAnim = Tween<Offset>(begin: Offset(3.0, 0.0), end: Offset(-5.5, 0.0)).animate(cloudController);
     _bottomCloudAnim = Tween<Offset>(begin: Offset(-5.5, 0.0), end: Offset(3.0, 0.0)).animate(cloudController);
@@ -175,80 +178,83 @@ class _HomeState extends State<Home> with TickerProviderStateMixin, AutomaticKee
     super.build(context);
 
     final Images images = context.read<ThemeProvider>().images;
-    data = Provider.of<DataProvider>(context).list;
 
     return Scaffold(
       body: SafeArea(
-              child: Column(
+        child: Column(
           children: <Widget>[
             AnimatedHeader(
               focusNode: _focusNode,
-              topCloudAnim: ValueNotifier(_topCloudAnim),
-              bottomCloudAnim: ValueNotifier(_bottomCloudAnim),
+              topCloudAnim: ValueNotifier<Animation<Offset>>(_topCloudAnim),
+              bottomCloudAnim: ValueNotifier<Animation<Offset>>(_bottomCloudAnim),
               remoteConfigNotifier: remoteConfigNotifier,
               isWriting: isWriting,
             ),
             Expanded(
-              child: ListView(
-                padding: EdgeInsets.only(top: 10),
-                children: <Widget>[
-                  Stack(
-                    children: [
-                        Column(
-                          children: [
-                            SizedBox(height: 50),
-                            HomeCard(
-                              page: const AthkarPage(),
-                              image: images.athkarCard,
-                              tag: 'athkar',
+              child: SingleChildScrollView(
+                child: Column(
+                  children: <Widget>[
+                    SizedBox(height: 20),
+                    serachBar(),
+                    Stack(
+                      children: <Widget>[
+                        if (!isWriting)
+                          Column(
+                            children: <Widget>[
+                              HomeCard(
+                                page: const AthkarPage(),
+                                image: images.athkarCard,
+                                tag: 'athkar',
+                              ),
+                              HomeCard(
+                                page: const Ad3yah(),
+                                image: images.ad3yahCard,
+                                tag: 'ad3yah',
+                              ),
+                              HomeCard(
+                                page: const AllahNames(),
+                                image: images.allahNamesCard,
+                                tag: 'allah names',
+                              ),
+                            ],
+                          ),
+                        Visibility(
+                          visible: !isWriting && _focusNode.hasFocus,
+                          child: AnimatedOpacity(
+                            duration: Duration(milliseconds: 400),
+                            opacity: _focusNode.hasFocus ? 1.0 : 0.0,
+                            child: GestureDetector(
+                              onTap: () {
+                                if (_focusNode.hasFocus) {
+                                  _searchController.clear();
+                                  FocusScope.of(context).requestFocus(new FocusNode());
+                                  setState(() {
+                                    isWriting = false;
+                                  });
+                                }
+                              },
+                              child: Container(
+                                color: Colors.transparent,
+                                height: _focusNode.hasFocus && !isWriting ? MediaQuery.of(context).size.height : 0,
+                              ),
                             ),
-                            HomeCard(
-                              page: const Ad3yah(),
-                              image: images.ad3yahCard,
-                              tag: 'ad3yah',
-                            ),
-                            HomeCard(
-                              page: const AllahNames(),
-                              image: images.allahNamesCard,
-                              tag: 'allah names',
-                            ),
-                          ],
-                        ),
-                      AnimatedOpacity(
-                        duration: Duration(milliseconds: 400),
-                        opacity: _focusNode.hasFocus ? 1.0 : 0.0,
-                        child: GestureDetector(
-                          onTap: () {
-                            if (_focusNode.hasFocus) {
-                              _searchController.clear();
-                              FocusScope.of(context).requestFocus(new FocusNode());
-                              setState(() {
-                                isWriting = false;
-                              });
-                            }
-                          },
-                          child: Container(
-                            color: Colors.transparent,
-                            height: _focusNode.hasFocus && !isWriting ? MediaQuery.of(context).size.height : 0,
                           ),
                         ),
+                      ],
+                    ),
+                    if (isWriting)
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height,
+                        child: SearchResults(
+                          query: searchWord,
+                          results: results,
+                          title: title,
+                        ),
                       ),
-                      serachBar(),
-                      
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            if (isWriting && _focusNode.hasFocus)
-              Expanded(
-                flex: 5,
-                child: SearchResults(
-                  title: title,
-                  results: results,
-                  query: searchWord,
+                  ],
                 ),
               ),
+            ),
           ],
         ),
       ),
@@ -353,57 +359,56 @@ class AnimatedHeader extends StatelessWidget {
                 ),
               ),
             ),
-          // if (Theme.of(context).brightness == Brightness.light)
-          //   ValueListenableBuilder<Animation<Offset>>(
-          //     valueListenable: topCloudAnim,
-          //     builder: (context, value, child) => Positioned(
-          //       top: 30,
-          //       child: SlideTransition(
-          //         position: value,
-          //         child: Image.asset('assets/CloudBottom.png'),
-          //       ),
-          //     ),
-          //   ),
-          // if (Theme.of(context).brightness == Brightness.dark)
-          //   Align(
-          //     alignment: Alignment.center,
-          //     child: GlowingStars(),
-          //   ),
-           Align(
-              alignment: Alignment.topCenter,
-              child: SizedBox(
-                width: MediaQuery.of(context).size.width,
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: <Widget>[
-                      const SizedBox(height: 20),
-                      const NoorLogo(),
-                      const SizedBox(height: 25),
-                      ValueListenableBuilder<RemoteConfig>(
-                        valueListenable: remoteConfigNotifier,
-                        builder: (_, RemoteConfig value, Widget child) {
-                          return AnimatedSwitcher(
-                            duration: Duration(milliseconds: 500),
-                            transitionBuilder: (Widget child, Animation<double> animation) {
-                              return FadeTransition(child: child, opacity: animation);
-                            },
-                            child: value != null
-                                ? Text(
-                                    value.getString('noorThker'),
-                                    key: UniqueKey(),
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(fontFamily: 'SST Roman', color: Colors.white, fontSize: 15),
-                                  )
-                                : Container(),
-                          );
-                        },
-                      ),
-                    ],
-                  ),
+          if (Theme.of(context).brightness == Brightness.light)
+            ValueListenableBuilder<Animation<Offset>>(
+              valueListenable: topCloudAnim,
+              builder: (context, value, child) => Positioned(
+                top: 30,
+                child: SlideTransition(
+                  position: value,
+                  child: Image.asset('assets/CloudBottom.png'),
                 ),
               ),
             ),
-          
+          if (Theme.of(context).brightness == Brightness.dark)
+            Align(
+              alignment: Alignment.center,
+              child: GlowingStars(),
+            ),
+          Align(
+            alignment: Alignment.topCenter,
+            child: SizedBox(
+              width: MediaQuery.of(context).size.width,
+              child: SingleChildScrollView(
+                child: Column(
+                  children: <Widget>[
+                    const SizedBox(height: 20),
+                    const NoorLogo(),
+                    const SizedBox(height: 25),
+                    ValueListenableBuilder<RemoteConfig>(
+                      valueListenable: remoteConfigNotifier,
+                      builder: (_, RemoteConfig value, Widget child) {
+                        return AnimatedSwitcher(
+                          duration: Duration(milliseconds: 500),
+                          transitionBuilder: (Widget child, Animation<double> animation) {
+                            return FadeTransition(child: child, opacity: animation);
+                          },
+                          child: value != null
+                              ? Text(
+                                  value.getString('noorThker'),
+                                  key: UniqueKey(),
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(fontFamily: 'SST Roman', color: Colors.white, fontSize: 15),
+                                )
+                              : Container(),
+                        );
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -494,7 +499,7 @@ class _SearchResultsState extends State<SearchResults> {
 
   @override
   Widget build(BuildContext context) {
-    return widget.results.length == 0
+    return widget.results?.length == 0
         ? Text('لا توجد نتائج')
         : ListView.builder(
             physics: AlwaysScrollableScrollPhysics(),

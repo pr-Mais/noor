@@ -14,10 +14,12 @@ class NameTitleCard extends StatelessWidget {
               child: Text(
                 title,
                 overflow: TextOverflow.clip,
+                textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Colors.white,
                   height: 1.5,
                   fontSize: 16,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
               margin: EdgeInsets.only(
@@ -27,8 +29,8 @@ class NameTitleCard extends StatelessWidget {
                 bottom: 10.0,
               ),
               padding: EdgeInsets.only(
-                right: 50,
-                left: 70,
+                right: 90,
+                left: 90,
                 top: 10.0,
                 bottom: 10.0,
               ),

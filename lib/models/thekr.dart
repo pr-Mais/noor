@@ -28,11 +28,11 @@ class Thekr {
   }) =>
       new Thekr(
         id: map['id'],
-        text: map['text'],
+        text: text?? map['text'],
         counter: map['counter'],
         isTitle: isTitle ?? false,
         isFav: 0,
-        sectionName: sectionName ?? map['section'],
+        sectionName: sectionName ?? map['sectionName'],
         section: 1,
       );
 

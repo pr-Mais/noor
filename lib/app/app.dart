@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:noor/models/data.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 import 'package:noor/components/custom_scroll_bhaviour.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-import 'package:noor/providers/data_provider.dart';
+import 'package:noor/providers/data_controller.dart';
 import 'package:noor/providers/settings_provider.dart';
 import 'package:noor/providers/theme_provider.dart';
 import 'package:noor/pages/root.dart';
@@ -16,7 +17,7 @@ class NoorApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return FutureBuilder<void>(
       future: GetIt.I.allReady(),
-      builder: (_, snapshot) {
+      builder: (_, AsyncSnapshot<void> snapshot) {
         return AnimatedSwitcher(
           duration: Duration(microseconds: 800),
           child: snapshot.hasData
@@ -25,12 +26,15 @@ class NoorApp extends StatelessWidget {
                     ChangeNotifierProvider<ThemeProvider>.value(
                       value: ThemeProvider(),
                     ),
-                    FutureProvider<DataProvider>(
-                      initialData: null,
-                      create: (_) => DataProvider.init(),
+                    ChangeNotifierProvider<DataModel>.value(
+                      value: DataModel.instance,
                     ),
-                    ChangeNotifierProvider<DataProvider>(
-                      create: (_) => GetIt.I<DataProvider>(),
+                    FutureProvider<DataController>(
+                      initialData: null,
+                      create: (_) => DataController.init(),
+                    ),
+                    ChangeNotifierProvider<DataController>(
+                      create: (_) => GetIt.I<DataController>(),
                     ),
                     ChangeNotifierProvider<SettingsProvider>(
                       create: (_) => SettingsProvider(),

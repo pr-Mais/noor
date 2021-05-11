@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:noor/constants/theme.dart';
+import 'package:provider/provider.dart';
+
 import 'package:noor/constants/ribbons.dart';
+import 'package:noor/providers/settings_provider.dart';
 
 class CardTemplate extends StatelessWidget {
   const CardTemplate({
@@ -17,6 +21,8 @@ class CardTemplate extends StatelessWidget {
   final Widget actionButton;
   @override
   Widget build(BuildContext context) {
+    final SettingsProvider settings = context.watch<SettingsProvider>();
+
     return Container(
       width: MediaQuery.of(context).size.width,
       height: 335,
@@ -79,10 +85,14 @@ class CardTemplate extends StatelessWidget {
                 controller: ScrollController(),
                 radius: Radius.circular(4),
                 child: SingleChildScrollView(
-                  child: Container(
-                    width: double.infinity,
-                    margin: const EdgeInsets.only(left: 15, right: 15, top: 5),
-                    child: child,
+                  child: DefaultTextStyle(
+                    textAlign: TextAlign.justify,
+                    style: Theme.of(context).textTheme.bodyText1.copyWith(fontFamily: settings.fontType),
+                    child: Container(
+                      width: double.infinity,
+                      margin: const EdgeInsets.only(left: 15, right: 15, top: 5),
+                      child: child,
+                    ),
                   ),
                 ),
               ),
@@ -96,11 +106,18 @@ class CardTemplate extends StatelessWidget {
                 child: Scrollbar(
                   radius: Radius.circular(4),
                   child: SingleChildScrollView(
-                    child: Container(
-                      width: double.infinity,
-                      alignment: Alignment.bottomRight,
-                      margin: const EdgeInsets.only(left: 15, right: 15, top: 5),
-                      child: additionalContent,
+                    child: DefaultTextStyle.merge(
+                      textAlign: TextAlign.justify,
+                      style: Theme.of(context).textTheme.bodyText1.copyWith(
+                            fontFamily: settings.fontType,
+                            color: Theme.of(context).primaryColor,
+                          ),
+                      child: Container(
+                        width: double.infinity,
+                        alignment: Alignment.bottomRight,
+                        margin: const EdgeInsets.only(left: 15, right: 15, top: 5),
+                        child: additionalContent,
+                      ),
                     ),
                   ),
                 ),

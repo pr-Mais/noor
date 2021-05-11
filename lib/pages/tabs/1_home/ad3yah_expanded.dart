@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:noor/models/data.dart';
 import 'package:provider/provider.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
@@ -7,7 +8,7 @@ import 'package:noor/components/abstract_card.dart';
 import 'package:noor/components/close_button.dart';
 import 'package:noor/constants/ribbons.dart';
 import 'package:noor/models/doaa.dart';
-import 'package:noor/providers/data_provider.dart';
+import 'package:noor/providers/data_controller.dart';
 import 'package:noor/providers/settings_provider.dart';
 import 'package:noor/utils/copy.dart';
 import 'package:noor/utils/remove_tashkeel.dart';
@@ -37,14 +38,26 @@ class _Ad3yahListState extends State<Ad3yahList> {
     'الرقية الشرعية': Ribbon.ribbon4,
   };
 
+  List< List<Doaa>> data;
+
+  @override
+  void didChangeDependencies() {
+    final DataModel dataModel = context.watch<DataModel>();
+
+    data = [
+      dataModel.quraan,
+      dataModel.sunnah,
+      dataModel.ruqiya,
+    ];
+
+    super.didChangeDependencies();
+  }
+
   @override
   Widget build(BuildContext context) {
     final SettingsProvider settings = context.watch<SettingsProvider>();
-    final DataProvider data = context.watch<DataProvider>();
-    final List<Doaa> ad3yah = data.list
-        .where((dynamic element) => element is Doaa && element.section == widget.section + 2)
-        .toList()
-        .cast<Doaa>();
+    final DataController provider = context.watch<DataController>();
+
     return Scaffold(
       body: Column(
         children: <Widget>[
@@ -60,7 +73,7 @@ class _Ad3yahListState extends State<Ad3yahList> {
                   Text(
                     title[widget.section],
                     textAlign: TextAlign.center,
-                   style: Theme.of(context).textTheme.headline1,
+                    style: Theme.of(context).textTheme.headline1,
                   ),
                   NoorCloseButton(color: Theme.of(context).accentColor),
                 ],
@@ -70,50 +83,42 @@ class _Ad3yahListState extends State<Ad3yahList> {
           Expanded(
             child: ScrollablePositionedList.builder(
               physics: AlwaysScrollableScrollPhysics(),
-              itemCount: ad3yah.length,
+              itemCount: data[widget.section].length,
               initialScrollIndex: widget.index,
               itemScrollController: controller,
               itemBuilder: (BuildContext context, int index) {
+                Doaa item = data[widget.section][index];
                 return CardTemplate(
-                  ribbon: ribbon[ad3yah[index].sectionName],
+                  ribbon: ribbon[item.sectionName],
                   actions: <Widget>[
                     GestureDetector(
                       onTap: () {
-                        ad3yah[index].isFav == 1 ? data.removeFromFav(ad3yah[index]) : data.addToFav(ad3yah[index]);
+                        item.isFav == 1 ? provider.removeFromFav(item) : provider.addToFav(item);
                       },
                       child: AnimatedCrossFade(
                         firstChild: Image.asset('assets/icons/outline_heart.png'),
                         secondChild: Image.asset('assets/icons/filled_heart.png'),
-                        crossFadeState: ad3yah[index].isFav == 1 ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+                        crossFadeState: item.isFav == 1 ? CrossFadeState.showSecond : CrossFadeState.showFirst,
                         duration: Duration(milliseconds: 500),
                       ),
                     ),
                     GestureDetector(
                       child: Image.asset('assets/icons/copy.png'),
                       onTap: () {
-                        Copy.onCopy(ad3yah[index].text, context);
+                        Copy.onCopy(item.text, context);
                       },
                     ),
                   ],
-                  additionalContent: ad3yah[index].info.isNotEmpty
+                  additionalContent: item.info.isNotEmpty
                       ? Text(
-                          ad3yah[index].info,
+                          item.info,
                           textAlign: TextAlign.right,
                           textScaleFactor: settings.fontSize,
-                          style: Theme.of(context).textTheme.bodyText1.copyWith(
-                                fontFamily: settings.fontType,
-                                fontSize: 12,
-                                color: Theme.of(context).primaryColor,
-                              ),
                         )
                       : null,
                   child: Text(
-                    !context.watch<SettingsProvider>().tashkeel
-                        ? Tashkeel.remove(ad3yah[index].text)
-                        : ad3yah[index].text,
-                    textAlign: TextAlign.justify,
+                    !context.watch<SettingsProvider>().tashkeel ? Tashkeel.remove(item.text) : item.text,
                     textScaleFactor: settings.fontSize,
-                    style: Theme.of(context).textTheme.bodyText1.copyWith(fontFamily: settings.fontType),
                   ),
                 );
               },

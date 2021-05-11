@@ -6,10 +6,10 @@ import 'package:noor/app/app.dart';
 import 'package:noor/services/db.dart';
 import 'package:noor/services/fcm.dart';
 import 'package:noor/services/prefs.dart';
-import 'package:noor/providers/data_provider.dart';
+import 'package:noor/providers/data_controller.dart';
 
 void main() async {
-  GetIt.I.registerSingletonAsync(() => DataProvider.init());
+  GetIt.I.registerSingletonAsync(() => DataController.init());
 
   WidgetsFlutterBinding.ensureInitialized();
   await SharedPrefsUtil.getInstance();

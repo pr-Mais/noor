@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:noor/models/data.dart';
 import 'package:provider/provider.dart';
 import 'package:reorderables/reorderables.dart';
 
@@ -19,14 +20,14 @@ import 'package:noor/pages/tabs/1_home/allah_names_expanded.dart';
 import 'package:noor/pages/tabs/1_home/athkar_expanded.dart';
 import 'package:noor/pages/tabs/1_home/my_ad3yah.dart';
 
-import 'package:noor/providers/data_provider.dart';
+import 'package:noor/providers/data_controller.dart';
 import 'package:noor/providers/settings_provider.dart';
 import 'package:noor/providers/theme_provider.dart';
 import 'package:noor/services/prefs.dart';
 import 'package:noor/utils/back_to_location.dart';
 import 'package:noor/utils/remove_tashkeel.dart';
 
-import '../../providers/data_provider.dart';
+import '../../providers/data_controller.dart';
 
 class Favorite extends StatefulWidget {
   Favorite({
@@ -67,14 +68,20 @@ class _FavoriteState extends State<Favorite> with AutomaticKeepAliveClientMixin 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    list = Provider.of<DataProvider>(context).favList ?? [];
+    list = Provider.of<DataModel>(context).favList ?? <dynamic>[];
     sectionList = list;
   }
 
   backToMainPage(dynamic item) async {
-    final provider = Provider.of<DataProvider>(context, listen: false);
-
-    final tmpList = provider.list.where((element) => element.section == item.section).toList();
+    final DataModel dataModel = context.read<DataModel>();
+    final List<dynamic> allLists = List<dynamic>.from(<dynamic>[
+      ...dataModel.athkar,
+      ...dataModel.quraan,
+      ...dataModel.sunnah,
+      ...dataModel.ruqiya,
+      ...dataModel.allahNames,
+    ]);
+    final tmpList = allLists.where((element) => element.section == item.section).toList();
     final index = tmpList.indexWhere((element) => element.sectionName == item.sectionName);
     switch (item.section) {
       case 1:
@@ -109,7 +116,7 @@ class _FavoriteState extends State<Favorite> with AutomaticKeepAliveClientMixin 
   // TODO(Mais): Refactor into a widget
   //delete dialog confirmation
   deleteDialog(dynamic dataToDelete, int i) {
-    final DataProvider data = context.read<DataProvider>();
+    final DataController data = context.read<DataController>();
 
     showGeneralDialog(
       transitionDuration: Duration(milliseconds: 600),
@@ -137,7 +144,7 @@ class _FavoriteState extends State<Favorite> with AutomaticKeepAliveClientMixin 
     super.build(context);
 
     final Images images = context.read<ThemeProvider>().images;
-    final DataProvider data = context.watch<DataProvider>();
+    final DataController data = context.watch<DataController>();
 
     return Scaffold(
       body: SafeArea(
@@ -183,65 +190,70 @@ class _FavoriteState extends State<Favorite> with AutomaticKeepAliveClientMixin 
                         ),
                       )
                     : section.value == 0
-                        ? CustomScrollView(
-                            slivers: <Widget>[
-                              ReorderableSliverList(
-                                key: ValueKey<String>('List'),
-                                controller: _scrollController,
-                                buildDraggableFeedback: (_, BoxConstraints constraints, Widget child) {
-                                  return Material(
-                                    type: MaterialType.transparency,
-                                    child: SizedBox(
-                                      width: constraints.maxWidth,
-                                      child: child,
+                        ? Scrollbar(
+                            controller: _scrollController,
+                            child: CustomScrollView(
+                              slivers: <Widget>[
+                                ReorderableSliverList(
+                                  key: ValueKey<String>('List'),
+                                  controller: _scrollController,
+                                  buildDraggableFeedback: (_, BoxConstraints constraints, Widget child) {
+                                    return Material(
+                                      type: MaterialType.transparency,
+                                      child: SizedBox(
+                                        width: constraints.maxWidth,
+                                        child: child,
+                                      ),
+                                    );
+                                  },
+                                  delegate: ReorderableSliverChildBuilderDelegate(
+                                    (BuildContext context, int index) => FavCard(
+                                      key: ValueKey<int>(index),
+                                      icon: icons[sectionList.toList()[index].section],
+                                      item: sectionList.toList()[index],
+                                      remove: () {
+                                        deleteDialog(sectionList.toList()[index],
+                                            sectionList.indexOf(sectionList.toList()[index]));
+                                      },
+                                      ribbon: ribbons[sectionList.toList()[index].section],
+                                      backToLocation: () {
+                                        backToLocation(sectionList.toList()[index], context);
+                                      },
+                                      backToGeneralLocation: () {
+                                        backToMainPage(sectionList.toList()[index]);
+                                      },
                                     ),
-                                  );
-                                },
-                                delegate: ReorderableSliverChildBuilderDelegate(
-                                  (BuildContext context, int index) => Card(
-                                    key: ValueKey<int>(index),
-                                    icon: icons[sectionList.toList()[index].section],
-                                    item: sectionList.toList()[index],
+                                    childCount: sectionList.length,
+                                  ),
+                                  onReorder: data.swapFav,
+                                ),
+                              ],
+                            ),
+                          )
+                        : Scrollbar(
+                            controller: _scrollController,
+                            child: ListView(
+                              controller: _scrollController,
+                              key: ValueKey<int>(section.value),
+                              children: <Widget>[
+                                for (dynamic item in sectionList.toList())
+                                  FavCard(
+                                    key: ValueKey<dynamic>(item),
+                                    icon: icons[item.section],
+                                    item: item,
                                     remove: () {
-                                      deleteDialog(sectionList.toList()[index],
-                                          sectionList.indexOf(sectionList.toList()[index]));
+                                      deleteDialog(item, sectionList.indexOf(item));
                                     },
-                                    ribbon: ribbons[sectionList.toList()[index].section],
+                                    ribbon: ribbons[item.section],
                                     backToLocation: () {
-                                      backToLocation(sectionList.toList()[index], context);
+                                      backToLocation(item, context);
                                     },
                                     backToGeneralLocation: () {
-                                      backToMainPage(sectionList.toList()[index]);
+                                      backToMainPage(item);
                                     },
-                                  ),
-                                  childCount: sectionList.length,
-                                ),
-                                onReorder: (int from, int to) {
-                                  data.swapFav(from, to);
-                                },
-                              ),
-                            ],
-                          )
-                        : ListView(
-                            key: ValueKey<int>(section.value),
-                            children: <Widget>[
-                              for (dynamic item in sectionList.toList())
-                                Card(
-                                  key: ValueKey<dynamic>(item),
-                                  icon: icons[item.section],
-                                  item: item,
-                                  remove: () {
-                                    deleteDialog(item, sectionList.indexOf(item));
-                                  },
-                                  ribbon: ribbons[item.section],
-                                  backToLocation: () {
-                                    backToLocation(item, context);
-                                  },
-                                  backToGeneralLocation: () {
-                                    backToMainPage(item);
-                                  },
-                                )
-                            ],
+                                  )
+                              ],
+                            ),
                           ),
               ),
             )
@@ -252,32 +264,31 @@ class _FavoriteState extends State<Favorite> with AutomaticKeepAliveClientMixin 
   }
 }
 
-class Card extends StatelessWidget {
-  Card({
-    this.key,
+class FavCard extends StatelessWidget {
+  FavCard({
+    Key key,
     this.item,
     this.icon,
     this.ribbon,
     this.remove,
     this.backToLocation,
     this.backToGeneralLocation,
-  });
-  final key;
-  final item;
-  final ribbon;
-  final icon;
-  final remove;
-  final backToLocation;
-  final backToGeneralLocation;
+  }) : super(key: key);
+  final dynamic item;
+  final String ribbon;
+  final IconData icon;
+  final Function remove;
+  final Function backToLocation;
+  final Function backToGeneralLocation;
 
-  Widget backToMainLocation(location) {
+  Widget backToMainLocation(String location) {
     return Container(
       height: 30,
       alignment: Alignment.bottomRight,
       child: TextButton(
         child: Row(
           mainAxisSize: MainAxisSize.min,
-          children: [
+          children: <Widget>[
             Image.asset('assets/icons/back.png'),
             SizedBox(width: 10),
             Text(
@@ -294,23 +305,21 @@ class Card extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final settings = context.watch<SettingsProvider>();
+    final SettingsProvider settings = context.watch<SettingsProvider>();
+
     return CardTemplate(
       ribbon: ribbon,
-      actions: [
-        SizedBox(
-          width: 40,
-          child: FlatButton(
-            highlightColor: Colors.transparent,
-            splashColor: Colors.transparent,
-            padding: EdgeInsets.all(0),
-            child: Icon(
-              icon,
-              size: item.runtimeType == AllahName ? 20 : 32,
-              color: Colors.white,
-            ),
-            onPressed: backToGeneralLocation,
+      actions: <Widget>[
+        IconButton(
+          padding: EdgeInsets.zero,
+          highlightColor: Colors.transparent,
+          splashColor: Colors.transparent,
+          icon: Icon(
+            icon,
+            size: item.runtimeType == AllahName ? 22 : 32,
+            color: Colors.white,
           ),
+          onPressed: backToGeneralLocation,
         ),
         GestureDetector(
           child: Image.asset('assets/icons/erase.png'),
@@ -321,53 +330,37 @@ class Card extends StatelessWidget {
       ],
       additionalContent: item.section == 5
           ? Text(
-              !SharedPrefsUtil.getBool('tashkeel') ? Tashkeel.remove(item.info) : item.info,
-              textAlign: TextAlign.justify,
-              textDirection: TextDirection.rtl,
+              !settings.tashkeel ? Tashkeel.remove(item.info) : item.info,
               textScaleFactor: settings.fontSize,
-              style: TextStyle(
-                fontSize: 16,
-                color: Theme.of(context).primaryColor,
-                fontFamily: SharedPrefsUtil.getString('fontType'),
-                height: 1.6,
-              ),
             )
           : null,
-      actionButton: backToMainLocation(item.runtimeType == AllahName ? item.name : item.sectionName),
-      child: item.runtimeType == AllahName
+      actionButton: backToMainLocation(item is AllahName ? item.name : item.sectionName),
+      child: item is AllahName
           ? SingleChildScrollView(
-              child: Builder(builder: (context) {
-                final textList = item.text.split('.');
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      !settings.tashkeel
-                          ? Tashkeel.remove('${textList[0].trim()}.')
-                          : '${textList[0].trim()}.',
-                      textAlign: TextAlign.justify,
-                      textDirection: TextDirection.rtl,
-                      textScaleFactor: settings.fontSize,
-                    ),
-                    SizedBox(height: 10),
-                    Text(
-                       !settings.tashkeel
-                          ? Tashkeel.remove('${textList[1].trim()}.')
-                          : '${textList[1].trim()}.',
-                      textAlign: TextAlign.justify,
-                      textDirection: TextDirection.rtl,
-                      textScaleFactor: settings.fontSize,
-                    )
-                  ],
-                );
-              }),
+              child: Builder(
+                builder: (BuildContext context) {
+                  final List<String> textList = item.text.split('.');
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        !settings.tashkeel ? Tashkeel.remove('${textList[0].trim()}.') : '${textList[0].trim()}.',
+                        textScaleFactor: settings.fontSize,
+                      ),
+                      SizedBox(height: 10),
+                      Text(
+                        !settings.tashkeel ? Tashkeel.remove('${textList[1].trim()}.') : '${textList[1].trim()}.',
+                        textScaleFactor: settings.fontSize,
+                        textAlign: TextAlign.right,
+                      )
+                    ],
+                  );
+                },
+              ),
             )
           : Text(
-               settings.tashkeel ? item.text : Tashkeel.remove(item.text),
-              textAlign: TextAlign.justify,
-              textDirection: TextDirection.rtl,
+              settings.tashkeel ? item.text : Tashkeel.remove(item.text),
               textScaleFactor: settings.fontSize,
-              style: Theme.of(context).textTheme.bodyText1.copyWith(fontFamily: settings.fontType),
             ),
     );
   }

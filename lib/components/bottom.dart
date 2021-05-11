@@ -166,10 +166,10 @@ class _BottomItemState extends State<BottomItem> with SingleTickerProviderStateM
                     children: <Widget>[
                       Text(
                         widget.text,
-                        semanticsLabel: widget.text,
                         style: TextStyle(
                           color: Theme.of(context).primaryColor,
                           fontSize: 12,
+                          fontWeight: FontWeight.bold
                         ),
                       ),
                       Container(

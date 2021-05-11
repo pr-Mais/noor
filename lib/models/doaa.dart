@@ -12,8 +12,8 @@ class Doaa {
         id: map['id'].toString(),
         text: map['text'],
         info: map['info'],
-        sectionName: sectionName,
-        section: section,
+        sectionName: sectionName?? map['sectionName'],
+        section: section?? map['section'],
         isFav: map['isFav'] ?? 0,
       );
 

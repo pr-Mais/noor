@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:noor/components/close_button.dart';
 import 'package:noor/components/list_item.dart';
 import 'package:noor/models/allah_name.dart';
+import 'package:noor/models/data.dart';
 import 'package:noor/pages/tabs/1_home/allah_names_expanded.dart';
-import 'package:noor/providers/data_provider.dart';
+import 'package:noor/providers/data_controller.dart';
 import 'package:noor/providers/theme_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -83,23 +84,23 @@ class _AllahNamesState extends State<AllahNames> with SingleTickerProviderStateM
               ),
             ],
           ),
-          Consumer<DataProvider>(
-            builder: (_, provider, child) {
-              final asmaa = provider.list.where((element) => element.runtimeType == AllahName).toList();
+          Consumer<DataModel>(
+            builder: (_,DataModel model, __) {
+              final List<AllahName> allahNames = model.allahNames;
               return Expanded(
                 child: ListView.builder(
                   padding: EdgeInsets.symmetric(vertical: 10),
                   physics: AlwaysScrollableScrollPhysics(),
-                  itemCount: asmaa.length,
+                  itemCount: allahNames.length,
                   controller: scrollController,
-                  itemBuilder: (context, index) {
-                    final title = asmaa[index];
+                  itemBuilder: (BuildContext context, int index) {
+                    final AllahName title = allahNames[index];
                     return ListItem(
                       title: '${title.name}',
                       icon: images.allahNames,
                       onTap: () {
                         Navigator.of(context).push(
-                          MaterialPageRoute(
+                          MaterialPageRoute<AllahNamesList>(
                             builder: (_) => AllahNamesList(index: index),
                           ),
                         );

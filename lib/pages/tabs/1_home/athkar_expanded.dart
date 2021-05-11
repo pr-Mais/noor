@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:noor/components/athkar_card.dart';
+import 'package:noor/models/data.dart';
 import 'package:noor/models/thekr.dart';
-import 'package:noor/providers/data_provider.dart';
+import 'package:noor/providers/data_controller.dart';
 import 'package:noor/components/athkar_title.dart';
 import 'package:noor/providers/settings_provider.dart';
 import 'package:provider/provider.dart';
@@ -75,7 +76,7 @@ class _AthkarListState extends State<AthkarList> with SingleTickerProviderStateM
     }
 
     if (index < 422 && settings.autoJump && counter._counter == 0) {
-      Future.delayed(Duration(milliseconds: 500)).then(
+      Future<void>.delayed(Duration(milliseconds: 500)).then(
         (f) {
           controller.scrollTo(duration: Duration(milliseconds: 800), curve: Curves.easeInOutCubic, index: index + 1);
         },
@@ -99,13 +100,13 @@ class _AthkarListState extends State<AthkarList> with SingleTickerProviderStateM
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   SizedBox(width: 45),
-                  Consumer<DataProvider>(
-                    builder: (context, value, child) {
+                  Consumer<DataModel>(
+                    builder: (BuildContext context, DataModel model, _) {
                       return AnimatedSwitcher(
                         child: Text(
-                          value.list[pagePosition + 2].sectionName,
+                          model.athkar[pagePosition + 2].sectionName,
                           textAlign: TextAlign.center,
-                          key: ValueKey<String>(value.list[pagePosition + 2].sectionName),
+                          key: ValueKey<String>(model.athkar[pagePosition + 2].sectionName),
                           style: Theme.of(context).textTheme.headline1,
                         ),
                         duration: const Duration(milliseconds: 250),
@@ -118,16 +119,10 @@ class _AthkarListState extends State<AthkarList> with SingleTickerProviderStateM
             ),
           ),
           Expanded(
-            child: Consumer<DataProvider>(
-              builder: (_, DataProvider provider, __) {
+            child: Consumer<DataModel>(
+              builder: (_, DataModel model, __) {
                 //get only the atkar from the whole list!
-                List<Thekr> athkar = <Thekr>[];
-
-                provider.list.forEach((element) {
-                  if (element.runtimeType == Thekr) {
-                    athkar.add(element);
-                  }
-                });
+                List<Thekr> athkar = model.athkar;
 
                 final List<Counter> counterList = athkar.map((Thekr thekr) => Counter(thekr.counter)).toList();
 

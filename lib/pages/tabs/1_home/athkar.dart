@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:noor/components/close_button.dart';
 import 'package:noor/components/list_item.dart';
+import 'package:noor/constants/images.dart';
+import 'package:noor/models/data.dart';
 import 'package:noor/models/thekr.dart';
 import 'package:noor/pages/tabs/1_home/athkar_expanded.dart';
-import 'package:noor/providers/data_provider.dart';
+import 'package:noor/providers/data_controller.dart';
 import 'package:noor/providers/theme_provider.dart';
 import 'package:noor/services/db.dart';
 import 'package:provider/provider.dart';
@@ -47,7 +50,7 @@ class _AthkarPageState extends State<AthkarPage> with SingleTickerProviderStateM
 
   @override
   Widget build(BuildContext context) {
-    final images = Provider.of<ThemeProvider>(context, listen: false).images;
+    final Images images = context.read<ThemeProvider>().images;
 
     return Scaffold(
         body: Column(
@@ -68,7 +71,7 @@ class _AthkarPageState extends State<AthkarPage> with SingleTickerProviderStateM
                     ),
                   ),
                 ),
-                onVerticalDragUpdate: (details) {
+                onVerticalDragUpdate: (DragUpdateDetails details) {
                   if (details.delta.dy > 0) Navigator.of(context).pop();
                 },
               ),
@@ -77,17 +80,20 @@ class _AthkarPageState extends State<AthkarPage> with SingleTickerProviderStateM
           ],
         ),
         Expanded(
-          child: NotificationListener(
-            child: Consumer<DataProvider>(
-              builder: (context, provider, child) {
-                final athkarTitles = provider.list.where((element) => element.runtimeType == Thekr).toList();
+          child: NotificationListener<Notification>(
+            child: Consumer<DataModel>(
+              builder: (_, DataModel model, __) {
+                final List<Thekr> athkarTitles = model.athkar.where((Thekr thekr) => thekr.isTitle).toList();
+
                 return ListView.builder(
                   physics: AlwaysScrollableScrollPhysics(),
-                  itemCount: athkarTitles.length,
+                  itemCount: athkarTitles.where((Thekr thekr) => thekr.isTitle).length,
                   controller: scrollController,
                   padding: EdgeInsets.only(top: 10),
-                  itemBuilder: (context, index) {
-                    final title = athkarTitles[index];
+                  itemBuilder: (BuildContext context, int index) {
+                    final Thekr title = athkarTitles[index];
+                    final int position = model.athkar.indexOf(title);
+
                     return title.isTitle
                         ? ListItem(
                             title: '${title.text}',
@@ -95,8 +101,8 @@ class _AthkarPageState extends State<AthkarPage> with SingleTickerProviderStateM
                             onTap: () {
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(
-                                  builder: (context) => AthkarList(index: index),
+                                MaterialPageRoute<AthkarList>(
+                                  builder: (_) => AthkarList(index: position),
                                 ),
                               );
                             },
@@ -106,8 +112,8 @@ class _AthkarPageState extends State<AthkarPage> with SingleTickerProviderStateM
                 );
               },
             ),
-            onNotification: (t) {
-              WidgetsBinding.instance.addPostFrameCallback((t) {
+            onNotification: (_) {
+              WidgetsBinding.instance.addPostFrameCallback((_) {
                 if (currentScroll < 100) {
                   controller.forward();
                 }
@@ -115,6 +121,8 @@ class _AthkarPageState extends State<AthkarPage> with SingleTickerProviderStateM
                   controller.reverse();
                 }
               });
+
+              return true;
             },
           ),
         ),

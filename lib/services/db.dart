@@ -61,42 +61,41 @@ class DBService with ChangeNotifier {
     );
   }
 
-  Future swap(Doaa from, Doaa to) async {
-    final db = await database;
-    final fromID = from.id;
-    final toID = to.id;
-    final _from = from.toMap();
-    final _to = to.toMap();
+  Future<void> swap(Doaa from, Doaa to) async {
+    final Database db = await database;
+    final String fromID = from.id;
+    final String toID = to.id;
+    final Map<String, dynamic> _from = from.toMap();
+    final Map<String, dynamic> _to = to.toMap();
 
     _from['id'] = toID;
     _to['id'] = fromID;
 
-    await db.update('MyAd3yah', _from, where: 'id = ?', whereArgs: [toID]);
-    await db.update('MyAd3yah', _to, where: 'id = ?', whereArgs: [fromID]);
+    await db.update('MyAd3yah', _from, where: 'id = ?', whereArgs: <dynamic>[_from['id']]);
+    await db.update('MyAd3yah', _to, where: 'id = ?', whereArgs: <dynamic>[_to['id']]);
   }
 
-  get() async {
-    final db = await database;
-    final res = await db.query('MyAd3yah', orderBy: 'id');
-    final list = res.isNotEmpty ? res.map((e) => Doaa.fromMap(e, sectionName: 'أدعيتي', section: 5)).toList() : [];
+  Future<List<Doaa>> get() async {
+    final Database db = await database;
+    final List<Map<String, Object>> res = await db.query('MyAd3yah', orderBy: 'id');
+    final List<Doaa> list = res.isNotEmpty ? res.map((Map<String, Object> e) => Doaa.fromMap(e, sectionName: 'أدعيتي', section: 5)).toList().cast<Doaa>() : <Doaa>[];
     return list;
   }
 
   insert(Doaa newClient) async {
-    final db = await database;
+    final Database db = await database;
     var res = await db.insert('MyAd3yah', newClient.toMap());
     return res;
   }
 
   update(Doaa newClient) async {
-    final db = await database;
+    final Database db = await database;
     var res = await db.update('MyAd3yah', newClient.toMap(), where: 'id = ?', whereArgs: [newClient.id]);
-    notifyListeners();
     return res;
   }
 
   delete(Doaa doaa) async {
-    final db = await database;
+    final Database db = await database;
     db.delete('MyAd3yah', where: 'id = ?', whereArgs: [doaa.id]);
   }
 }

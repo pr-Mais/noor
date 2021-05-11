@@ -28,13 +28,14 @@ class ThekrTitleCard extends StatelessWidget {
                     style: TextStyle(
                       color: Colors.white,
                       height: 1.5,
+                      fontWeight: FontWeight.bold,
                       fontSize: 16,
                     ),
                   ),
                   alignment: Alignment.center,
                   padding: EdgeInsets.only(
                     right: 70,
-                    left: 50,
+                    left: 70,
                     top: 10.0,
                     bottom: 10.0,
                   ),

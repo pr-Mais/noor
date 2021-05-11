@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/services.dart';
 
 class JsonService {
-  var _x;
+  dynamic _x;
   Future<JsonService> init() async {
     _x = json.decode(await _loadFromAsset());
     return this;

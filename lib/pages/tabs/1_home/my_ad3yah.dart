@@ -7,9 +7,11 @@ import 'package:noor/components/abstract_card.dart';
 import 'package:noor/components/close_button.dart';
 import 'package:noor/components/custom_dialog.dart';
 import 'package:noor/components/image_button.dart';
+import 'package:noor/constants/images.dart';
 import 'package:noor/constants/ribbons.dart';
+import 'package:noor/models/data.dart';
 import 'package:noor/models/doaa.dart';
-import 'package:noor/providers/data_provider.dart';
+import 'package:noor/providers/data_controller.dart';
 import 'package:noor/providers/settings_provider.dart';
 import 'package:noor/providers/theme_provider.dart';
 import 'package:noor/services/db.dart';
@@ -19,7 +21,7 @@ import 'package:provider/provider.dart';
 import 'package:reorderables/reorderables.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../providers/data_provider.dart';
+import '../../../providers/data_controller.dart';
 import '../../../providers/settings_provider.dart';
 import '../../../services/prefs.dart';
 
@@ -194,31 +196,37 @@ class _MyAd3yahState extends State<MyAd3yah> with TickerProviderStateMixin {
   //delete dialog confirmation
   deleteDialog(dataToDelete) {
     showGeneralDialog(
-        transitionDuration: Duration(milliseconds: 600),
-        barrierDismissible: false,
-        barrierColor: Colors.black.withOpacity(0.75),
-        barrierLabel: '',
-        context: context,
-        transitionBuilder: (context, a1, a2, widget) {
-          final curvedValue = Curves.easeInOutBack.transform(a1.value) - 1.0;
-          return Transform(
-              transform: Matrix4.translationValues(0.0, curvedValue * 800, 0.0),
-              child: CustomDialog(
-                onDelete: () => delete(dataToDelete),
-              ));
-        },
-        pageBuilder: (context, animation1, animation2) {});
+      transitionDuration: Duration(milliseconds: 600),
+      barrierDismissible: false,
+      barrierColor: Colors.black.withOpacity(0.75),
+      barrierLabel: '',
+      context: context,
+      transitionBuilder: (_, Animation<double> a1, Animation<double> a2, __) {
+        final double curvedValue = Curves.easeInOutBack.transform(a1.value) - 1.0;
+        return Transform(
+          transform: Matrix4.translationValues(0.0, curvedValue * 800, 0.0),
+          child: CustomDialog(
+            onDelete: () => delete(dataToDelete),
+          ),
+        );
+      },
+      pageBuilder: (_, __, ___) => null,
+    );
     _firstController.clear();
     _secondController.clear();
   }
 
   @override
   Widget build(BuildContext context) {
-    final images = context.read<ThemeProvider>().images;
-    final provider = Provider.of<DataProvider>(context);
+    final Images images = context.read<ThemeProvider>().images;
+    final DataController provider = Provider.of<DataController>(context);
+    final DataModel dataModel = Provider.of<DataModel>(context);
 
-    final List<Doaa> myAd3yah =
-        provider.list.reversed.where((element) => element is Doaa && element.section == 5).toList().cast<Doaa>();
+    final List<Doaa> myAd3yah = dataModel.myAd3yah;
+
+    // Sort descendingly
+    myAd3yah.sort((Doaa a, Doaa b) => b.id.compareTo(a.id));
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Stack(
@@ -255,45 +263,48 @@ class _MyAd3yahState extends State<MyAd3yah> with TickerProviderStateMixin {
                 ),
                 SizedBox(height: 35),
                 Expanded(
-                                  child: AnimatedSwitcher(
+                  child: AnimatedSwitcher(
                     duration: Duration(milliseconds: 400),
                     child: myAd3yah.isNotEmpty
-                        ?  CustomScrollView(
-                              slivers: <Widget>[
-                                ReorderableSliverList(
-                                  key: ValueKey<String>('list'),
-                                  controller: controller,
-                                  buildDraggableFeedback: (_, BoxConstraints constraints, Widget child) {
-                                    return Material(
-                                      type: MaterialType.transparency,
-                                      child: SizedBox(width: constraints.maxWidth, child: child),
-                                    );
+                        ? CustomScrollView(
+                            slivers: <Widget>[
+                              ReorderableSliverList(
+                                key: ValueKey<String>('list'),
+                                controller: controller,
+                                buildDraggableFeedback: (_, BoxConstraints constraints, Widget child) {
+                                  return Material(
+                                    type: MaterialType.transparency,
+                                    child: SizedBox(width: constraints.maxWidth, child: child),
+                                  );
+                                },
+                                delegate: ReorderableSliverChildBuilderDelegate(
+                                  (BuildContext context, int index) {
+                                    return card(myAd3yah[index]);
                                   },
-                                  delegate: ReorderableSliverChildBuilderDelegate(
-                                    (BuildContext context, int index) {
-                                      return card(myAd3yah[index]);
-                                    },
-                                    childCount: myAd3yah.length,
-                                  ),
-                                  onReorder: (from, to) async {
-                                    final tmpFrom = myAd3yah[from];
-                                    final tmpTo = myAd3yah[to];
-
-                                    await provider.updateMyAd3yahList(tmpFrom, tmpTo);
-
-                                    if (tmpFrom.isFav == 1) {
-                                      provider.favList[provider.favList.indexOf(tmpFrom.id)] = tmpTo.id;
-                                    }
-
-                                    if (tmpTo.isFav == 1) {
-                                      provider.favList[provider.favList.indexOf(tmpTo.id)] = tmpFrom.id;
-                                    }
-
-                                    SharedPrefsUtil.putStringList('fav', provider.favList);
-                                  },
+                                  childCount: myAd3yah.length,
                                 ),
-                              ],
-                            
+                                onReorder: (int from, int to) async {
+           
+                                  await provider.updateMyAd3yahList(from, to);
+
+                                  // print('Before: ' + provider.favList.map((dynamic e) => e.id).toString());
+
+                                  // if (tmpFrom.isFav == 1) {
+                                  //   final int i = provider.favList.indexOf(tmpFrom.id);
+                                  //   provider.favList.insert(i, tmpTo.id);
+                                  // }
+
+                                  // if (tmpTo.isFav == 1) {
+                                  //   final int i = provider.favList.indexOf(tmpTo.id);
+                                  //   provider.favList.insert(i, tmpFrom.id);
+                                  // }
+
+                                  // print('After: ' + provider.favList.map((e) => e.id).toString());
+
+                                  // SharedPrefsUtil.putStringList('fav', provider.favList.map((e) => e.id));
+                                },
+                              ),
+                            ],
                           )
                         : Image.asset(images.noAd3yah),
                   ),
@@ -307,26 +318,26 @@ class _MyAd3yahState extends State<MyAd3yah> with TickerProviderStateMixin {
   }
 
   void insert(Doaa doaa) {
-    final provider = Provider.of<DataProvider>(context, listen: false);
+    final provider = Provider.of<DataController>(context, listen: false);
     _firstController.clear();
     _secondController.clear();
     provider.insert(doaa);
   }
 
   void delete(Doaa doaa) {
-    final provider = Provider.of<DataProvider>(context, listen: false);
+    final provider = Provider.of<DataController>(context, listen: false);
 
     provider.remove(doaa);
   }
 
   void update(Doaa doaa) {
-    final provider = Provider.of<DataProvider>(context, listen: false);
+    final provider = Provider.of<DataController>(context, listen: false);
     print(doaa.text);
     provider.update(doaa);
   }
 
   Widget card(Doaa item) {
-    final provider = Provider.of<DataProvider>(context);
+    final provider = Provider.of<DataController>(context);
     final settings = context.read<SettingsProvider>();
     return CardTemplate(
       ribbon: Ribbon.ribbon5,

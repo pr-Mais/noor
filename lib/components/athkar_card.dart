@@ -3,13 +3,12 @@ import 'package:noor/components/abstract_card.dart';
 import 'package:noor/constants/ribbons.dart';
 import 'package:noor/models/thekr.dart';
 import 'package:noor/pages/tabs/1_home/athkar_expanded.dart';
-import 'package:noor/providers/data_provider.dart';
+import 'package:noor/providers/data_controller.dart';
 import 'package:noor/providers/settings_provider.dart';
 import 'package:noor/utils/copy.dart';
 import 'package:noor/utils/remove_tashkeel.dart';
 import 'package:noor/utils/to_arabic.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class AthkarCard extends StatelessWidget {
   const AthkarCard({
@@ -23,7 +22,7 @@ class AthkarCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Counter counter = context.watch<Counter>();
-    final DataProvider provider = context.watch<DataProvider>();
+    final DataController provider = context.watch<DataController>();
     final SettingsProvider settings = context.watch<SettingsProvider>();
 
     return Stack(
@@ -53,10 +52,7 @@ class AthkarCard extends StatelessWidget {
               padding: const EdgeInsets.only(bottom: 30.0),
               child: Text(
                 !settings.tashkeel ? Tashkeel.remove(thekr.text) : thekr.text,
-                textAlign: TextAlign.justify,
-                textDirection: TextDirection.rtl,
                 textScaleFactor: settings.fontSize,
-                style: Theme.of(context).textTheme.bodyText1.copyWith(fontFamily: settings.fontType)
               ),
             ),
           ),
@@ -86,7 +82,7 @@ class AthkarCard extends StatelessWidget {
                           child: AnimatedSwitcher(
                             duration: const Duration(milliseconds: 250),
                             child: Text(
-                              ToArabic.integer(counter.getCounter),
+                              '${counter.getCounter}'.arabicDigit(),
                               key: ValueKey<int>(counter.getCounter),
                               style: TextStyle(color: Theme.of(context).accentColor, fontSize: 16, height: 1.25),
                             ),
