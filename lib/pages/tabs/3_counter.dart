@@ -114,7 +114,7 @@ class _CounterPageState extends State<CounterPage> {
                   },
                   duration: Duration(milliseconds: 250),
                   child: Text(
-                    ToArabic.integer(counter),
+                    '$counter'.arabicDigit(),
                     key: ValueKey<int>(counter),
                     style: TextStyle(color: Colors.white, fontSize: 50),
                   ),
