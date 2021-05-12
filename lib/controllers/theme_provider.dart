@@ -63,7 +63,12 @@ ThemeData lightTheme = ThemeData(
     highlightColor: Colors.black.withOpacity(0.1),
     splashColor: Colors.black.withOpacity(0.1),
     textTheme: TextTheme(
-      bodyText1: TextStyle(fontSize: 16, height: 1.8, color: Colors.black, fontWeight: FontWeight.normal),
+      bodyText1: TextStyle(
+        fontSize: 16,
+        height: 1.8,
+        color: Colors.black,
+        fontWeight: FontWeight.normal,
+      ),
       subtitle1: TextStyle(
         color: Colors.black87,
         fontSize: 13,
@@ -75,6 +80,7 @@ ThemeData lightTheme = ThemeData(
         fontWeight: FontWeight.bold,
       ),
     ),
+    scrollbarTheme: ScrollbarThemeData(radius: Radius.circular(5)),
     iconTheme: IconThemeData(color: Colors.grey[400], size: 30),
     inputDecorationTheme: InputDecorationTheme(
       fillColor: Colors.grey[300],
@@ -104,11 +110,11 @@ ThemeData darkTheme = ThemeData(
     bodyText1: TextStyle(
       fontSize: 16,
       height: 1.8,
-      color: Colors.black,
+      color: Colors.white,
       fontWeight: FontWeight.normal,
     ),
     subtitle1: TextStyle(
-      color: Colors.black87,
+      color: Colors.white,
       fontSize: 13,
     ),
     headline1: TextStyle(
@@ -124,4 +130,5 @@ ThemeData darkTheme = ThemeData(
   highlightColor: Color(0xff3C387B).withOpacity(0.5),
   dialogTheme: DialogTheme(backgroundColor: Color(0xff1B2349)),
   cardColor: Color(0xff10122C),
+  scrollbarTheme: ScrollbarThemeData(radius: Radius.circular(5)),
 );
