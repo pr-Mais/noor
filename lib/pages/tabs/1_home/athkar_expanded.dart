@@ -16,7 +16,7 @@ class AthkarList extends StatefulWidget {
 class _AthkarListState extends State<AthkarList> with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   ItemScrollController controller;
   ItemPositionsListener listener = ItemPositionsListener.create();
-  Animation animation;
+  Animation<double> animation;
   AnimationController animationController;
   int pagePosition = 0;
 
@@ -29,10 +29,10 @@ class _AthkarListState extends State<AthkarList> with SingleTickerProviderStateM
     animationController = new AnimationController(
       vsync: this,
     );
-    animation =
-        Tween(begin: 0.0, end: 0.1).animate(CurvedAnimation(parent: animationController, curve: Curves.elasticIn));
+    animation = Tween<double>(begin: 0.0, end: 0.1)
+        .animate(CurvedAnimation(parent: animationController, curve: Curves.elasticIn));
     controller = new ItemScrollController();
-    WidgetsBinding.instance.addPostFrameCallback((callback) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       listener.itemPositions.addListener(changeAppBar);
     });
   }
@@ -70,7 +70,7 @@ class _AthkarListState extends State<AthkarList> with SingleTickerProviderStateM
 
     if (index < 422 && settings.autoJump && counter._counter == 0) {
       Future<void>.delayed(Duration(milliseconds: 500)).then(
-        (f) {
+        (_) {
           controller.scrollTo(duration: Duration(milliseconds: 800), curve: Curves.easeInOutCubic, index: index + 1);
         },
       );
@@ -123,35 +123,35 @@ class _AthkarListState extends State<AthkarList> with SingleTickerProviderStateM
                   create: (_) => counterList,
                   child: Consumer<List<Counter>>(
                     builder: (_, List<Counter> countersList, __) {
-                      return ScrollablePositionedList.builder(
-                        key: ValueKey<String>('list'),
-                        physics: AlwaysScrollableScrollPhysics(),
-                        itemScrollController: controller,
-                        itemPositionsListener: listener,
-                        itemCount: athkar.length,
-                        addAutomaticKeepAlives: true,
-                        initialScrollIndex: widget.index,
-                        minCacheExtent: 900,
-                        padding: EdgeInsets.only(bottom: 20),
-                        itemBuilder: (_, int index) {
-                          final Thekr thekr = athkar[index];
-                          if (thekr.isTitle) {
-                            return ThekrTitleCard(
-                              title: thekr.text,
-                            );
-                          } else {
-                            return ChangeNotifierProvider<Counter>.value(
-                              value: countersList[index],
-                              child: Consumer<Counter>(
-                                builder: (_, Counter counter, __) => AthkarCard(
-                                  key: ValueKey<int>(index),
-                                  thekr: thekr,
-                                  onTap: () => onCardTap(index, counter),
+                      return Scrollbar(
+                        child: ScrollablePositionedList.builder(
+                          key: ValueKey<String>('list'),
+                          physics: AlwaysScrollableScrollPhysics(),
+                          itemScrollController: controller,
+                          itemPositionsListener: listener,
+                          itemCount: athkar.length,
+                          addAutomaticKeepAlives: true,
+                          initialScrollIndex: widget.index,
+                          minCacheExtent: 900,
+                          padding: EdgeInsets.only(bottom: 20),
+                          itemBuilder: (_, int index) {
+                            final Thekr thekr = athkar[index];
+                            if (thekr.isTitle) {
+                              return ThekrTitleCard(title: thekr.text);
+                            } else {
+                              return ChangeNotifierProvider<Counter>.value(
+                                value: countersList[index],
+                                child: Consumer<Counter>(
+                                  builder: (_, Counter counter, __) => AthkarCard(
+                                    key: ValueKey<int>(index),
+                                    thekr: thekr,
+                                    onTap: () => onCardTap(index, counter),
+                                  ),
                                 ),
-                              ),
-                            );
-                          }
-                        },
+                              );
+                            }
+                          },
+                        ),
                       );
                     },
                   ),
@@ -190,7 +190,7 @@ class _PersistedCardState extends State<PersistedCard> with AutomaticKeepAliveCl
     super.build(context);
 
     return AthkarCard(
-      key: PageStorageKey(widget.index),
+      key: PageStorageKey<int>(widget.index),
       thekr: widget.thekr,
       onTap: widget.onTap,
     );

@@ -78,30 +78,33 @@ class _AthkarPageState extends State<AthkarPage> with SingleTickerProviderStateM
               builder: (_, DataModel model, __) {
                 final List<Thekr> athkarTitles = model.athkar.where((Thekr thekr) => thekr.isTitle).toList();
 
-                return ListView.builder(
-                  physics: AlwaysScrollableScrollPhysics(),
-                  itemCount: athkarTitles.where((Thekr thekr) => thekr.isTitle).length,
+                return Scrollbar(
                   controller: scrollController,
-                  padding: EdgeInsets.only(top: 10),
-                  itemBuilder: (BuildContext context, int index) {
-                    final Thekr title = athkarTitles[index];
-                    final int position = model.athkar.indexOf(title);
+                  child: ListView.builder(
+                    physics: AlwaysScrollableScrollPhysics(),
+                    itemCount: athkarTitles.where((Thekr thekr) => thekr.isTitle).length,
+                    controller: scrollController,
+                    padding: EdgeInsets.only(top: 10),
+                    itemBuilder: (BuildContext context, int index) {
+                      final Thekr title = athkarTitles[index];
+                      final int position = model.athkar.indexOf(title);
 
-                    return title.isTitle
-                        ? ListItem(
-                            title: '${title.text}',
-                            icon: images.athkar,
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute<AthkarList>(
-                                  builder: (_) => AthkarList(index: position),
-                                ),
-                              );
-                            },
-                          )
-                        : Container();
-                  },
+                      return title.isTitle
+                          ? ListItem(
+                              title: '${title.text}',
+                              icon: images.athkar,
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute<AthkarList>(
+                                    builder: (_) => AthkarList(index: position),
+                                  ),
+                                );
+                              },
+                            )
+                          : Container();
+                    },
+                  ),
                 );
               },
             ),
