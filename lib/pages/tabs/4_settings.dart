@@ -10,11 +10,11 @@ import 'package:intl/intl.dart' as intl;
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
-import 'package:noor/exports/components.dart' show NoorSettingsIcons;
-import 'package:noor/exports/services.dart'  show SharedPrefsUtil;
+import 'package:noor/exports/components.dart' show CardTemplate, NoorSettingsIcons;
+import 'package:noor/exports/services.dart' show SharedPrefsUtil;
 import 'package:noor/exports/utils.dart' show Tashkeel;
 import 'package:noor/exports/controllers.dart' show ThemeProvider, SettingsProvider;
-import 'package:noor/exports/constants.dart' show Links;
+import 'package:noor/exports/constants.dart' show Images, Links, Ribbon;
 
 class Settings extends StatefulWidget {
   Settings({
@@ -235,9 +235,9 @@ class _SettingsState extends State<Settings> with TickerProviderStateMixin, Auto
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    final settings = context.watch<SettingsProvider>();
-
-    final images = Provider.of<ThemeProvider>(context).images;
+    final SettingsProvider settings = context.watch<SettingsProvider>();
+    final Images images = Provider.of<ThemeProvider>(context).images;
+    
     return Scaffold(
       body: Scrollbar(
         controller: _scrollController,
@@ -254,7 +254,6 @@ class _SettingsState extends State<Settings> with TickerProviderStateMixin, Auto
                   Card(
                     data: placeholderText,
                     scaleFactor: settings.fontSize,
-                    fontFamily: settings.fontType,
                     tashkeel: settings.tashkeel,
                   ),
                   const Divider(),
@@ -938,122 +937,24 @@ class Card extends StatelessWidget {
   Card({
     this.data,
     this.scaleFactor,
-    this.fontFamily,
     this.tashkeel,
   });
-  final data;
-  final scaleFactor;
-  final fontFamily;
-  final tashkeel;
+
+  final String data;
+  final double scaleFactor;
+  final bool tashkeel;
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 8.0),
-      child: Stack(
-        children: <Widget>[
-          GestureDetector(
-            child: Stack(
-              children: <Widget>[
-                AnimatedSwitcher(
-                  duration: Duration(milliseconds: 500),
-                  child: Container(
-                    key: ValueKey(tashkeel),
-                    width: MediaQuery.of(context).size.width,
-                    height: 300,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15.0),
-                      color: Theme.of(context).cardColor,
-                      gradient: LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          colors: Theme.of(context).brightness == Brightness.light
-                              ? [Color(0xfff3f3f3), Color(0xfff1f1f1)]
-                              : [
-                                  Color(0xff1B2349),
-                                  Color(0xff161A3A),
-                                ]),
-                      boxShadow: [
-                        new BoxShadow(
-                          color: Colors.black26,
-                          blurRadius: 8.0,
-                        ),
-                      ],
-                    ),
-                    margin: EdgeInsets.only(
-                      top: 20,
-                      right: 30,
-                      left: 30,
-                    ),
-                    child: Stack(
-                      children: <Widget>[
-                        Column(
-                          children: <Widget>[
-                            Expanded(
-                              child: ScrollConfiguration(
-                                child: GlowingOverscrollIndicator(
-                                  axisDirection: AxisDirection.down,
-                                  color: Colors.white10,
-                                  child: SingleChildScrollView(
-                                    child: Padding(
-                                      child: AnimatedSwitcher(
-                                        key: UniqueKey(),
-                                        duration: Duration(milliseconds: 500),
-                                        child: Text(
-                                          tashkeel ? data : Tashkeel.remove(data),
-                                          textScaleFactor: scaleFactor,
-                                          textAlign: TextAlign.justify,
-                                          style: TextStyle(fontFamily: fontFamily, fontSize: 16, height: 1.6),
-                                        ),
-                                      ),
-                                      padding: EdgeInsets.only(
-                                        top: 20.0,
-                                        left: 12.0,
-                                        right: 12.0,
-                                        bottom: 20.0,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                behavior: ScrollBehavior(),
-                              ),
-                            ),
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width,
-                              height: 28.0,
-                            )
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Container(
-            margin: EdgeInsets.only(
-              right: 30,
-              left: 30,
-            ),
-            padding: EdgeInsets.symmetric(horizontal: 5.0),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(15.0),
-                topRight: Radius.circular(15.0),
-              ),
-              image: DecorationImage(image: AssetImage('assets/ribbons/ribbon1.png'), fit: BoxFit.fitWidth),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Image.asset('assets/icons/outline_heart.png'),
-                Image.asset('assets/icons/copy.png'),
-              ],
-            ),
-            height: 35,
-          ),
-        ],
+    return CardTemplate(
+      ribbon: Ribbon.ribbon1,
+      actions: <Widget>[
+        Image.asset('assets/icons/outline_heart.png'),
+        Image.asset('assets/icons/copy.png'),
+      ],
+      child: Text(
+        !tashkeel ? Tashkeel.remove(data) : data,
+        textScaleFactor: scaleFactor,
       ),
     );
   }
