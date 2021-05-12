@@ -1,12 +1,11 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:noor/models/data.dart';
+import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 import 'package:noor/exports/components.dart' show NoorCloseButton, CardTemplate;
 import 'package:noor/exports/constants.dart' show Ribbon;
-import 'package:noor/exports/models.dart' show Doaa;
+import 'package:noor/exports/models.dart' show Doaa, DataModel;
 import 'package:noor/exports/controllers.dart' show DataController, SettingsProvider;
 import 'package:noor/exports/utils.dart' show Copy, Tashkeel;
 
@@ -53,7 +52,7 @@ class _Ad3yahListState extends State<Ad3yahList> {
   @override
   Widget build(BuildContext context) {
     final SettingsProvider settings = context.watch<SettingsProvider>();
-    final DataController provider = context.watch<DataController>();
+    final DataController provider = GetIt.I<DataController>();
 
     return Scaffold(
       body: Column(
@@ -110,11 +109,10 @@ class _Ad3yahListState extends State<Ad3yahList> {
                       ? Text(
                           item.info,
                           textAlign: TextAlign.right,
-                          textScaleFactor: settings.fontSize,
                         )
                       : null,
                   child: Text(
-                    !context.watch<SettingsProvider>().tashkeel ? Tashkeel.remove(item.text) : item.text,
+                    !settings.tashkeel ? Tashkeel.remove(item.text) : item.text,
                     textScaleFactor: settings.fontSize,
                   ),
                 );

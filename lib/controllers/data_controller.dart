@@ -1,33 +1,30 @@
 import 'dart:async';
 
-import 'package:flutter/foundation.dart';
+import 'package:get_it/get_it.dart';
 import 'package:noor/exports/models.dart' show DataModel, Doaa, Thekr, AllahName;
 import 'package:noor/exports/services.dart' show DBService, SharedPrefsUtil, JsonService;
 
-class DataController extends ChangeNotifier {
-  DataController._();
-
+class DataController {
   static Future<DataController> init() async {
-    final JsonService service = await JsonService().init();
-    final dynamic json = service.file;
+    final Map<String, dynamic> json = await JsonService.init();
+    final DataModel dataModel = GetIt.I<DataModel>();
+    if (dataModel.athkar.isEmpty) {
+      //add الأذكار
+      json['athkar'].forEach((String k, dynamic v) {
+        final Thekr title = Thekr(
+          isTitle: true,
+          text: k,
+          sectionName: k,
+        );
+        dataModel.athkar = <Thekr>[...dataModel.athkar, title];
 
-    final DataModel dataModel = DataModel.instance;
-
-    //add الأذكار
-    json['athkar'].forEach((String k, dynamic v) {
-      final Thekr title = Thekr(
-        isTitle: true,
-        text: k,
-        sectionName: k,
-      );
-      dataModel.athkar = <Thekr>[...dataModel.athkar, title];
-
-      v.forEach((value) {
-        value['section'] = 1;
-        value['sectionName'] = k;
-        dataModel.athkar = <Thekr>[...dataModel.athkar, Thekr.fromMap(value)];
+        v.forEach((value) {
+          value['section'] = 1;
+          value['sectionName'] = k;
+          dataModel.athkar = <Thekr>[...dataModel.athkar, Thekr.fromMap(value)];
+        });
       });
-    });
+    }
 
     int index = 2;
 
@@ -62,32 +59,46 @@ class DataController extends ChangeNotifier {
 
       index++;
     });
-
-    dataModel.quraan = tmpQuraan.map((dynamic e) => Doaa.fromMap(e)).toList().cast<Doaa>();
-    dataModel.sunnah = tmpSunnah.map((dynamic e) => Doaa.fromMap(e)).toList().cast<Doaa>();
-    dataModel.ruqiya = tmpRuqiya.map((dynamic e) => Doaa.fromMap(e)).toList().cast<Doaa>();
+    if (dataModel.quraan.isEmpty) {
+      dataModel.quraan = tmpQuraan.map((dynamic e) => Doaa.fromMap(e)).toList().cast<Doaa>();
+    }
+    if (dataModel.sunnah.isEmpty) {
+      dataModel.sunnah = tmpSunnah.map((dynamic e) => Doaa.fromMap(e)).toList().cast<Doaa>();
+    }
+    if (dataModel.ruqiya.isEmpty) {
+      dataModel.ruqiya = tmpRuqiya.map((dynamic e) => Doaa.fromMap(e)).toList().cast<Doaa>();
+    }
 
     //add أسماء الله
-    json['allah names'].forEach((dynamic v) {
-      dataModel.allahNames = <AllahName>[...dataModel.allahNames, AllahName.fromMap(v)];
-    });
+    if (dataModel.allahNames.isEmpty) {
+      json['allah names'].forEach((dynamic v) {
+        dataModel.allahNames = <AllahName>[...dataModel.allahNames, AllahName.fromMap(v)];
+      });
+    }
 
     //add أدعيتي
     final List<Doaa> myAd3yah = await DBService.db.get();
 
-    dataModel.myAd3yah = myAd3yah.cast<Doaa>();
+    if (dataModel.myAd3yah.isEmpty) {
+      dataModel.myAd3yah = myAd3yah.cast<Doaa>();
+    }
 
     //check favorite items
-    updateFavList();
+    if (dataModel.favList.isEmpty) {
+      updateFavList();
+    }
 
-    return DataController._();
+    await Future<void>.delayed(Duration(seconds: 1));
+
+    return DataController();
   }
 
   static void updateFavList() {
-    final DataModel dataModel = DataModel.instance;
-    List<String> x = SharedPrefsUtil.getStringList('fav') ?? <String>[];
+    final DataModel dataModel = GetIt.I<DataModel>();
+    List<String> favPrefs = SharedPrefsUtil.getStringList('fav') ?? <String>[];
+
     final List<dynamic> allLists = List<dynamic>.from(<dynamic>[
-      ...dataModel.athkar,
+      ...dataModel.athkar.where((Thekr thekr) => !thekr.isTitle).toList(),
       ...dataModel.quraan,
       ...dataModel.sunnah,
       ...dataModel.ruqiya,
@@ -97,12 +108,12 @@ class DataController extends ChangeNotifier {
 
     List<dynamic> _favList = <dynamic>[];
 
-    for (String id in x) {
+    for (String id in favPrefs) {
       dynamic favItem;
 
       if (!allLists.any((dynamic element) => element.id == id)) continue;
 
-      favItem = allLists.singleWhere((dynamic element) => element.id == id);
+      favItem = allLists.firstWhere((dynamic element) => element.id == id);
 
       favItem.isFav = 1;
 
@@ -115,7 +126,7 @@ class DataController extends ChangeNotifier {
   }
 
   updateMyAd3yahList(int from, int to) async {
-    final DataModel dataModel = DataModel.instance;
+    final DataModel dataModel = GetIt.I<DataModel>();
 
     final Doaa tmpFrom = dataModel.myAd3yah[from];
     final Doaa tmpTo = dataModel.myAd3yah[to];
@@ -170,15 +181,11 @@ class DataController extends ChangeNotifier {
   }
 
   void swapFav(int from, int to) async {
-    final DataModel dataModel = DataModel.instance;
     List<String> favPrefs = SharedPrefsUtil.getStringList('fav') ?? <String>[];
 
-    final dynamic fromCard = dataModel.favList[from];
-    final dynamic toCard = dataModel.favList[to];
-
     // Swap IDs
-    favPrefs[to] = fromCard.id;
-    favPrefs[from] = toCard.id;
+    favPrefs.removeAt(from);
+    favPrefs.insert(to, GetIt.I<DataModel>().favList[from].id);
 
     // Update user prefs list
     SharedPrefsUtil.putStringList('fav', favPrefs);
@@ -190,18 +197,18 @@ class DataController extends ChangeNotifier {
   void insert(Doaa doaa) async {
     DBService.db.insert(doaa);
 
-    DataModel.instance.myAd3yah = await DBService.db.get();
+    GetIt.I<DataModel>().myAd3yah = await DBService.db.get();
   }
 
   void update(Doaa doaa) async {
     DBService.db.update(doaa);
 
-    DataModel.instance.myAd3yah = await DBService.db.get();
+    GetIt.I<DataModel>().myAd3yah = await DBService.db.get();
   }
 
   void remove(Doaa doaa) async {
     DBService.db.delete(doaa);
-    DataModel.instance.myAd3yah = await DBService.db.get();
+    GetIt.I<DataModel>().myAd3yah = await DBService.db.get();
 
     //cleaning fav list
     List<String> favList = SharedPrefsUtil.getStringList('fav');

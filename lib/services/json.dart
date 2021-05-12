@@ -3,15 +3,14 @@ import 'dart:convert';
 import 'package:flutter/services.dart';
 
 class JsonService {
-  dynamic _x;
-  Future<JsonService> init() async {
-    _x = json.decode(await _loadFromAsset());
-    return this;
-  }
+  static Future<Map<String, dynamic>> init() async {
+    try {
+      final String jsonFile = await rootBundle.loadString('assets/noor-data/data.json');
+    Map<String, dynamic> decodedJson = json.decode(jsonFile);
 
-  Future<String> _loadFromAsset() async {
-    return await rootBundle.loadString('assets/noor-data/data.json');
+    return decodedJson;
+    } catch (e) {
+      print(e);
+    }
   }
-
-  get file => _x;
 }

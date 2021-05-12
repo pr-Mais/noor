@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 
 import 'package:noor/exports/models.dart' show Thekr;
@@ -19,7 +20,7 @@ class AthkarCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Counter counter = context.watch<Counter>();
-    final DataController provider = context.watch<DataController>();
+    final DataController dataController = GetIt.I<DataController>();
     final SettingsProvider settings = context.watch<SettingsProvider>();
 
     return Stack(
@@ -30,7 +31,7 @@ class AthkarCard extends StatelessWidget {
             actions: <Widget>[
               GestureDetector(
                 onTap: () {
-                  thekr.isFav == 1 ? provider.removeFromFav(thekr) : provider.addToFav(thekr);
+                  thekr.isFav == 1 ? dataController.removeFromFav(thekr) : dataController.addToFav(thekr);
                 },
                 child: AnimatedCrossFade(
                   firstChild: Image.asset('assets/icons/outline_heart.png'),

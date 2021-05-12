@@ -4,8 +4,6 @@ import 'package:noor/models/doaa.dart';
 import 'package:noor/models/thekr.dart';
 
 class DataModel extends ChangeNotifier {
-  DataModel._();
-  static DataModel instance = DataModel._();
 
   List<Thekr> _athkar = <Thekr>[];
   List<Doaa> _quraan = <Doaa>[];

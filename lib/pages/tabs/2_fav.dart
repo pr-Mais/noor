@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:noor/models/data.dart';
 import 'package:provider/provider.dart';
 import 'package:reorderables/reorderables.dart';
@@ -98,7 +99,7 @@ class _FavoriteState extends State<Favorite> with AutomaticKeepAliveClientMixin 
   // TODO(Mais): Refactor into a widget
   //delete dialog confirmation
   deleteDialog(dynamic dataToDelete, int i) {
-    final DataController data = context.read<DataController>();
+    final DataController data = GetIt.I<DataController>();
 
     showGeneralDialog(
       transitionDuration: Duration(milliseconds: 600),
@@ -126,7 +127,7 @@ class _FavoriteState extends State<Favorite> with AutomaticKeepAliveClientMixin 
     super.build(context);
 
     final Images images = context.read<ThemeProvider>().images;
-    final DataController data = context.watch<DataController>();
+    final DataController data = GetIt.I<DataController>();
 
     return Scaffold(
       body: SafeArea(

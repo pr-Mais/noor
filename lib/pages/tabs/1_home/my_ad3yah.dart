@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 import 'package:reorderables/reorderables.dart';
 
@@ -204,7 +205,6 @@ class _MyAd3yahState extends State<MyAd3yah> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     final Images images = context.read<ThemeProvider>().images;
-    final DataController provider = Provider.of<DataController>(context);
     final DataModel dataModel = Provider.of<DataModel>(context);
 
     final List<Doaa> myAd3yah = dataModel.myAd3yah;
@@ -223,7 +223,7 @@ class _MyAd3yahState extends State<MyAd3yah> with TickerProviderStateMixin {
             child: Column(
               children: <Widget>[
                 Padding(
-                  padding: EdgeInsets.only(left: 20, right: 20),
+                  padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -252,6 +252,7 @@ class _MyAd3yahState extends State<MyAd3yah> with TickerProviderStateMixin {
                     duration: Duration(milliseconds: 400),
                     child: myAd3yah.isNotEmpty
                         ? CustomScrollView(
+                          controller: controller,
                             slivers: <Widget>[
                               ReorderableSliverList(
                                 key: ValueKey<String>('list'),
@@ -269,23 +270,7 @@ class _MyAd3yahState extends State<MyAd3yah> with TickerProviderStateMixin {
                                   childCount: myAd3yah.length,
                                 ),
                                 onReorder: (int from, int to) async {
-                                  await provider.updateMyAd3yahList(from, to);
-
-                                  // print('Before: ' + provider.favList.map((dynamic e) => e.id).toString());
-
-                                  // if (tmpFrom.isFav == 1) {
-                                  //   final int i = provider.favList.indexOf(tmpFrom.id);
-                                  //   provider.favList.insert(i, tmpTo.id);
-                                  // }
-
-                                  // if (tmpTo.isFav == 1) {
-                                  //   final int i = provider.favList.indexOf(tmpTo.id);
-                                  //   provider.favList.insert(i, tmpFrom.id);
-                                  // }
-
-                                  // print('After: ' + provider.favList.map((e) => e.id).toString());
-
-                                  // SharedPrefsUtil.putStringList('fav', provider.favList.map((e) => e.id));
+                                  await GetIt.I<DataController>().updateMyAd3yahList(from, to);
                                 },
                               ),
                             ],
@@ -302,26 +287,20 @@ class _MyAd3yahState extends State<MyAd3yah> with TickerProviderStateMixin {
   }
 
   void insert(Doaa doaa) {
-    final provider = Provider.of<DataController>(context, listen: false);
     _firstController.clear();
     _secondController.clear();
-    provider.insert(doaa);
+    GetIt.I<DataController>().insert(doaa);
   }
 
   void delete(Doaa doaa) {
-    final provider = Provider.of<DataController>(context, listen: false);
-
-    provider.remove(doaa);
+    GetIt.I<DataController>().remove(doaa);
   }
 
   void update(Doaa doaa) {
-    final provider = Provider.of<DataController>(context, listen: false);
-    print(doaa.text);
-    provider.update(doaa);
+    GetIt.I<DataController>().update(doaa);
   }
 
   Widget card(Doaa item) {
-    final provider = Provider.of<DataController>(context);
     final settings = context.read<SettingsProvider>();
     return CardTemplate(
       ribbon: Ribbon.ribbon5,
@@ -329,7 +308,7 @@ class _MyAd3yahState extends State<MyAd3yah> with TickerProviderStateMixin {
       actions: <Widget>[
         GestureDetector(
           onTap: () async {
-            item.isFav == 1 ? provider.removeFromFav(item) : provider.addToFav(item);
+            item.isFav == 1 ? GetIt.I<DataController>().removeFromFav(item) : GetIt.I<DataController>().addToFav(item);
             await DBService.db.update(item);
           },
           child: AnimatedCrossFade(

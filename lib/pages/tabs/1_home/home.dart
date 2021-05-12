@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 
 import 'package:provider/provider.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -12,8 +13,7 @@ import 'package:noor/exports/components.dart' show NoorLogo, GlowingStars, HomeC
 import 'package:noor/exports/utils.dart' show backToLocation, Tashkeel;
 import 'package:noor/exports/controllers.dart' show ThemeProvider;
 import 'package:noor/exports/services.dart' show SharedPrefsUtil;
-import 'package:noor/exports/models.dart' show Thekr, AllahName;
-
+import 'package:noor/exports/models.dart' show AllahName, DataModel, Thekr;
 
 class Home extends StatefulWidget {
   Home({
@@ -27,7 +27,6 @@ class _HomeState extends State<Home> with TickerProviderStateMixin, AutomaticKee
   bool isWriting = false;
   FocusNode _focusNode = new FocusNode();
   TextEditingController _searchController = new TextEditingController();
-  List data = [];
   List results = [];
   List title = [];
 
@@ -136,6 +135,16 @@ class _HomeState extends State<Home> with TickerProviderStateMixin, AutomaticKee
 
   //once the user type something, results will start showing
   void _searchOperation(String query) {
+    final DataModel dataModel = GetIt.I<DataModel>();
+
+    final List<dynamic> allLists = List<dynamic>.from(<dynamic>[
+      ...dataModel.athkar,
+      ...dataModel.quraan,
+      ...dataModel.sunnah,
+      ...dataModel.ruqiya,
+      ...dataModel.allahNames,
+    ]);
+
     results.clear();
     title.clear();
     String tmp;
@@ -146,21 +155,21 @@ class _HomeState extends State<Home> with TickerProviderStateMixin, AutomaticKee
         isWriting = false;
       }
     });
-    for (int i = 0; i < data.length; i++) {
-      tmp = Tashkeel.remove(data[i].text);
+    for (int i = 0; i < allLists.length; i++) {
+      tmp = Tashkeel.remove(allLists[i].text);
       tmp = mask(tmp);
-      if ((tmp.contains(query) || data[i].text.contains(query)) && data[i].section != 5) {
-        results.add(data[i]);
-        if (data[i].runtimeType == Thekr) {
-          title.add(data[i].sectionName);
-        } else if (data[i].runtimeType == AllahName) {
-          if (data[i].name == 'الله جل جلاله') {
-            title.add('اسم ${data[i].name}');
+      if ((tmp.contains(query) || allLists[i].text.contains(query)) && allLists[i].section != 5) {
+        results.add(allLists[i]);
+        if (allLists[i].runtimeType == Thekr) {
+          title.add(allLists[i].sectionName);
+        } else if (allLists[i].runtimeType == AllahName) {
+          if (allLists[i].name == 'الله جل جلاله') {
+            title.add('اسم ${allLists[i].name}');
           } else {
-            title.add('اسم الله ${data[i].name}');
+            title.add('اسم الله ${allLists[i].name}');
           }
         } else {
-          title.add(data[i].sectionName);
+          title.add(allLists[i].sectionName);
         }
       }
     }
@@ -173,6 +182,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin, AutomaticKee
     final Images images = context.read<ThemeProvider>().images;
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Column(
           children: <Widget>[
@@ -183,12 +193,13 @@ class _HomeState extends State<Home> with TickerProviderStateMixin, AutomaticKee
               remoteConfigNotifier: remoteConfigNotifier,
               isWriting: isWriting,
             ),
+            SizedBox(height: 20),
+            serachBar(),
+            if(!isWriting)
             Expanded(
               child: SingleChildScrollView(
                 child: Column(
                   children: <Widget>[
-                    SizedBox(height: 20),
-                    serachBar(),
                     Stack(
                       children: <Widget>[
                         if (!isWriting)
@@ -235,19 +246,18 @@ class _HomeState extends State<Home> with TickerProviderStateMixin, AutomaticKee
                         ),
                       ],
                     ),
-                    if (isWriting)
-                      SizedBox(
-                        height: MediaQuery.of(context).size.height,
-                        child: SearchResults(
-                          query: searchWord,
-                          results: results,
-                          title: title,
-                        ),
-                      ),
                   ],
                 ),
               ),
             ),
+            if (isWriting)
+              Expanded(
+                child: SearchResults(
+                  query: searchWord,
+                  results: results,
+                  title: title,
+                ),
+              ),
           ],
         ),
       ),
@@ -261,7 +271,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin, AutomaticKee
       child: TextField(
         controller: _searchController,
         focusNode: _focusNode,
-        onChanged: _searchOperation,
+        onChanged: (String text) => _searchOperation(text),
         onTap: () {
           if (!_focusNode.hasFocus) {
             setState(() {});
@@ -292,7 +302,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin, AutomaticKee
           ),
           filled: true,
           fillColor:
-              Theme.of(context).brightness == Brightness.light ? Colors.black12 : Colors.grey[300].withOpacity(0.1),
+              Theme.of(context).brightness == Brightness.light ? Colors.grey[100] : Colors.white12,
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(16.0),
             borderSide: BorderSide(
@@ -492,62 +502,65 @@ class _SearchResultsState extends State<SearchResults> {
 
   @override
   Widget build(BuildContext context) {
-    return widget.results?.length == 0
-        ? Text('لا توجد نتائج')
-        : ListView.builder(
-            physics: AlwaysScrollableScrollPhysics(),
-            itemCount: widget.results.length,
-            itemBuilder: (context, index) {
-              return GestureDetector(
-                onTap: () {
-                  backToLocation(widget.results[index], context);
-                },
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Padding(
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Flexible(
-                            fit: FlexFit.loose,
-                            child: RichText(
-                              text: TextSpan(
-                                children: highlightOccurrences(widget.results[index].text, widget.query),
-                                style: DefaultTextStyle.of(context).style,
+    return SizedBox(
+      child: widget.results.length == 0
+          ? Text('لا توجد نتائج')
+          : ListView.builder(
+              physics: AlwaysScrollableScrollPhysics(),
+              padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+              itemCount: widget.results.length,
+              itemBuilder: (context, index) {
+                return GestureDetector(
+                  onTap: () {
+                    backToLocation(widget.results[index], context);
+                  },
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Padding(
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Flexible(
+                              fit: FlexFit.loose,
+                              child: RichText(
+                                text: TextSpan(
+                                  children: highlightOccurrences(widget.results[index].text, widget.query),
+                                  style: DefaultTextStyle.of(context).style,
+                                ),
+                                textAlign: TextAlign.start,
+                                overflow: TextOverflow.fade,
+                                maxLines: 2,
                               ),
-                              textAlign: TextAlign.start,
-                              overflow: TextOverflow.fade,
-                              maxLines: 2,
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 30.0,
+                        ),
                       ),
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 30.0,
+                      Padding(
+                        child: Text(
+                          widget.title[index],
+                          overflow: TextOverflow.ellipsis,
+                          softWrap: false,
+                          maxLines: 1,
+                          textDirection: TextDirection.rtl,
+                          textAlign: TextAlign.right,
+                          style: TextStyle(
+                              color: Theme.of(context).primaryColor, fontWeight: FontWeight.bold, fontSize: 12),
+                        ),
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 30.0,
+                        ),
                       ),
-                    ),
-                    Padding(
-                      child: Text(
-                        widget.title[index],
-                        overflow: TextOverflow.ellipsis,
-                        softWrap: false,
-                        maxLines: 1,
-                        textDirection: TextDirection.rtl,
-                        textAlign: TextAlign.right,
-                        style:
-                            TextStyle(color: Theme.of(context).primaryColor, fontWeight: FontWeight.bold, fontSize: 12),
-                      ),
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 30.0,
-                      ),
-                    ),
-                    Divider(),
-                  ],
-                ),
-              );
-            },
-          );
+                      Divider(),
+                    ],
+                  ),
+                );
+              },
+            ),
+    );
   }
 }

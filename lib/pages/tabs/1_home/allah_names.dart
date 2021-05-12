@@ -74,36 +74,34 @@ class _AllahNamesState extends State<AllahNames> with SingleTickerProviderStateM
                   },
                 ),
               ),
-              Positioned(
-                left: 10.0,
-                top: 40.0,
-                child: NoorCloseButton(size: 35)
-              ),
+              Positioned(left: 10.0, top: 40.0, child: NoorCloseButton(size: 35)),
             ],
           ),
           Consumer<DataModel>(
-            builder: (_,DataModel model, __) {
+            builder: (_, DataModel model, __) {
               final List<AllahName> allahNames = model.allahNames;
               return Expanded(
-                child: ListView.builder(
-                  padding: EdgeInsets.symmetric(vertical: 10),
-                  physics: AlwaysScrollableScrollPhysics(),
-                  itemCount: allahNames.length,
-                  controller: scrollController,
-                  itemBuilder: (BuildContext context, int index) {
-                    final AllahName title = allahNames[index];
-                    return ListItem(
-                      title: '${title.name}',
-                      icon: images.allahNames,
-                      onTap: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute<AllahNamesList>(
-                            builder: (_) => AllahNamesList(index: index),
-                          ),
-                        );
-                      },
-                    );
-                  },
+                child: Scrollbar(
+                  child: ListView.builder(
+                    padding: EdgeInsets.symmetric(vertical: 10),
+                    physics: AlwaysScrollableScrollPhysics(),
+                    itemCount: allahNames.length,
+                    controller: scrollController,
+                    itemBuilder: (BuildContext context, int index) {
+                      final AllahName title = allahNames[index];
+                      return ListItem(
+                        title: '${title.name}',
+                        icon: images.allahNames,
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute<AllahNamesList>(
+                              builder: (_) => AllahNamesList(index: index),
+                            ),
+                          );
+                        },
+                      );
+                    },
+                  ),
                 ),
               );
             },

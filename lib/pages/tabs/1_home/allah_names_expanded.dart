@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
@@ -82,7 +83,7 @@ class _AllahNamesListState extends State<AllahNamesList> with SingleTickerProvid
 
   @override
   Widget build(BuildContext context) {
-    final DataController dataProvider = context.watch<DataController>();
+    final DataController dataProvider = GetIt.I<DataController>();
     final DataModel dataModel = context.watch<DataModel>();
 
     allahNames = dataModel.allahNames;
@@ -123,62 +124,64 @@ class _AllahNamesListState extends State<AllahNamesList> with SingleTickerProvid
             ),
           ),
           Expanded(
-            child: ScrollablePositionedList.builder(
-              physics: AlwaysScrollableScrollPhysics(),
-              itemScrollController: controller,
-              itemPositionsListener: listener,
-              itemCount: allahNames.length,
-              addAutomaticKeepAlives: true,
-              initialScrollIndex: widget.index,
-              padding: EdgeInsets.only(bottom: 20),
-              itemBuilder: (_, int index) {
-                final AllahName name = allahNames[index];
+            child: Scrollbar(
+              child: ScrollablePositionedList.builder(
+                physics: AlwaysScrollableScrollPhysics(),
+                itemScrollController: controller,
+                itemPositionsListener: listener,
+                itemCount: allahNames.length,
+                addAutomaticKeepAlives: true,
+                initialScrollIndex: widget.index,
+                padding: EdgeInsets.only(bottom: 20),
+                itemBuilder: (_, int index) {
+                  final AllahName name = allahNames[index];
 
-                List<String> textList = name.text.split('.');
-                textList = textList.map((String e) => e.trim()).toList();
+                  List<String> textList = name.text.split('.');
+                  textList = textList.map((String e) => e.trim()).toList();
 
-                return Column(
-                  children: <Widget>[
-                    NameTitleCard(title: name.name),
-                    CardTemplate(
-                      ribbon: Ribbon.ribbon6,
-                      additionalContent: name.inApp ? backToMainLocation(name) : null,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            !settings.tashkeel ? Tashkeel.remove('${textList[0]}.') : '${textList[0]}.',
-                            textScaleFactor: settings.fontSize,
+                  return Column(
+                    children: <Widget>[
+                      NameTitleCard(title: name.name),
+                      CardTemplate(
+                        ribbon: Ribbon.ribbon6,
+                        additionalContent: name.inApp ? backToMainLocation(name) : null,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              !settings.tashkeel ? Tashkeel.remove('${textList[0]}.') : '${textList[0]}.',
+                              textScaleFactor: settings.fontSize,
+                            ),
+                            SizedBox(height: 10),
+                            Text(
+                              !settings.tashkeel ? Tashkeel.remove('${textList[1]}.') : '${textList[1]}.',
+                              textScaleFactor: settings.fontSize,
+                              textAlign: TextAlign.right,
+                            )
+                          ],
+                        ),
+                        actions: <Widget>[
+                          GestureDetector(
+                            onTap: () {
+                              name.isFav == 1 ? dataProvider.removeFromFav(name) : dataProvider.addToFav(name);
+                            },
+                            child: AnimatedCrossFade(
+                              firstChild: Image.asset('assets/icons/outline_heart.png'),
+                              secondChild: Image.asset('assets/icons/filled_heart.png'),
+                              crossFadeState: name.isFav == 1 ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+                              duration: Duration(milliseconds: 500),
+                            ),
                           ),
-                          SizedBox(height: 10),
-                          Text(
-                            !settings.tashkeel ? Tashkeel.remove('${textList[1]}.') : '${textList[1]}.',
-                            textScaleFactor: settings.fontSize,
-                            textAlign: TextAlign.right,
-                          )
+                          GestureDetector(
+                            child: Image.asset('assets/icons/copy.png'),
+                            onTap: () => Copy.onCopy(name.text, context),
+                          ),
                         ],
                       ),
-                      actions: <Widget>[
-                        GestureDetector(
-                          onTap: () {
-                            name.isFav == 1 ? dataProvider.removeFromFav(name) : dataProvider.addToFav(name);
-                          },
-                          child: AnimatedCrossFade(
-                            firstChild: Image.asset('assets/icons/outline_heart.png'),
-                            secondChild: Image.asset('assets/icons/filled_heart.png'),
-                            crossFadeState: name.isFav == 1 ? CrossFadeState.showSecond : CrossFadeState.showFirst,
-                            duration: Duration(milliseconds: 500),
-                          ),
-                        ),
-                        GestureDetector(
-                          child: Image.asset('assets/icons/copy.png'),
-                          onTap: () => Copy.onCopy(name.text, context),
-                        ),
-                      ],
-                    ),
-                  ],
-                );
-              },
+                    ],
+                  );
+                },
+              ),
             ),
           )
         ],
@@ -229,7 +232,7 @@ class ReferenceList extends StatelessWidget {
             bottom: false,
             child: Container(
               width: double.infinity,
-              margin: EdgeInsets.symmetric(horizontal: 20),
+              margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
@@ -237,11 +240,7 @@ class ReferenceList extends StatelessWidget {
                   Text(
                     name.name,
                     textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Theme.of(context).accentColor,
-                      height: 1.2,
-                      fontSize: 18,
-                    ),
+                    style: Theme.of(context).textTheme.headline1,
                   ),
                   NoorCloseButton(color: Theme.of(context).accentColor),
                 ],
@@ -249,45 +248,38 @@ class ReferenceList extends StatelessWidget {
             ),
           ),
           Expanded(
-            child: ListView.builder(
-              controller: scrollController,
-              itemCount: name.occurances.length,
-              padding: EdgeInsets.zero,
-              itemBuilder: (BuildContext context, int index) {
-                final dynamic element = allLists.singleWhere((dynamic item) => item.id == name.occurances[index]);
+            child: Scrollbar(
+              child: ListView.builder(
+                controller: scrollController,
+                itemCount: name.occurances.length,
+                padding: EdgeInsets.zero,
+                itemBuilder: (BuildContext context, int index) {
+                  final dynamic element = allLists.singleWhere((dynamic item) => item.id == name.occurances[index]);
 
-                return CardTemplate(
-                  ribbon: ribbon[element.section - 1],
-                  additionalContent: Text(
-                    '${element.sectionName}',
-                    textScaleFactor: settings.fontSize,
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: Theme.of(context).primaryColor,
-                      height: 1.6,
+                  return CardTemplate(
+                    ribbon: ribbon[element.section - 1],
+                    additionalContent: Text(
+                      '${element.sectionName}',                      
                     ),
-                  ),
-                  child: Text(
-                    !settings.tashkeel ? Tashkeel.remove('${element.text}') : '${element.text}',
-                    textAlign: TextAlign.justify,
-                    textDirection: TextDirection.rtl,
-                    textScaleFactor: settings.fontSize,
-                    style: Theme.of(context).textTheme.bodyText1.copyWith(fontFamily: settings.fontType),
-                  ),
-                  actions: <Widget>[
-                    Icon(
-                      icons[element.section - 1],
-                      color: Colors.white,
+                    child: Text(
+                      !settings.tashkeel ? Tashkeel.remove('${element.text}') : '${element.text}',
+                      textScaleFactor: settings.fontSize,
                     ),
-                    GestureDetector(
-                      child: Image.asset('assets/icons/copy.png'),
-                      onTap: () {
-                        Copy.onCopy(element.text, context);
-                      },
-                    ),
-                  ],
-                );
-              },
+                    actions: <Widget>[
+                      Icon(
+                        icons[element.section - 1],
+                        color: Colors.white,
+                      ),
+                      GestureDetector(
+                        child: Image.asset('assets/icons/copy.png'),
+                        onTap: () {
+                          Copy.onCopy(element.text, context);
+                        },
+                      ),
+                    ],
+                  );
+                },
+              ),
             ),
           ),
         ],

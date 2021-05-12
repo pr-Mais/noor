@@ -12,36 +12,20 @@ import 'package:noor/exports/controllers.dart' show DataController, ThemeProvide
 class NoorApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<void>(
-      future: GetIt.I.allReady(),
-      builder: (_, AsyncSnapshot<void> snapshot) {
-        return AnimatedSwitcher(
-          duration: Duration(microseconds: 800),
-          child: snapshot.hasData
-              ? MultiProvider(
-                  providers: <SingleChildWidget>[
-                    ChangeNotifierProvider<ThemeProvider>.value(
-                      value: ThemeProvider(),
-                    ),
-                    ChangeNotifierProvider<DataModel>.value(
-                      value: DataModel.instance,
-                    ),
-                    FutureProvider<DataController>(
-                      initialData: null,
-                      create: (_) => DataController.init(),
-                    ),
-                    ChangeNotifierProvider<DataController>(
-                      create: (_) => GetIt.I<DataController>(),
-                    ),
-                    ChangeNotifierProvider<SettingsProvider>(
-                      create: (_) => SettingsProvider(),
-                    ),
-                  ],
-                  child: MaterialAppWithTheme(),
-                )
-              : SplashScreen(),
-        );
-      },
+    return MultiProvider(
+      providers: <SingleChildWidget>[
+        ChangeNotifierProvider<ThemeProvider>.value(
+          value: ThemeProvider(),
+        ),
+        ChangeNotifierProvider<DataModel>.value(
+          value: GetIt.I<DataModel>(),
+        ),
+        ChangeNotifierProvider<SettingsProvider>(
+          create: (_) => SettingsProvider(),
+        ),
+        
+      ],
+      child: MaterialAppWithTheme(),
     );
   }
 }
@@ -77,7 +61,7 @@ class MaterialAppWithTheme extends StatelessWidget {
           ),
         );
       },
-      home: RootHome(),
+      home: SplashScreen(),
     );
   }
 }
