@@ -54,7 +54,7 @@ class _BottomNavState extends State<BottomNav> {
           BottomNavigationBarItem(
             icon: BottomItem(
               icon: NoorIcons.counter,
-              text: 'العداد',
+              text: 'السُّبحة',
               currentIndex: currentIndex,
               index: 2,
             ),

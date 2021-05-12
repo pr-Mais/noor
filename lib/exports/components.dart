@@ -2,7 +2,7 @@ export 'package:noor/components/card_template.dart';
 export 'package:noor/components/allah_names_title.dart';
 export 'package:noor/components/athkar_card.dart';
 export 'package:noor/components/athkar_title.dart';
-export 'package:noor/components/bottom.dart';
+export 'package:noor/components/bottom_nav.dart';
 export 'package:noor/components/card.dart';
 export 'package:noor/components/close_button.dart';
 export 'package:noor/components/custom_dialog.dart';
