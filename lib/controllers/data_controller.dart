@@ -1,13 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
-import 'package:noor/models/allah_name.dart';
-import 'package:noor/models/data.dart';
-import 'package:noor/models/doaa.dart';
-import 'package:noor/models/thekr.dart';
-import 'package:noor/services/db.dart';
-import 'package:noor/services/prefs.dart';
-import 'package:noor/services/json.dart';
+import 'package:noor/exports/models.dart' show DataModel, Doaa, Thekr, AllahName;
+import 'package:noor/exports/services.dart' show DBService, SharedPrefsUtil, JsonService;
 
 class DataController extends ChangeNotifier {
   DataController._();

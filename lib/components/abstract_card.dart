@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:noor/constants/theme.dart';
 import 'package:provider/provider.dart';
 
-import 'package:noor/constants/ribbons.dart';
-import 'package:noor/providers/settings_provider.dart';
+import 'package:noor/exports/constants.dart' show Ribbon;
+import 'package:noor/exports/models.dart' show SettingsProvider;
 
 class CardTemplate extends StatelessWidget {
   const CardTemplate({

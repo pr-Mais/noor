@@ -1,22 +1,15 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
-import 'package:noor/components/athkar_card.dart';
-import 'package:noor/models/data.dart';
-import 'package:noor/models/thekr.dart';
-import 'package:noor/providers/data_controller.dart';
-import 'package:noor/components/athkar_title.dart';
-import 'package:noor/providers/settings_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../components/close_button.dart';
+import 'package:noor/exports/models.dart' show DataModel, Thekr;
+import 'package:noor/exports/controllers.dart' show SettingsProvider;
+import 'package:noor/exports/components.dart' show NoorCloseButton, ThekrTitleCard, AthkarCard;
 
 class AthkarList extends StatefulWidget {
   const AthkarList({Key key, this.index}) : super(key: key);
-  final index;
+  final int index;
   _AthkarListState createState() => _AthkarListState();
 }
 

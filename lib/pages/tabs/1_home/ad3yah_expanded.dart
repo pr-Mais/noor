@@ -4,14 +4,11 @@ import 'package:noor/models/data.dart';
 import 'package:provider/provider.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
-import 'package:noor/components/abstract_card.dart';
-import 'package:noor/components/close_button.dart';
-import 'package:noor/constants/ribbons.dart';
-import 'package:noor/models/doaa.dart';
-import 'package:noor/providers/data_controller.dart';
-import 'package:noor/providers/settings_provider.dart';
-import 'package:noor/utils/copy.dart';
-import 'package:noor/utils/remove_tashkeel.dart';
+import 'package:noor/exports/components.dart' show NoorCloseButton, CardTemplate;
+import 'package:noor/exports/constants.dart' show Ribbon;
+import 'package:noor/exports/models.dart' show Doaa;
+import 'package:noor/exports/controllers.dart' show DataController, SettingsProvider;
+import 'package:noor/exports/utils.dart' show Copy, Tashkeel;
 
 class Ad3yahList extends StatefulWidget {
   const Ad3yahList({
@@ -38,13 +35,13 @@ class _Ad3yahListState extends State<Ad3yahList> {
     'الرقية الشرعية': Ribbon.ribbon4,
   };
 
-  List< List<Doaa>> data;
+  List<List<Doaa>> data;
 
   @override
   void didChangeDependencies() {
     final DataModel dataModel = context.watch<DataModel>();
 
-    data = [
+    data = <List<Doaa>>[
       dataModel.quraan,
       dataModel.sunnah,
       dataModel.ruqiya,

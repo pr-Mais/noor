@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:noor/components/noor_icons_icons.dart';
-import 'package:flutter/foundation.dart';
+import 'package:noor/exports/components.dart' show NoorIcons;
 
 class BottomNav extends StatefulWidget {
   BottomNav({

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:noor/constants/images.dart';
-import 'package:noor/services/prefs.dart';
+import 'package:noor/exports/constants.dart' show Images;
+import 'package:noor/exports/services.dart' show SharedPrefsUtil;
 
 class ThemeProvider with ChangeNotifier {
   String _userTheme = SharedPrefsUtil.getString('theme');

@@ -2,20 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
-import 'package:noor/components/allah_names_title.dart';
-import 'package:noor/components/noor_icons_icons.dart';
-import 'package:noor/components/abstract_card.dart';
-import 'package:noor/components/close_button.dart';
-import 'package:noor/constants/ribbons.dart';
-
-import 'package:noor/models/data.dart';
-import 'package:noor/models/allah_name.dart';
-
-import 'package:noor/utils/copy.dart';
-import 'package:noor/utils/remove_tashkeel.dart';
-
-import 'package:noor/providers/data_controller.dart';
-import 'package:noor/providers/settings_provider.dart';
+import 'package:noor/exports/utils.dart' show Copy, Tashkeel;
+import 'package:noor/exports/models.dart' show DataModel, AllahName;
+import 'package:noor/exports/constants.dart' show Ribbon;
+import 'package:noor/exports/components.dart' show NoorCloseButton, CardTemplate, NoorIcons, NameTitleCard;
+import 'package:noor/exports/controllers.dart' show DataController, SettingsProvider;
 
 class AllahNamesList extends StatefulWidget {
   const AllahNamesList({

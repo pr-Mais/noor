@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
-import 'package:noor/constants/default_settings.dart';
-import 'package:noor/services/prefs.dart';
+import 'package:noor/exports/services.dart' show  SharedPrefsUtil;
+import 'package:noor/exports/constants.dart' show  DefaultSettings;
 
 class SettingsProvider with ChangeNotifier {
   /// Font Size, the scale factor by which the font size is multiplied

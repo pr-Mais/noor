@@ -1,20 +1,20 @@
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:intl/intl.dart' as intl;
-import 'package:noor/components/noor_settings_icons.dart';
-import 'package:noor/constants/links.dart';
-import 'package:noor/providers/settings_provider.dart';
-import 'package:noor/providers/theme_provider.dart';
-import 'package:noor/services/prefs.dart';
-import 'package:noor/utils/remove_tashkeel.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:intl/intl.dart' as intl;
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
+
+import 'package:noor/exports/components.dart' show NoorSettingsIcons;
+import 'package:noor/exports/services.dart'  show SharedPrefsUtil;
+import 'package:noor/exports/utils.dart' show Tashkeel;
+import 'package:noor/exports/controllers.dart' show ThemeProvider, SettingsProvider;
+import 'package:noor/exports/constants.dart' show Links;
 
 class Settings extends StatefulWidget {
   Settings({

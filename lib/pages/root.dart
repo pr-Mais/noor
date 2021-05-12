@@ -1,12 +1,9 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:noor/components/bottom.dart';
-import 'package:noor/pages/tabs/1_home/athkar_expanded.dart';
-import 'package:noor/pages/tabs/1_home/home.dart';
-import 'package:noor/pages/tabs/2_fav.dart';
-import 'package:noor/pages/tabs/3_counter.dart';
-import 'package:noor/pages/tabs/4_settings.dart';
+
+import 'package:noor/exports/components.dart' show BottomNav;
+import 'package:noor/exports/pages.dart' show Home, Favorite, CounterPage, Settings, AthkarList;
 
 class RootHome extends StatefulWidget {
   RootHome({Key key}) : super(key: key);

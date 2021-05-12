@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:noor/components/close_button.dart';
-import 'package:noor/components/list_item.dart';
-import 'package:noor/models/allah_name.dart';
-import 'package:noor/models/data.dart';
-import 'package:noor/pages/tabs/1_home/allah_names_expanded.dart';
-import 'package:noor/providers/data_controller.dart';
-import 'package:noor/providers/theme_provider.dart';
 import 'package:provider/provider.dart';
 
-import '../../../constants/images.dart';
+import 'package:noor/exports/pages.dart' show AllahNamesList;
+import 'package:noor/exports/models.dart' show DataModel, AllahName;
+import 'package:noor/exports/constants.dart' show Images;
+import 'package:noor/exports/controllers.dart' show ThemeProvider;
+import 'package:noor/exports/components.dart' show NoorCloseButton, ListItem;
 
 class AllahNames extends StatefulWidget {
   const AllahNames({Key key}) : super(key: key);

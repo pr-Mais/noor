@@ -4,30 +4,12 @@ import 'package:noor/models/data.dart';
 import 'package:provider/provider.dart';
 import 'package:reorderables/reorderables.dart';
 
-import 'package:noor/components/abstract_card.dart';
-import 'package:noor/components/custom_dialog.dart';
-import 'package:noor/components/image_button.dart';
-import 'package:noor/components/noor_icons_icons.dart';
-import 'package:noor/components/noor_settings_icons.dart';
-
-import 'package:noor/constants/fav_buttons.dart';
-import 'package:noor/constants/ribbons.dart';
-import 'package:noor/constants/images.dart';
-import 'package:noor/models/allah_name.dart';
-
-import 'package:noor/pages/tabs/1_home/ad3yah_expanded.dart';
-import 'package:noor/pages/tabs/1_home/allah_names_expanded.dart';
-import 'package:noor/pages/tabs/1_home/athkar_expanded.dart';
-import 'package:noor/pages/tabs/1_home/my_ad3yah.dart';
-
-import 'package:noor/providers/data_controller.dart';
-import 'package:noor/providers/settings_provider.dart';
-import 'package:noor/providers/theme_provider.dart';
-import 'package:noor/services/prefs.dart';
-import 'package:noor/utils/back_to_location.dart';
-import 'package:noor/utils/remove_tashkeel.dart';
-
-import '../../providers/data_controller.dart';
+import 'package:noor/exports/components.dart' show CardTemplate, CustomDialog, ImageButton, NoorIcons, NoorSettingsIcons;
+import 'package:noor/exports/models.dart' show AllahName, SettingsProvider;
+import 'package:noor/exports/constants.dart' show FavButtons, Ribbon, Images;
+import 'package:noor/exports/pages.dart' show Ad3yahList, MyAd3yah, AthkarList, AllahNamesList;
+import 'package:noor/exports/controllers.dart' show DataController, ThemeProvider;
+import 'package:noor/exports/utils.dart' show Tashkeel, backToLocation;
 
 class Favorite extends StatefulWidget {
   Favorite({

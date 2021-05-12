@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'package:noor/components/noor_icons_icons.dart';
-import 'package:noor/services/prefs.dart';
-import 'package:noor/utils/to_arabic.dart';
+import 'package:noor/exports/components.dart' show NoorIcons;
+import 'package:noor/exports/services.dart'  show SharedPrefsUtil;
+import 'package:noor/exports/utils.dart' show ToArabicNumbers;
 
 class CounterPage extends StatefulWidget {
   const CounterPage({Key key}) : super(key: key);

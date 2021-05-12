@@ -1,26 +1,19 @@
 import 'dart:async';
+import 'package:flutter/material.dart';
+
+import 'package:provider/provider.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:noor/models/allah_name.dart';
-import 'package:noor/models/thekr.dart';
-import 'package:noor/pages/tabs/1_home/ad3yah.dart';
-import 'package:noor/pages/tabs/1_home/allah_names.dart';
-import 'package:noor/pages/tabs/1_home/athkar.dart';
-import 'package:noor/providers/data_controller.dart';
-import 'package:noor/providers/theme_provider.dart';
-import 'package:noor/components/card.dart';
-import 'package:noor/components/glowing_stars.dart';
-import 'package:noor/components/logo.dart';
-import 'package:noor/utils/back_to_location.dart';
-import 'package:noor/utils/remove_tashkeel.dart';
-import 'package:provider/provider.dart';
-import 'package:noor/services/prefs.dart';
 
-import 'package:noor/constants/images.dart';
+import 'package:noor/exports/constants.dart' show Images;
+import 'package:noor/exports/pages.dart' show AllahNames, AthkarPage, Ad3yah;
+import 'package:noor/exports/components.dart' show NoorLogo, GlowingStars, HomeCard;
+import 'package:noor/exports/utils.dart' show backToLocation, Tashkeel;
+import 'package:noor/exports/controllers.dart' show ThemeProvider;
+import 'package:noor/exports/services.dart' show SharedPrefsUtil;
+import 'package:noor/exports/models.dart' show Thekr, AllahName;
+
 
 class Home extends StatefulWidget {
   Home({

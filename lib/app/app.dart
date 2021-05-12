@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:noor/models/data.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
-import 'package:noor/components/custom_scroll_bhaviour.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-import 'package:noor/providers/data_controller.dart';
-import 'package:noor/providers/settings_provider.dart';
-import 'package:noor/providers/theme_provider.dart';
-import 'package:noor/pages/root.dart';
-import 'package:noor/pages/splash.dart';
+import 'package:noor/exports/pages.dart' show SplashScreen, RootHome;
+import 'package:noor/exports/models.dart' show DataModel, SettingsProvider;
+import 'package:noor/exports/components.dart' show CustomScrollBehavior;
+import 'package:noor/exports/controllers.dart' show DataController, ThemeProvider, lightTheme, darkTheme;
 
 class NoorApp extends StatelessWidget {
   @override

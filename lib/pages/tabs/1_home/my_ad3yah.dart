@@ -1,33 +1,18 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:noor/components/abstract_card.dart';
-import 'package:noor/components/close_button.dart';
-import 'package:noor/components/custom_dialog.dart';
-import 'package:noor/components/image_button.dart';
-import 'package:noor/constants/images.dart';
-import 'package:noor/constants/ribbons.dart';
-import 'package:noor/models/data.dart';
-import 'package:noor/models/doaa.dart';
-import 'package:noor/providers/data_controller.dart';
-import 'package:noor/providers/settings_provider.dart';
-import 'package:noor/providers/theme_provider.dart';
-import 'package:noor/services/db.dart';
-import 'package:noor/utils/copy.dart';
-import 'package:noor/utils/remove_tashkeel.dart';
 import 'package:provider/provider.dart';
 import 'package:reorderables/reorderables.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../providers/data_controller.dart';
-import '../../../providers/settings_provider.dart';
-import '../../../services/prefs.dart';
+import 'package:noor/exports/services.dart' show DBService;
+import 'package:noor/exports/controllers.dart' show ThemeProvider, SettingsProvider, DataController;
+import 'package:noor/exports/constants.dart' show Images, Ribbon;
+import 'package:noor/exports/models.dart' show DataModel, Doaa;
+import 'package:noor/exports/components.dart' show CardTemplate, NoorCloseButton, CustomDialog, ImageButton;
+import 'package:noor/exports/utils.dart' show Tashkeel, Copy;
 
 class MyAd3yah extends StatefulWidget {
   MyAd3yah({Key key, this.index = 0}) : super(key: key);
-  final index;
+  final int index;
   _MyAd3yahState createState() => _MyAd3yahState();
 }
 
@@ -51,7 +36,7 @@ class _MyAd3yahState extends State<MyAd3yah> with TickerProviderStateMixin {
   }
 
   //text input design (used in dialoges)
-  input(maxHeight, minHeight, text, controller) {
+  input(double maxHeight, double minHeight, String text, TextEditingController controller) {
     return ConstrainedBox(
       constraints: BoxConstraints(maxHeight: maxHeight, minHeight: minHeight),
       child: SingleChildScrollView(
@@ -284,7 +269,6 @@ class _MyAd3yahState extends State<MyAd3yah> with TickerProviderStateMixin {
                                   childCount: myAd3yah.length,
                                 ),
                                 onReorder: (int from, int to) async {
-           
                                   await provider.updateMyAd3yahList(from, to);
 
                                   // print('Before: ' + provider.favList.map((dynamic e) => e.id).toString());

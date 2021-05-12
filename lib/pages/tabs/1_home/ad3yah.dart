@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:noor/components/close_button.dart';
-import 'package:noor/components/list_item.dart';
-import 'package:noor/constants/titles.dart';
-import 'package:noor/pages/tabs/1_home/ad3yah_expanded.dart';
-import 'package:noor/pages/tabs/1_home/my_ad3yah.dart';
-import 'package:noor/providers/theme_provider.dart';
 import 'package:provider/provider.dart';
+
+import 'package:noor/exports/pages.dart' show Ad3yahList, MyAd3yah;
+import 'package:noor/exports/constants.dart' show Titles;
+import 'package:noor/exports/components.dart' show NoorCloseButton, ListItem;
+import 'package:noor/exports/controllers.dart' show ThemeProvider;
 
 class Ad3yah extends StatefulWidget {
   const Ad3yah();
@@ -110,7 +109,12 @@ class _Ad3yahState extends State<Ad3yah> with SingleTickerProviderStateMixin {
 }
 
 class Ad3yahTitleCard extends StatelessWidget {
-  const Ad3yahTitleCard({Key key, @required this.icon, @required this.title, @required this.section}) : super(key: key);
+  const Ad3yahTitleCard({
+    Key key,
+    @required this.icon,
+    @required this.title,
+    @required this.section,
+  }) : super(key: key);
 
   final String icon;
   final String title;

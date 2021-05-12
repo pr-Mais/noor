@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:noor/components/abstract_card.dart';
-import 'package:noor/constants/ribbons.dart';
-import 'package:noor/models/thekr.dart';
-import 'package:noor/pages/tabs/1_home/athkar_expanded.dart';
-import 'package:noor/providers/data_controller.dart';
-import 'package:noor/providers/settings_provider.dart';
-import 'package:noor/utils/copy.dart';
-import 'package:noor/utils/remove_tashkeel.dart';
-import 'package:noor/utils/to_arabic.dart';
 import 'package:provider/provider.dart';
 
+import 'package:noor/exports/models.dart' show Thekr;
+import 'package:noor/exports/pages.dart' show Counter;
+import 'package:noor/exports/constants.dart' show Ribbon;
+import 'package:noor/exports/components.dart' show CardTemplate;
+import 'package:noor/exports/utils.dart' show Tashkeel, Copy, ToArabicNumbers;
+import 'package:noor/exports/controllers.dart' show DataController, SettingsProvider;
 class AthkarCard extends StatelessWidget {
   const AthkarCard({
     Key key,
