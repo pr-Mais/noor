@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:noor/exports/components.dart' show NoorIcons;
-import 'package:noor/exports/services.dart'  show SharedPrefsUtil;
+import 'package:noor/exports/services.dart' show SharedPrefsUtil;
 import 'package:noor/exports/utils.dart' show ToArabicNumbers;
 
 class CounterPage extends StatefulWidget {
@@ -116,7 +116,11 @@ class _CounterPageState extends State<CounterPage> {
                   child: Text(
                     '$counter'.arabicDigit(),
                     key: ValueKey<int>(counter),
-                    style: TextStyle(color: Colors.white, fontSize: 50),
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 55,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
               )
