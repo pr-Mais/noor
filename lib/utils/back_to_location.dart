@@ -13,6 +13,7 @@ backToLocation(dynamic item, BuildContext context) async {
     ...dataModel.quraan,
     ...dataModel.sunnah,
     ...dataModel.ruqiya,
+    ...dataModel.myAd3yah,
     ...dataModel.allahNames,
   ]);
   List<dynamic> tmpList = allLists.where((dynamic element) => element.section == item.section).toList();
@@ -28,7 +29,6 @@ backToLocation(dynamic item, BuildContext context) async {
       );
       break;
     case 5:
-      tmpList = tmpList.reversed.toList();
       final int index = tmpList.indexWhere((dynamic element) => element == item);
 
       Navigator.of(context).push(
