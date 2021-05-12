@@ -7,9 +7,9 @@ import 'package:noor/exports/models.dart' show SettingsProvider;
 class CardTemplate extends StatelessWidget {
   const CardTemplate({
     Key key,
+    @required this.child,
     @required this.ribbon,
     this.actions = const <Widget>[],
-    @required this.child,
     this.additionalContent,
     this.actionButton,
   }) : super(key: key);
@@ -24,7 +24,7 @@ class CardTemplate extends StatelessWidget {
 
     return Container(
       width: MediaQuery.of(context).size.width,
-      height: 335,
+      height: 325,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15.0),
         gradient: LinearGradient(
@@ -47,11 +47,11 @@ class CardTemplate extends StatelessWidget {
           ),
         ],
       ),
-      margin: EdgeInsets.only(
+      margin: const EdgeInsets.only(
         top: 20,
         right: 30,
         left: 30,
-        bottom: 20.0,
+        bottom: 20,
       ),
       alignment: Alignment.topCenter,
       child: Column(
@@ -81,10 +81,9 @@ class CardTemplate extends StatelessWidget {
               alignment: Alignment.topRight,
               margin: const EdgeInsets.all(5.0),
               child: Scrollbar(
-                controller: ScrollController(),
                 radius: Radius.circular(4),
                 child: SingleChildScrollView(
-                  child: DefaultTextStyle(
+                  child: DefaultTextStyle.merge(
                     textAlign: TextAlign.justify,
                     style: Theme.of(context).textTheme.bodyText1.copyWith(fontFamily: settings.fontType),
                     child: Container(

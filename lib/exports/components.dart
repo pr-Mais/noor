@@ -1,4 +1,4 @@
-export 'package:noor/components/abstract_card.dart';
+export 'package:noor/components/card_template.dart';
 export 'package:noor/components/allah_names_title.dart';
 export 'package:noor/components/athkar_card.dart';
 export 'package:noor/components/athkar_title.dart';
