@@ -15,3 +15,4 @@ linter:
     - sized_box_for_whitespace
     - always_use_package_imports
     - avoid_relative_lib_imports
+    - lines_longer_than_80_chars

@@ -5,7 +5,7 @@ import 'package:provider/single_child_widget.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'package:noor/exports/pages.dart' show SplashScreen;
-import 'package:noor/exports/models.dart' show DataModel, SettingsProvider;
+import 'package:noor/exports/models.dart' show DataModel, SettingsModel;
 import 'package:noor/exports/components.dart' show CustomScrollBehavior;
 import 'package:noor/exports/controllers.dart' show ThemeProvider;
 import 'package:noor/exports/constants.dart' show lightTheme, darkTheme;
@@ -21,10 +21,9 @@ class NoorApp extends StatelessWidget {
         ChangeNotifierProvider<DataModel>.value(
           value: GetIt.I<DataModel>(),
         ),
-        ChangeNotifierProvider<SettingsProvider>(
-          create: (_) => SettingsProvider(),
+        ChangeNotifierProvider<SettingsModel>(
+          create: (_) => GetIt.I<SettingsModel>(),
         ),
-        
       ],
       child: MaterialAppWithTheme(),
     );
@@ -52,13 +51,13 @@ class MaterialAppWithTheme extends StatelessWidget {
       themeMode: providerTheme.theme,
       theme: lightTheme,
       darkTheme: darkTheme,
-      builder: (BuildContext context, Widget child) {
+      builder: (BuildContext context, Widget? child) {
         final MediaQueryData data = MediaQuery.of(context);
         return MediaQuery(
           data: data.copyWith(textScaleFactor: 1.0),
           child: ScrollConfiguration(
             behavior: CustomScrollBehavior(),
-            child: child,
+            child: child!,
           ),
         );
       },

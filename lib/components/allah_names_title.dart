@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class NameTitleCard extends StatelessWidget {
   NameTitleCard({this.title});
-  final String title;
+  final String? title;
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +12,7 @@ class NameTitleCard extends StatelessWidget {
           children: <Widget>[
             Container(
               child: Text(
-                title,
+                title!,
                 overflow: TextOverflow.clip,
                 textAlign: TextAlign.center,
                 style: TextStyle(

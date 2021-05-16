@@ -59,3 +59,4 @@ assets/*
 
 # Google Service File
 android/app/google-services.json
+GoogleService-Info.plist

@@ -1,35 +1,39 @@
+import 'package:noor/constants/categories.dart';
+
 class Doaa {
-  String id;
-  String text;
-  String info;
-  String sectionName;
-  int isFav;
-  int section;
+  late final String id;
+  late final String text;
+  late final String info;
+  late final String ribbon;
+  late bool isFav;
 
-  Doaa({this.id, this.text, this.info, this.isFav, this.sectionName, this.section});
+  late final String sectionName;
 
-  factory Doaa.fromMap(Map<String, dynamic> map, {String sectionName, int section}) => new Doaa(
-        id: map['id'].toString(),
-        text: map['text'],
-        info: map['info'],
-        sectionName: sectionName?? map['sectionName'],
-        section: section?? map['section'],
-        isFav: map['isFav'] ?? 0,
+  late final NoorCategory? category;
+
+  Doaa._(
+    this.id,
+    this.text,
+    this.info,
+    this.sectionName,
+    this.ribbon,
+    this.isFav, {
+    this.category,
+  });
+
+  factory Doaa.fromMap(Map<String, dynamic> map) => Doaa._(
+        map['id'] ?? '',
+        map['text'] as String,
+        map['info'] as String,
+        map['sectionName'] as String,
+        map['ribbon'] ?? '',
+        map['isFav'] ?? false,
+        category: map['category'],
       );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
-        'id': id,
         'text': text,
         'info': info,
-        'section': section,
-        'sectionName': sectionName,
-        'isFav': isFav,
+        'isFav': isFav ? 1 : 0,
       };
 }
-
-Map<int, String> sections = <int, String>{
-  2: 'أدعية من القرآن الكريم',
-  3: 'أدعية من السنة النبوية',
-  4: 'الرقية الشرعية',
-  5: 'أدعيتي'
-};

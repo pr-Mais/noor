@@ -13,12 +13,13 @@ class AthkarPage extends StatefulWidget {
   _AthkarPageState createState() => _AthkarPageState();
 }
 
-class _AthkarPageState extends State<AthkarPage> with SingleTickerProviderStateMixin {
+class _AthkarPageState extends State<AthkarPage>
+    with SingleTickerProviderStateMixin {
   ScrollController scrollController = new ScrollController();
   double currentScroll = 0;
   double maxHeight = 180;
-  Animation<double> animation;
-  AnimationController controller;
+  late Animation<double> animation;
+  late AnimationController controller;
 
   initState() {
     super.initState();
@@ -76,13 +77,14 @@ class _AthkarPageState extends State<AthkarPage> with SingleTickerProviderStateM
           child: NotificationListener<Notification>(
             child: Consumer<DataModel>(
               builder: (_, DataModel model, __) {
-                final List<Thekr> athkarTitles = model.athkar.where((Thekr thekr) => thekr.isTitle).toList();
+                final List<Thekr> athkarTitles =
+                    model.athkar.where((Thekr thekr) => thekr.isTitle).toList();
 
                 return Scrollbar(
                   controller: scrollController,
                   child: ListView.builder(
                     physics: AlwaysScrollableScrollPhysics(),
-                    itemCount: athkarTitles.where((Thekr thekr) => thekr.isTitle).length,
+                    itemCount: athkarTitles.length,
                     controller: scrollController,
                     padding: EdgeInsets.only(top: 10),
                     itemBuilder: (BuildContext context, int index) {
@@ -109,7 +111,7 @@ class _AthkarPageState extends State<AthkarPage> with SingleTickerProviderStateM
               },
             ),
             onNotification: (_) {
-              WidgetsBinding.instance.addPostFrameCallback((_) {
+              WidgetsBinding.instance!.addPostFrameCallback((_) {
                 if (currentScroll < 100) {
                   controller.forward();
                 }

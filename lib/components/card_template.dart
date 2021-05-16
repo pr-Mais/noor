@@ -2,25 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:noor/exports/constants.dart' show Ribbon;
-import 'package:noor/exports/models.dart' show SettingsProvider;
+import 'package:noor/exports/models.dart' show SettingsModel;
 
 class CardTemplate extends StatelessWidget {
   const CardTemplate({
-    Key key,
-    @required this.child,
-    @required this.ribbon,
+    Key? key,
+    required this.child,
+    required this.ribbon,
     this.actions = const <Widget>[],
     this.additionalContent,
     this.actionButton,
   }) : super(key: key);
-  final String ribbon;
+  final String? ribbon;
   final List<Widget> actions;
   final Widget child;
-  final Widget additionalContent;
-  final Widget actionButton;
+  final Widget? additionalContent;
+  final Widget? actionButton;
   @override
   Widget build(BuildContext context) {
-    final SettingsProvider settings = context.watch<SettingsProvider>();
+    final SettingsModel settings = context.watch<SettingsModel>();
 
     return Container(
       width: MediaQuery.of(context).size.width,
@@ -65,7 +65,7 @@ class CardTemplate extends StatelessWidget {
                 topRight: Radius.circular(15.0),
               ),
               image: DecorationImage(
-                image: AssetImage(ribbon),
+                image: AssetImage(ribbon!),
                 fit: BoxFit.cover,
               ),
             ),
@@ -85,10 +85,14 @@ class CardTemplate extends StatelessWidget {
                 child: SingleChildScrollView(
                   child: DefaultTextStyle.merge(
                     textAlign: TextAlign.justify,
-                    style: Theme.of(context).textTheme.bodyText1.copyWith(fontFamily: settings.fontType),
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyText1!
+                        .copyWith(fontFamily: settings.fontType),
                     child: Container(
                       width: double.infinity,
-                      margin: const EdgeInsets.only(left: 15, right: 15, top: 5),
+                      margin:
+                          const EdgeInsets.only(left: 15, right: 15, top: 5),
                       child: child,
                     ),
                   ),
@@ -106,14 +110,15 @@ class CardTemplate extends StatelessWidget {
                   child: SingleChildScrollView(
                     child: DefaultTextStyle.merge(
                       textAlign: TextAlign.justify,
-                      style: Theme.of(context).textTheme.bodyText1.copyWith(
+                      style: Theme.of(context).textTheme.bodyText1!.copyWith(
                             fontFamily: settings.fontType,
                             color: Theme.of(context).primaryColor,
                           ),
                       child: Container(
                         width: double.infinity,
                         alignment: Alignment.bottomRight,
-                        margin: const EdgeInsets.only(left: 15, right: 15, top: 5),
+                        margin:
+                            const EdgeInsets.only(left: 15, right: 15, top: 5),
                         child: additionalContent,
                       ),
                     ),

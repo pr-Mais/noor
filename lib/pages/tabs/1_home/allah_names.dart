@@ -8,19 +8,20 @@ import 'package:noor/exports/controllers.dart' show ThemeProvider;
 import 'package:noor/exports/components.dart' show NoorCloseButton, ListItem;
 
 class AllahNames extends StatefulWidget {
-  const AllahNames({Key key}) : super(key: key);
+  const AllahNames({Key? key}) : super(key: key);
 
   @override
   _AllahNamesState createState() => _AllahNamesState();
 }
 
-class _AllahNamesState extends State<AllahNames> with SingleTickerProviderStateMixin {
+class _AllahNamesState extends State<AllahNames>
+    with SingleTickerProviderStateMixin {
   ScrollController scrollController = new ScrollController();
 
   double currentScroll = 0;
   double maxHeight = 180;
-  Animation<double> animation;
-  AnimationController controller;
+  late Animation<double> animation;
+  late AnimationController controller;
 
   int index = 0;
 
@@ -74,7 +75,8 @@ class _AllahNamesState extends State<AllahNames> with SingleTickerProviderStateM
                   },
                 ),
               ),
-              Positioned(left: 10.0, top: 40.0, child: NoorCloseButton(size: 35)),
+              Positioned(
+                  left: 10.0, top: 40.0, child: NoorCloseButton(size: 35)),
             ],
           ),
           Consumer<DataModel>(

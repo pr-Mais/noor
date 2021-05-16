@@ -16,4 +16,5 @@ class DefaultSettings {
   static const String morningNotiTime = '';
   static const String nightNotiTime = '';
   static const int counter = 0;
+  static const bool generalNotifications = false;
 }

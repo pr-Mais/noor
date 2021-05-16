@@ -2,30 +2,31 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:noor/exports/components.dart' show NoorIcons;
-import 'package:noor/exports/services.dart' show SharedPrefsUtil;
+import 'package:noor/exports/services.dart' show SharedPrefsService;
 import 'package:noor/exports/utils.dart' show ToArabicNumbers;
 
 class CounterPage extends StatefulWidget {
-  const CounterPage({Key key}) : super(key: key);
+  const CounterPage({Key? key}) : super(key: key);
   @override
   _CounterPageState createState() => _CounterPageState();
 }
 
 class _CounterPageState extends State<CounterPage> {
-  int counter = SharedPrefsUtil.getInt('counter');
+  int counter = SharedPrefsService.getInt('counter');
 
-  String vibrationSettings1 = SharedPrefsUtil.getString('vibrationClickCounter');
+  String vibrationSettings1 =
+      SharedPrefsService.getString('vibrationClickCounter');
 
-  String vibrationSettings2 = SharedPrefsUtil.getString('vibrationHunderds');
+  String vibrationSettings2 = SharedPrefsService.getString('vibrationHunderds');
 
   void incrementCounter() {
     setState(() {
       counter++;
     });
 
-    SharedPrefsUtil.putInt('counter', counter);
+    SharedPrefsService.putInt('counter', counter);
 
-    if (SharedPrefsUtil.getBool('vibrateCounter')) {
+    if (SharedPrefsService.getBool('vibrateCounter')) {
       if (counter % 100 == 0) {
         switch (vibrationSettings2) {
           case 'strong':
@@ -60,7 +61,7 @@ class _CounterPageState extends State<CounterPage> {
     setState(() {
       counter = 0;
     });
-    SharedPrefsUtil.putInt('counter', counter);
+    SharedPrefsService.putInt('counter', counter);
   }
 
   LinearGradient lightModeBG = LinearGradient(
@@ -90,8 +91,10 @@ class _CounterPageState extends State<CounterPage> {
         child: Container(
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height,
-          decoration:
-              BoxDecoration(gradient: Theme.of(context).brightness == Brightness.dark ? darkModeBG : lightModeBG),
+          decoration: BoxDecoration(
+              gradient: Theme.of(context).brightness == Brightness.dark
+                  ? darkModeBG
+                  : lightModeBG),
           child: Stack(
             children: <Widget>[
               Positioned(
@@ -109,7 +112,8 @@ class _CounterPageState extends State<CounterPage> {
               Align(
                 alignment: Alignment.center,
                 child: AnimatedSwitcher(
-                  transitionBuilder: (Widget child, Animation<double> animation) {
+                  transitionBuilder:
+                      (Widget child, Animation<double> animation) {
                     return FadeTransition(child: child, opacity: animation);
                   },
                   duration: Duration(milliseconds: 250),

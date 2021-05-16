@@ -4,7 +4,7 @@ import 'package:get_it/get_it.dart';
 import 'package:noor/exports/pages.dart' show RootHome;
 
 class SplashScreen extends StatefulWidget {
-  SplashScreen({Key key}) : super(key: key);
+  SplashScreen({Key? key}) : super(key: key);
 
   @override
   _SplashScreenState createState() => _SplashScreenState();

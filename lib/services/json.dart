@@ -3,14 +3,22 @@ import 'dart:convert';
 import 'package:flutter/services.dart';
 
 class JsonService {
-  static Future<Map<String, dynamic>> init() async {
-    try {
-      final String jsonFile = await rootBundle.loadString('assets/noor-data/data.json');
-    Map<String, dynamic> decodedJson = json.decode(jsonFile);
+  static Future<List<dynamic>> init() async {
+    List<String> _files = <String>[
+      'assets/json/1_athkar.json',
+      'assets/json/2_quraan_ad3yah.json',
+      'assets/json/3_sunnah_ad3yah.json',
+      'assets/json/4_ruqiya.json',
+      'assets/json/6_allah_names.json',
+    ];
+    final List<dynamic> _content = <dynamic>[];
+    for (String f in _files) {
+      final String load = await rootBundle.loadString(f);
+      final dynamic decode = json.decode(load);
 
-    return decodedJson;
-    } catch (e) {
-      print(e);
+      _content.add(decode);
     }
+
+    return _content;
   }
 }

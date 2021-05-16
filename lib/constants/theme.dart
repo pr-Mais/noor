@@ -6,9 +6,11 @@ ThemeData lightTheme = ThemeData(
     brightness: Brightness.light,
     fontFamily: 'SST Roman',
     primaryColor: Color(0xff6db7e5),
-    pageTransitionsTheme: PageTransitionsTheme(builders: {
-      TargetPlatform.android: FadeUpwardsPageTransitionsBuilder(),
-    }),
+    pageTransitionsTheme: PageTransitionsTheme(
+      builders: <TargetPlatform, PageTransitionsBuilder>{
+        TargetPlatform.android: FadeUpwardsPageTransitionsBuilder(),
+      },
+    ),
     unselectedWidgetColor: Colors.grey[300],
     canvasColor: Colors.white,
     dividerColor: Colors.grey[300],
@@ -48,9 +50,11 @@ ThemeData darkTheme = ThemeData(
   brightness: Brightness.dark,
   fontFamily: 'SST',
   primaryColor: Color(0xff6db7e5),
-  pageTransitionsTheme: PageTransitionsTheme(builders: {
-    TargetPlatform.android: FadeUpwardsPageTransitionsBuilder(),
-  }),
+  pageTransitionsTheme: PageTransitionsTheme(
+    builders: <TargetPlatform, PageTransitionsBuilder>{
+      TargetPlatform.android: FadeUpwardsPageTransitionsBuilder(),
+    },
+  ),
   canvasColor: Color(0xff10122C),
   dividerColor: Color(0xff3C387B),
   iconTheme: IconThemeData(color: Color(0xff3C387B), size: 30),

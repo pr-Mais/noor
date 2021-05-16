@@ -7,36 +7,43 @@ import 'package:noor/exports/pages.dart' show Counter;
 import 'package:noor/exports/constants.dart' show Ribbon;
 import 'package:noor/exports/components.dart' show CardTemplate;
 import 'package:noor/exports/utils.dart' show Tashkeel, Copy, ToArabicNumbers;
-import 'package:noor/exports/controllers.dart' show DataController, SettingsProvider;
+import 'package:noor/exports/controllers.dart'
+    show DataController, SettingsModel;
+
 class AthkarCard extends StatelessWidget {
   const AthkarCard({
-    Key key,
-    @required this.thekr,
+    Key? key,
+    required this.thekr,
     this.onTap,
   }) : super(key: key);
   final Thekr thekr;
-  final Function onTap;
+  final Function? onTap;
 
   @override
   Widget build(BuildContext context) {
     final Counter counter = context.watch<Counter>();
-    final DataController dataController = GetIt.I<DataController>();
-    final SettingsProvider settings = context.watch<SettingsProvider>();
+    final SettingsModel settings = context.watch<SettingsModel>();
+
+    final DataController? dataController = GetIt.I<DataController>();
 
     return Stack(
       children: <Widget>[
         GestureDetector(
-          onTap: onTap,
+          onTap: onTap as void Function()?,
           child: CardTemplate(
             actions: <Widget>[
               GestureDetector(
                 onTap: () {
-                  thekr.isFav == 1 ? dataController.removeFromFav(thekr) : dataController.addToFav(thekr);
+                  thekr.isFav
+                      ? dataController!.removeFromFav(thekr)
+                      : dataController!.addToFav(thekr);
                 },
                 child: AnimatedCrossFade(
                   firstChild: Image.asset('assets/icons/outline_heart.png'),
                   secondChild: Image.asset('assets/icons/filled_heart.png'),
-                  crossFadeState: thekr.isFav == 1 ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+                  crossFadeState: thekr.isFav
+                      ? CrossFadeState.showSecond
+                      : CrossFadeState.showFirst,
                   duration: Duration(milliseconds: 500),
                 ),
               ),
@@ -55,7 +62,7 @@ class AthkarCard extends StatelessWidget {
             ),
           ),
         ),
-        ((settings.showCounter ?? true) || thekr.counter > 1)
+        ((settings.showCounter) || thekr.counter > 1)
             ? Positioned.fill(
                 child: Align(
                   alignment: Alignment.bottomCenter,
@@ -69,9 +76,12 @@ class AthkarCard extends StatelessWidget {
                             color: Color(0xff58d1ed),
                           ),
                           decoration: BoxDecoration(
-                              color:
-                                  Theme.of(context).brightness == Brightness.light ? Colors.white : Color(0xff202b54),
-                              border: Border.all(color: Color(0xff6f86d6), width: 2),
+                              color: Theme.of(context).brightness ==
+                                      Brightness.light
+                                  ? Colors.white
+                                  : Color(0xff202b54),
+                              border: Border.all(
+                                  color: Color(0xff6f86d6), width: 2),
                               borderRadius: BorderRadius.circular(50.0)),
                           width: 45.0,
                           height: 45.0,
@@ -81,16 +91,22 @@ class AthkarCard extends StatelessWidget {
                             duration: const Duration(milliseconds: 250),
                             child: Text(
                               '${counter.getCounter}'.arabicDigit(),
-                              key: ValueKey<int>(counter.getCounter),
-                              style: TextStyle(color: Theme.of(context).accentColor, fontSize: 16, height: 1.25),
+                              key: ValueKey<int?>(counter.getCounter),
+                              style: TextStyle(
+                                  color: Theme.of(context).accentColor,
+                                  fontSize: 16,
+                                  height: 1.25),
                             ),
                           ),
                           decoration: BoxDecoration(
-                              color:
-                                  Theme.of(context).brightness == Brightness.light ? Colors.white : Color(0xff202b54),
+                              color: Theme.of(context).brightness ==
+                                      Brightness.light
+                                  ? Colors.white
+                                  : Color(0xff202b54),
                               border: Border.all(
-                                  color: Theme.of(context).brightness == Brightness.light
-                                      ? Colors.grey[400]
+                                  color: Theme.of(context).brightness ==
+                                          Brightness.light
+                                      ? Colors.grey[400]!
                                       : Color(0xff33477f),
                                   width: 2),
                               borderRadius: BorderRadius.circular(50.0)),

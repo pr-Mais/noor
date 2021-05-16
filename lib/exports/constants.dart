@@ -5,3 +5,4 @@ export 'package:noor/constants/links.dart';
 export 'package:noor/constants/ribbons.dart';
 export 'package:noor/constants/theme.dart';
 export 'package:noor/constants/titles.dart';
+export 'package:noor/constants/categories.dart';

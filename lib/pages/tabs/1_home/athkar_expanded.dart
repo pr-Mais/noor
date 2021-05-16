@@ -4,20 +4,22 @@ import 'package:provider/provider.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 import 'package:noor/exports/models.dart' show DataModel, Thekr;
-import 'package:noor/exports/controllers.dart' show SettingsProvider;
-import 'package:noor/exports/components.dart' show NoorCloseButton, ThekrTitleCard, AthkarCard;
+import 'package:noor/exports/controllers.dart' show SettingsModel;
+import 'package:noor/exports/components.dart'
+    show NoorCloseButton, ThekrTitleCard, AthkarCard;
 
 class AthkarList extends StatefulWidget {
-  const AthkarList({Key key, this.index}) : super(key: key);
-  final int index;
+  const AthkarList({Key? key, this.index}) : super(key: key);
+  final int? index;
   _AthkarListState createState() => _AthkarListState();
 }
 
-class _AthkarListState extends State<AthkarList> with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
-  ItemScrollController controller;
+class _AthkarListState extends State<AthkarList>
+    with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
+  ItemScrollController? controller;
   ItemPositionsListener listener = ItemPositionsListener.create();
-  Animation<double> animation;
-  AnimationController animationController;
+  Animation<double>? animation;
+  late AnimationController animationController;
   int pagePosition = 0;
 
   @override
@@ -29,10 +31,10 @@ class _AthkarListState extends State<AthkarList> with SingleTickerProviderStateM
     animationController = new AnimationController(
       vsync: this,
     );
-    animation = Tween<double>(begin: 0.0, end: 0.1)
-        .animate(CurvedAnimation(parent: animationController, curve: Curves.elasticIn));
+    animation = Tween<double>(begin: 0.0, end: 0.1).animate(
+        CurvedAnimation(parent: animationController, curve: Curves.elasticIn));
     controller = new ItemScrollController();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
       listener.itemPositions.addListener(changeAppBar);
     });
   }
@@ -52,10 +54,10 @@ class _AthkarListState extends State<AthkarList> with SingleTickerProviderStateM
   }
 
   onCardTap(int index, Counter counter) {
-    final SettingsProvider settings = context.read<SettingsProvider>();
+    final SettingsModel settings = context.read<SettingsModel>();
 
     counter.decrement();
-    if (settings.vibrate ?? false) {
+    if (settings.vibrate) {
       switch (settings.vibrationClick) {
         case 'light':
           HapticFeedback.heavyImpact();
@@ -71,7 +73,10 @@ class _AthkarListState extends State<AthkarList> with SingleTickerProviderStateM
     if (index < 422 && settings.autoJump && counter._counter == 0) {
       Future<void>.delayed(Duration(milliseconds: 500)).then(
         (_) {
-          controller.scrollTo(duration: Duration(milliseconds: 800), curve: Curves.easeInOutCubic, index: index + 1);
+          controller!.scrollTo(
+              duration: Duration(milliseconds: 800),
+              curve: Curves.easeInOutCubic,
+              index: index + 1);
         },
       );
     }
@@ -99,7 +104,8 @@ class _AthkarListState extends State<AthkarList> with SingleTickerProviderStateM
                         child: Text(
                           model.athkar[pagePosition + 2].sectionName,
                           textAlign: TextAlign.center,
-                          key: ValueKey<String>(model.athkar[pagePosition + 2].sectionName),
+                          key: ValueKey<String?>(
+                              model.athkar[pagePosition + 2].sectionName),
                           style: Theme.of(context).textTheme.headline1,
                         ),
                         duration: const Duration(milliseconds: 250),
@@ -117,7 +123,9 @@ class _AthkarListState extends State<AthkarList> with SingleTickerProviderStateM
                 //get only the atkar from the whole list!
                 List<Thekr> athkar = model.athkar;
 
-                final List<Counter> counterList = athkar.map((Thekr thekr) => Counter(thekr.counter)).toList();
+                final List<Counter> counterList = athkar
+                    .map((Thekr thekr) => Counter(thekr.counter))
+                    .toList();
 
                 return Provider<List<Counter>>(
                   create: (_) => counterList,
@@ -131,7 +139,7 @@ class _AthkarListState extends State<AthkarList> with SingleTickerProviderStateM
                           itemPositionsListener: listener,
                           itemCount: athkar.length,
                           addAutomaticKeepAlives: true,
-                          initialScrollIndex: widget.index,
+                          initialScrollIndex: widget.index!,
                           minCacheExtent: 900,
                           padding: EdgeInsets.only(bottom: 20),
                           itemBuilder: (_, int index) {
@@ -142,7 +150,8 @@ class _AthkarListState extends State<AthkarList> with SingleTickerProviderStateM
                               return ChangeNotifierProvider<Counter>.value(
                                 value: countersList[index],
                                 child: Consumer<Counter>(
-                                  builder: (_, Counter counter, __) => AthkarCard(
+                                  builder: (_, Counter counter, __) =>
+                                      AthkarCard(
                                     key: ValueKey<int>(index),
                                     thekr: thekr,
                                     onTap: () => onCardTap(index, counter),
@@ -167,10 +176,10 @@ class _AthkarListState extends State<AthkarList> with SingleTickerProviderStateM
 
 class PersistedCard extends StatefulWidget {
   const PersistedCard({
-    Key key,
-    @required this.thekr,
-    this.onTap,
-    this.index,
+    Key? key,
+    required this.thekr,
+    required this.onTap,
+    required this.index,
   }) : super(key: key);
 
   final Thekr thekr;
@@ -181,7 +190,8 @@ class PersistedCard extends StatefulWidget {
   _PersistedCardState createState() => _PersistedCardState();
 }
 
-class _PersistedCardState extends State<PersistedCard> with AutomaticKeepAliveClientMixin {
+class _PersistedCardState extends State<PersistedCard>
+    with AutomaticKeepAliveClientMixin {
   @override
   get wantKeepAlive => true;
 
@@ -190,7 +200,7 @@ class _PersistedCardState extends State<PersistedCard> with AutomaticKeepAliveCl
     super.build(context);
 
     return AthkarCard(
-      key: PageStorageKey<int>(widget.index),
+      key: PageStorageKey<int?>(widget.index),
       thekr: widget.thekr,
       onTap: widget.onTap,
     );
