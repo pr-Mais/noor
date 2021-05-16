@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 
 import 'package:noor/exports/models.dart' show Thekr;
 import 'package:noor/exports/pages.dart' show Counter;
 import 'package:noor/exports/constants.dart' show Ribbon;
-import 'package:noor/exports/components.dart' show CardTemplate;
-import 'package:noor/exports/utils.dart' show Tashkeel, Copy, ToArabicNumbers;
-import 'package:noor/exports/controllers.dart'
-    show DataController, SettingsModel;
+import 'package:noor/exports/components.dart'
+    show CardTemplate, CardText, CopyAction, FavAction;
+import 'package:noor/exports/utils.dart' show ToArabicNumbers;
+import 'package:noor/exports/controllers.dart' show SettingsModel;
 
 class AthkarCard extends StatelessWidget {
   const AthkarCard({
@@ -24,41 +23,19 @@ class AthkarCard extends StatelessWidget {
     final Counter counter = context.watch<Counter>();
     final SettingsModel settings = context.watch<SettingsModel>();
 
-    final DataController? dataController = GetIt.I<DataController>();
-
     return Stack(
       children: <Widget>[
         GestureDetector(
           onTap: onTap as void Function()?,
           child: CardTemplate(
             actions: <Widget>[
-              GestureDetector(
-                onTap: () {
-                  thekr.isFav
-                      ? dataController!.removeFromFav(thekr)
-                      : dataController!.addToFav(thekr);
-                },
-                child: AnimatedCrossFade(
-                  firstChild: Image.asset('assets/icons/outline_heart.png'),
-                  secondChild: Image.asset('assets/icons/filled_heart.png'),
-                  crossFadeState: thekr.isFav
-                      ? CrossFadeState.showSecond
-                      : CrossFadeState.showFirst,
-                  duration: Duration(milliseconds: 500),
-                ),
-              ),
-              GestureDetector(
-                child: Image.asset('assets/icons/copy.png'),
-                onTap: () => Copy.onCopy(thekr.text, context),
-              ),
+              FavAction(thekr),
+              CopyAction(thekr.text),
             ],
             ribbon: Ribbon.ribbon1,
             child: Padding(
               padding: const EdgeInsets.only(bottom: 30.0),
-              child: Text(
-                !settings.tashkeel ? Tashkeel.remove(thekr.text) : thekr.text,
-                textScaleFactor: settings.fontSize,
-              ),
+              child: CardText(text: thekr.text),
             ),
           ),
         ),

@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
 import 'package:noor/constants/categories.dart';
 import 'package:provider/provider.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 import 'package:noor/exports/components.dart'
-    show NoorCloseButton, CardTemplate;
+    show NoorCloseButton, CardTemplate, FavAction, CardText, CopyAction;
 import 'package:noor/exports/models.dart' show Doaa, DataModel;
-import 'package:noor/exports/controllers.dart'
-    show DataController, SettingsModel;
-import 'package:noor/exports/utils.dart' show Copy, Tashkeel;
+import 'package:noor/exports/controllers.dart' show SettingsModel;
 
 class Ad3yahList extends StatefulWidget {
   const Ad3yahList({
@@ -43,7 +40,6 @@ class _Ad3yahListState extends State<Ad3yahList> {
   @override
   Widget build(BuildContext context) {
     final SettingsModel settings = context.watch<SettingsModel>();
-    final DataController dataController = GetIt.I<DataController>();
 
     return Scaffold(
       body: Column(
@@ -79,29 +75,8 @@ class _Ad3yahListState extends State<Ad3yahList> {
                 return CardTemplate(
                   ribbon: item.ribbon,
                   actions: <Widget>[
-                    GestureDetector(
-                      onTap: () {
-                        item.isFav
-                            ? dataController.removeFromFav(item)
-                            : dataController.addToFav(item);
-                      },
-                      child: AnimatedCrossFade(
-                        firstChild:
-                            Image.asset('assets/icons/outline_heart.png'),
-                        secondChild:
-                            Image.asset('assets/icons/filled_heart.png'),
-                        crossFadeState: item.isFav
-                            ? CrossFadeState.showSecond
-                            : CrossFadeState.showFirst,
-                        duration: Duration(milliseconds: 500),
-                      ),
-                    ),
-                    GestureDetector(
-                      child: Image.asset('assets/icons/copy.png'),
-                      onTap: () {
-                        Copy.onCopy(item.text, context);
-                      },
-                    ),
+                    FavAction(item),
+                    CopyAction(item.text),
                   ],
                   additionalContent: item.info.isNotEmpty
                       ? Text(
@@ -109,10 +84,7 @@ class _Ad3yahListState extends State<Ad3yahList> {
                           textAlign: TextAlign.right,
                         )
                       : null,
-                  child: Text(
-                    !settings.tashkeel ? Tashkeel.remove(item.text) : item.text,
-                    textScaleFactor: settings.fontSize,
-                  ),
+                  child: CardText(text: item.text),
                 );
               },
             ),

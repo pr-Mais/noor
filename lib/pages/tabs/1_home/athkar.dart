@@ -94,7 +94,7 @@ class _AthkarPageState extends State<AthkarPage>
                       return title.isTitle
                           ? ListItem(
                               title: '${title.text}',
-                              icon: images.athkar,
+                              icon: images.athkarIcon,
                               onTap: () {
                                 Navigator.push(
                                   context,

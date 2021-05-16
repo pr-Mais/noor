@@ -62,9 +62,7 @@ class _AllahNamesState extends State<AllahNames>
                       width: MediaQuery.of(context).size.width,
                       height: maxHeight,
                       child: Image.asset(
-                        Theme.of(context).brightness == Brightness.light
-                            ? 'assets/home-cards/light/AllahNames.png'
-                            : 'assets/home-cards/dark/AllahNames.png',
+                        images.allahNamesCard,
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -93,7 +91,7 @@ class _AllahNamesState extends State<AllahNames>
                       final AllahName title = allahNames[index];
                       return ListItem(
                         title: '${title.name}',
-                        icon: images.allahNames,
+                        icon: images.allahNamesIcon,
                         onTap: () {
                           Navigator.of(context).push(
                             MaterialPageRoute<AllahNamesList>(

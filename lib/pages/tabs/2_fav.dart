@@ -12,14 +12,15 @@ import 'package:noor/exports/components.dart'
         ImageButton,
         NoorIcons,
         NoorSettingsIcons;
-import 'package:noor/exports/models.dart' show AllahName, SettingsModel;
+import 'package:noor/exports/models.dart' show AllahName;
 import 'package:noor/exports/constants.dart'
     show FavButtons, Images, NoorCategory;
 import 'package:noor/exports/pages.dart'
     show Ad3yahList, AllahNamesList, AthkarList, MyAd3yah;
 import 'package:noor/exports/controllers.dart'
     show DataController, ThemeProvider;
-import 'package:noor/exports/utils.dart' show Tashkeel, backToExactLocation;
+import 'package:noor/exports/utils.dart' show backToExactLocation;
+import 'package:noor/exports/components.dart' show CardText;
 
 class Favorite extends StatefulWidget {
   Favorite({
@@ -274,21 +275,23 @@ class _FavoriteState extends State<Favorite>
 class FavCard extends StatelessWidget {
   FavCard({
     Key? key,
-    this.item,
-    this.icon,
-    this.ribbon,
+    required this.item,
+    required this.icon,
+    required this.ribbon,
     required this.remove,
-    this.backToLocation,
-    this.backToGeneralLocation,
+    required this.backToLocation,
+    required this.backToGeneralLocation,
   }) : super(key: key);
-  final dynamic item;
-  final String? ribbon;
-  final IconData? icon;
-  final void Function() remove;
-  final Function? backToLocation;
-  final Function? backToGeneralLocation;
 
-  Widget backToMainLocation(dynamic item) {
+  final dynamic item;
+  final String ribbon;
+  final IconData icon;
+  final void Function() remove;
+  final void Function() backToLocation;
+  final void Function() backToGeneralLocation;
+
+  Widget backToMainLocation(dynamic item, BuildContext context) {
+    ThemeProvider themeProvider = context.watch();
     return Container(
       height: 30,
       alignment: Alignment.bottomRight,
@@ -296,7 +299,7 @@ class FavCard extends StatelessWidget {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            Image.asset('assets/icons/back.png'),
+            Image.asset(themeProvider.images.eraseIcon),
             SizedBox(width: 10),
             Text(
               item is AllahName ? item.name : item.sectionName,
@@ -309,15 +312,13 @@ class FavCard extends StatelessWidget {
             ),
           ],
         ),
-        onPressed: backToLocation as void Function()?,
+        onPressed: backToLocation,
       ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    final SettingsModel settings = context.watch<SettingsModel>();
-
     return CardTemplate(
       ribbon: ribbon,
       actions: <Widget>[
@@ -330,7 +331,7 @@ class FavCard extends StatelessWidget {
             size: item is AllahName ? 22 : 32,
             color: Colors.white,
           ),
-          onPressed: backToGeneralLocation as void Function()?,
+          onPressed: backToGeneralLocation,
         ),
         GestureDetector(
           child: Image.asset('assets/icons/erase.png'),
@@ -338,43 +339,26 @@ class FavCard extends StatelessWidget {
         ),
       ],
       additionalContent: item.category == NoorCategory.MYAD3YAH
-          ? Text(
-              !settings.tashkeel ? Tashkeel.remove(item.info) : item.info,
-              textScaleFactor: settings.fontSize,
-            )
+          ? CardText(text: item.info)
           : null,
-      actionButton: backToMainLocation(item),
+      actionButton: backToMainLocation(item, context),
       child: item is AllahName
           ? SingleChildScrollView(
               child: Builder(
                 builder: (BuildContext context) {
-                  final List<String>? textList = item.text.split('.');
+                  final List<String> textList = item.text.split('.');
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text(
-                        !settings.tashkeel
-                            ? Tashkeel.remove('${textList![0].trim()}.')
-                            : '${textList![0].trim()}.',
-                        textScaleFactor: settings.fontSize,
-                      ),
+                      CardText(text: textList[0].trim()),
                       SizedBox(height: 10),
-                      Text(
-                        !settings.tashkeel
-                            ? Tashkeel.remove('${textList[1].trim()}.')
-                            : '${textList[1].trim()}.',
-                        textScaleFactor: settings.fontSize,
-                        textAlign: TextAlign.right,
-                      )
+                      CardText(text: textList[1].trim()),
                     ],
                   );
                 },
               ),
             )
-          : Text(
-              settings.tashkeel ? item.text : Tashkeel.remove(item.text),
-              textScaleFactor: settings.fontSize,
-            ),
+          : CardText(text: item.text),
     );
   }
 }

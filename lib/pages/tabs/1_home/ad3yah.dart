@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:noor/constants/categories.dart';
 import 'package:provider/provider.dart';
 
 import 'package:noor/exports/pages.dart' show Ad3yahList, MyAd3yah;
-import 'package:noor/exports/constants.dart' show Titles;
+import 'package:noor/exports/constants.dart' show Titles, NoorCategory;
 import 'package:noor/exports/components.dart' show NoorCloseButton, ListItem;
 import 'package:noor/exports/controllers.dart' show ThemeProvider;
 
@@ -43,6 +42,8 @@ class _Ad3yahState extends State<Ad3yah> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeProvider themeProvider = context.watch<ThemeProvider>();
+
     return Scaffold(
       body: Column(
         children: <Widget>[
@@ -55,9 +56,7 @@ class _Ad3yahState extends State<Ad3yah> with SingleTickerProviderStateMixin {
                       width: MediaQuery.of(context).size.width,
                       height: maxHeight,
                       child: Image.asset(
-                        Theme.of(context).brightness == Brightness.light
-                            ? 'assets/home-cards/light/Ad3yah.png'
-                            : 'assets/home-cards/dark/Ad3yah.png',
+                        themeProvider.images.ad3yahCard,
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -82,22 +81,22 @@ class _Ad3yahState extends State<Ad3yah> with SingleTickerProviderStateMixin {
                   children: <Ad3yahTitleCard>[
                     Ad3yahTitleCard(
                       title: Titles.quraan,
-                      icon: theme.images.quraan,
+                      icon: theme.images.quraanIcon,
                       category: NoorCategory.QURAAN,
                     ),
                     Ad3yahTitleCard(
                       title: Titles.sunnah,
-                      icon: theme.images.sunnah,
+                      icon: theme.images.sunnahIcon,
                       category: NoorCategory.SUNNAH,
                     ),
                     Ad3yahTitleCard(
                       title: Titles.ruqya,
-                      icon: theme.images.ruqya,
+                      icon: theme.images.ruqyaIcon,
                       category: NoorCategory.RUQIYA,
                     ),
                     Ad3yahTitleCard(
                       title: Titles.myAd3yah,
-                      icon: theme.images.myAd3yah,
+                      icon: theme.images.myAd3yahIcon,
                       category: NoorCategory.MYAD3YAH,
                     ),
                   ],

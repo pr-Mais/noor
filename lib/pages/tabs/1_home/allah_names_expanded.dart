@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
-import 'package:noor/exports/utils.dart' show Copy, Tashkeel;
 import 'package:noor/exports/models.dart' show DataModel, AllahName;
 import 'package:noor/exports/constants.dart' show Ribbon;
 import 'package:noor/exports/components.dart'
-    show NoorCloseButton, CardTemplate, NoorIcons, NameTitleCard;
-import 'package:noor/exports/controllers.dart'
-    show DataController, SettingsModel;
+    show
+        NoorCloseButton,
+        CardTemplate,
+        NoorIcons,
+        NameTitleCard,
+        FavAction,
+        CopyAction,
+        CardText;
+import 'package:noor/exports/controllers.dart' show ThemeProvider;
 
 class AllahNamesList extends StatefulWidget {
   const AllahNamesList({
@@ -56,6 +60,7 @@ class _AllahNamesListState extends State<AllahNamesList>
   }
 
   Widget backToMainLocation(AllahName name) {
+    ThemeProvider themeProvider = context.watch();
     return Container(
       height: 30,
       alignment: Alignment.bottomRight,
@@ -63,7 +68,7 @@ class _AllahNamesListState extends State<AllahNamesList>
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            Image.asset('assets/icons/back.png'),
+            Image.asset(themeProvider.images.referenceIcon),
             SizedBox(width: 10),
             Text(
               'ذُكِرَ في',
@@ -89,12 +94,10 @@ class _AllahNamesListState extends State<AllahNamesList>
 
   @override
   Widget build(BuildContext context) {
-    final DataController? dataProvider = GetIt.I<DataController>();
     final DataModel dataModel = context.watch<DataModel>();
 
     allahNames = dataModel.allahNames;
 
-    final SettingsModel settings = context.read<SettingsModel>();
     return Scaffold(
       body: Column(
         mainAxisSize: MainAxisSize.max,
@@ -157,44 +160,14 @@ class _AllahNamesListState extends State<AllahNamesList>
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Text(
-                              !settings.tashkeel
-                                  ? Tashkeel.remove('${textList[0]}.')
-                                  : '${textList[0]}.',
-                              textScaleFactor: settings.fontSize,
-                            ),
+                            CardText(text: textList[0]),
                             SizedBox(height: 10),
-                            Text(
-                              !settings.tashkeel
-                                  ? Tashkeel.remove('${textList[1]}.')
-                                  : '${textList[1]}.',
-                              textScaleFactor: settings.fontSize,
-                              textAlign: TextAlign.right,
-                            )
+                            CardText(text: textList[0]),
                           ],
                         ),
                         actions: <Widget>[
-                          GestureDetector(
-                            onTap: () {
-                              name.isFav
-                                  ? dataProvider!.removeFromFav(name)
-                                  : dataProvider!.addToFav(name);
-                            },
-                            child: AnimatedCrossFade(
-                              firstChild:
-                                  Image.asset('assets/icons/outline_heart.png'),
-                              secondChild:
-                                  Image.asset('assets/icons/filled_heart.png'),
-                              crossFadeState: name.isFav
-                                  ? CrossFadeState.showSecond
-                                  : CrossFadeState.showFirst,
-                              duration: Duration(milliseconds: 500),
-                            ),
-                          ),
-                          GestureDetector(
-                            child: Image.asset('assets/icons/copy.png'),
-                            onTap: () => Copy.onCopy(name.text, context),
-                          ),
+                          FavAction(name),
+                          CopyAction('اسم الله ${name.name}: ${name.text}')
                         ],
                       ),
                     ],
@@ -210,8 +183,8 @@ class _AllahNamesListState extends State<AllahNamesList>
 }
 
 class ReferenceList extends StatelessWidget {
-  ReferenceList({Key? key, this.name}) : super(key: key);
-  final AllahName? name;
+  ReferenceList({Key? key, required this.name}) : super(key: key);
+  final AllahName name;
 
   final List<String> ribbon = <String>[
     Ribbon.ribbon1,
@@ -233,7 +206,6 @@ class ReferenceList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final SettingsModel settings = context.watch<SettingsModel>();
     final DataModel dataModel = context.watch<DataModel>();
 
     final List<dynamic> allLists = List<dynamic>.from(<dynamic>[
@@ -257,7 +229,7 @@ class ReferenceList extends StatelessWidget {
                 children: <Widget>[
                   SizedBox(width: 45),
                   Text(
-                    name!.name,
+                    name.name,
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.headline1,
                   ),
@@ -270,32 +242,23 @@ class ReferenceList extends StatelessWidget {
             child: Scrollbar(
               child: ListView.builder(
                 controller: scrollController,
-                itemCount: name!.occurances.length,
+                itemCount: name.occurances.length,
                 padding: EdgeInsets.zero,
                 itemBuilder: (BuildContext context, int index) {
                   final dynamic element = allLists.singleWhere(
-                      (dynamic item) => item.id == name!.occurances[index]);
+                    (dynamic item) => item.id == name.occurances[index],
+                  );
 
                   return CardTemplate(
                     ribbon: element.ribbon,
                     additionalContent: Text('${element.sectionName}'),
-                    child: Text(
-                      !settings.tashkeel
-                          ? Tashkeel.remove('${element.text}')
-                          : '${element.text}',
-                      textScaleFactor: settings.fontSize,
-                    ),
+                    child: CardText(text: element.text),
                     actions: <Widget>[
                       Icon(
                         icons[element.category.index],
                         color: Colors.white,
                       ),
-                      GestureDetector(
-                        child: Image.asset('assets/icons/copy.png'),
-                        onTap: () {
-                          Copy.onCopy(element.text, context);
-                        },
-                      ),
+                      CopyAction(element.text)
                     ],
                   );
                 },

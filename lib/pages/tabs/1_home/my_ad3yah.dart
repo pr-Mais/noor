@@ -4,14 +4,19 @@ import 'package:provider/provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:reorderables/reorderables.dart';
 
-import 'package:noor/exports/services.dart' show DBService;
 import 'package:noor/exports/controllers.dart'
-    show ThemeProvider, SettingsModel, DataController;
+    show ThemeProvider, DataController;
 import 'package:noor/exports/constants.dart' show Images, Ribbon;
 import 'package:noor/exports/models.dart' show DataModel, Doaa;
 import 'package:noor/exports/components.dart'
-    show CardTemplate, NoorCloseButton, DeleteConfirmationDialog, ImageButton;
-import 'package:noor/exports/utils.dart' show Tashkeel, Copy;
+    show
+        CardTemplate,
+        NoorCloseButton,
+        DeleteConfirmationDialog,
+        ImageButton,
+        CardText,
+        CopyAction,
+        FavAction;
 
 class MyAd3yah extends StatefulWidget {
   MyAd3yah({Key? key, this.index = 0}) : super(key: key);
@@ -91,10 +96,7 @@ class _MyAd3yahState extends State<MyAd3yah> with TickerProviderStateMixin {
   }
 
   //add dailog
-  addDoaa({
-    id,
-    data,
-  }) {
+  addDoaa({id, data}) {
     if (data != null) {
       _firstController.text = data.text;
       _secondController.text = data.info;
@@ -314,66 +316,27 @@ class _MyAd3yahState extends State<MyAd3yah> with TickerProviderStateMixin {
   }
 
   Widget card(Doaa item) {
-    final SettingsModel settings = context.read<SettingsModel>();
+    final ThemeProvider themeProvider = context.watch();
+
     return CardTemplate(
       ribbon: Ribbon.ribbon5,
       key: ValueKey<Doaa>(item),
       actions: <Widget>[
+        FavAction(item),
         GestureDetector(
-          onTap: () async {
-            item.isFav
-                ? GetIt.I<DataController>().removeFromFav(item)
-                : GetIt.I<DataController>().addToFav(item);
-            await DBService.db.update(item);
-          },
-          child: AnimatedCrossFade(
-            firstChild: Image.asset('assets/icons/outline_heart.png'),
-            secondChild: Image.asset('assets/icons/filled_heart.png'),
-            crossFadeState: item.isFav
-                ? CrossFadeState.showSecond
-                : CrossFadeState.showFirst,
-            duration: Duration(milliseconds: 500),
-          ),
-        ),
-        GestureDetector(
-          child: Image.asset('assets/icons/edite.png'),
+          child: Image.asset(themeProvider.images.editeIcon),
           onTap: () => addDoaa(data: item),
         ),
+        CopyAction(item.text),
         GestureDetector(
-          child: Image.asset('assets/icons/copy.png'),
-          onTap: () => Copy.onCopy(item.text, context),
-        ),
-        GestureDetector(
-          child: Image.asset('assets/icons/erase.png'),
+          child: Image.asset(themeProvider.images.eraseIcon),
           onTap: () => deleteDialog(item),
         ),
       ],
-      child: Text(
-        !context.read<SettingsModel>().tashkeel
-            ? Tashkeel.remove(item.text)
-            : item.text,
-        textAlign: TextAlign.justify,
-        textDirection: TextDirection.rtl,
-        textScaleFactor: settings.fontSize,
-        style: TextStyle(
-          fontSize: 16,
-          fontFamily: settings.fontType,
-          height: 1.8,
-        ),
-      ),
-      additionalContent: Text(
-        !context.read<SettingsModel>().tashkeel
-            ? Tashkeel.remove(item.info)
-            : item.info,
-        textAlign: TextAlign.justify,
-        textDirection: TextDirection.rtl,
-        textScaleFactor: settings.fontSize,
-        style: TextStyle(
-          fontSize: 16,
-          color: Theme.of(context).primaryColor,
-          fontFamily: settings.fontType,
-          height: 1.6,
-        ),
+      child: CardText(text: item.text),
+      additionalContent: CardText(
+        text: item.text,
+        color: Theme.of(context).primaryColor,
       ),
     );
   }

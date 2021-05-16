@@ -1,5 +1,5 @@
-
 enum NoorCategory { ATHKAR, QURAAN, SUNNAH, RUQIYA, MYAD3YAH, ALLAHNAME }
+
 const Map<NoorCategory, String> categoryTitle = <NoorCategory, String>{
   NoorCategory.ATHKAR: 'الأذكار',
   NoorCategory.QURAAN: 'أدعية من القرآن الكريم',

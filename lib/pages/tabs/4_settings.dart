@@ -133,7 +133,12 @@ class _SettingsState extends State<Settings>
     );
   }
 
-  segmentedControlOption({icon, required title, required onChanged, value}) {
+  segmentedControlOption({
+    required IconData icon,
+    required String title,
+    required void Function(String?) onChanged,
+    required String value,
+  }) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
@@ -315,7 +320,8 @@ class _SettingsState extends State<Settings>
                               ),
                               child: Slider(
                                 divisions: 3,
-                                onChanged: (value) => settings.fontSize = value,
+                                onChanged: (double value) =>
+                                    settings.fontSize = value,
                                 value: settings.fontSize,
                                 min: 1,
                                 max: 1.375,
@@ -348,7 +354,7 @@ class _SettingsState extends State<Settings>
                     icon: NoorSettingsIcons.tashkeel,
                     title: 'التشكيل',
                     value: settings.tashkeel,
-                    onChanged: (value) => settings.tashkeel = value,
+                    onChanged: (bool value) => settings.tashkeel = value,
                   ),
                   const Divider(),
                   VerticalSpace(),
@@ -367,7 +373,7 @@ class _SettingsState extends State<Settings>
                   Container(
                     margin: EdgeInsets.symmetric(horizontal: 30.0),
                     alignment: Alignment.center,
-                    child: CupertinoSlidingSegmentedControl(
+                    child: CupertinoSlidingSegmentedControl<int>(
                       padding: EdgeInsets.all(3),
                       thumbColor: Theme.of(context).primaryColor,
                       children: <int, Widget>{
@@ -403,7 +409,7 @@ class _SettingsState extends State<Settings>
                     icon: NoorSettingsIcons.vibrate,
                     title: 'الهزاز لعداد صفحة الأذكار',
                     value: settings.vibrate,
-                    onChanged: (value) => settings.vibrate = value,
+                    onChanged: (bool value) => settings.vibrate = value,
                   ),
                   const Divider(),
                   AnimatedCrossFade(
@@ -420,8 +426,8 @@ class _SettingsState extends State<Settings>
                           icon: NoorSettingsIcons.click,
                           title: 'لكل ضغطة',
                           value: settings.vibrationClick,
-                          onChanged: (value) {
-                            settings.vibrationClick = value;
+                          onChanged: (String? value) {
+                            settings.vibrationClick = value!;
                             if (value == 'strong') {
                               HapticFeedback.lightImpact();
                             }
@@ -435,8 +441,8 @@ class _SettingsState extends State<Settings>
                           icon: NoorSettingsIcons.done,
                           title: 'عند اكتمال العد',
                           value: settings.vibrationDone,
-                          onChanged: (value) {
-                            settings.vibrationDone = value;
+                          onChanged: (String? value) {
+                            settings.vibrationDone = value!;
                             if (value == 'strong') {
                               HapticFeedback.lightImpact();
                             }
@@ -458,8 +464,8 @@ class _SettingsState extends State<Settings>
                   switcherOption(
                     icon: NoorSettingsIcons.vibrate,
                     title: 'الهزاز لصفحة العداد',
-                    value: SharedPrefsService.getBool('vibrateCounter'),
-                    onChanged: (value) => settings.vibrateCounter = value,
+                    value: settings.vibrateCounter,
+                    onChanged: (bool value) => settings.vibrateCounter = value,
                   ),
                   Divider(),
                   AnimatedCrossFade(
@@ -476,8 +482,8 @@ class _SettingsState extends State<Settings>
                             icon: NoorSettingsIcons.click,
                             title: 'لكل ضغطة',
                             value: settings.vibrationClickCounter,
-                            onChanged: (value) {
-                              settings.vibrationClickCounter = value;
+                            onChanged: (String? value) {
+                              settings.vibrationClickCounter = value!;
                               if (value == 'strong') {
                                 HapticFeedback.lightImpact();
                               }
@@ -490,8 +496,8 @@ class _SettingsState extends State<Settings>
                           icon: NoorSettingsIcons.done,
                           title: 'عند مضاعفات المئة',
                           value: settings.vibrationHunderds,
-                          onChanged: (value) {
-                            settings.vibrationHunderds = value;
+                          onChanged: (String? value) {
+                            settings.vibrationHunderds = value!;
                             if (value == 'strong') {
                               HapticFeedback.lightImpact();
                             }
@@ -920,9 +926,10 @@ class _SettingsState extends State<Settings>
                   ),
                   Divider(),
                   switcherOption(
-                    image: Theme.of(context).brightness == Brightness.light
-                        ? 'assets/icons/generalNotificationsLight.png'
-                        : 'assets/icons/generalNotificationsDark.png',
+                    image: context
+                        .watch<ThemeProvider>()
+                        .images
+                        .generalNotificationsIcons,
                     title: 'إشعارات عامة',
                     value: settings.generalNotification,
                     onChanged: (bool value) {
@@ -931,7 +938,6 @@ class _SettingsState extends State<Settings>
                       } else {
                         FCMService.instance.unsubscribe();
                       }
-                      setState(() {});
                     },
                   ),
                   Divider(),
