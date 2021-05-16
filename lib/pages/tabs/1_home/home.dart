@@ -35,8 +35,8 @@ class _HomeState extends State<Home>
   String? searchWord;
 
   late AnimationController cloudController;
-  Animation<Offset>? _topCloudAnim;
-  Animation<Offset>? _bottomCloudAnim;
+  late Animation<Offset> _topCloudAnim;
+  late Animation<Offset> _bottomCloudAnim;
 
   @override
   bool get wantKeepAlive => true;
@@ -45,7 +45,7 @@ class _HomeState extends State<Home>
   void initState() {
     super.initState();
 
-    //setupCloudAnimation();
+    setupCloudAnimation();
   }
 
   @override
@@ -148,9 +148,9 @@ class _HomeState extends State<Home>
           children: <Widget>[
             AnimatedHeader(
               focusNode: _focusNode,
-              topCloudAnim: ValueNotifier<Animation<Offset>?>(_topCloudAnim),
+              topCloudAnim: ValueNotifier<Animation<Offset>>(_topCloudAnim),
               bottomCloudAnim:
-                  ValueNotifier<Animation<Offset>?>(_bottomCloudAnim),
+                  ValueNotifier<Animation<Offset>>(_bottomCloudAnim),
               isWriting: isWriting,
             ),
             Expanded(
@@ -297,8 +297,8 @@ class AnimatedHeader extends StatefulWidget {
         super(key: key);
 
   final FocusNode focusNode;
-  final ValueNotifier<Animation<Offset>?> topCloudAnim;
-  final ValueNotifier<Animation<Offset>?> bottomCloudAnim;
+  final ValueNotifier<Animation<Offset>> topCloudAnim;
+  final ValueNotifier<Animation<Offset>> bottomCloudAnim;
 
   final bool isWriting;
 
@@ -352,30 +352,34 @@ class _AnimatedHeaderState extends State<AnimatedHeader>
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Stack(
           children: <Widget>[
-            // if (Theme.of(context).brightness == Brightness.light)
-            //   ValueListenableBuilder<Animation<Offset>>(
-            //     valueListenable: widget.bottomCloudAnim,
-            //     builder: (_, Animation<Offset> value, Widget child) => Positioned(
-            //       top: 65,
-            //       child: SlideTransition(
-            //         position: value,
-            //         child: child,
-            //       ),
-            //     ),
-            //     child: Image.asset('assets/CloudTop.png'),
-            //   ),
-            // if (Theme.of(context).brightness == Brightness.light)
-            //   ValueListenableBuilder<Animation<Offset>>(
-            //     valueListenable: widget.topCloudAnim,
-            //     builder: (_, Animation<Offset> value, Widget child) => Positioned(
-            //       top: 40,
-            //       child: SlideTransition(
-            //         position: value,
-            //         child: child,
-            //       ),
-            //     ),
-            //     child: Image.asset('assets/CloudBottom.png'),
-            //   ),
+            if (Theme.of(context).brightness == Brightness.light)
+              ValueListenableBuilder<Animation<Offset>>(
+                valueListenable: widget.bottomCloudAnim,
+                builder: (_, Animation<Offset> value, Widget? child) {
+                  return Positioned(
+                    top: 65,
+                    child: SlideTransition(
+                      position: value,
+                      child: child,
+                    ),
+                  );
+                },
+                child: Image.asset('assets/CloudTop.png'),
+              ),
+            if (Theme.of(context).brightness == Brightness.light)
+              ValueListenableBuilder<Animation<Offset>>(
+                valueListenable: widget.topCloudAnim,
+                builder: (_, Animation<Offset> value, Widget? child) {
+                  return Positioned(
+                    top: 40,
+                    child: SlideTransition(
+                      position: value,
+                      child: child,
+                    ),
+                  );
+                },
+                child: Image.asset('assets/CloudBottom.png'),
+              ),
             if (Theme.of(context).brightness == Brightness.dark)
               Align(
                 alignment: Alignment.center,
