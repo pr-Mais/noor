@@ -107,29 +107,13 @@ class _FavoriteState extends State<Favorite>
     }
   }
 
-  // TODO(Mais): Refactor into a widget
   //delete dialog confirmation
-  deleteDialog(dynamic dataToDelete, int i) {
-    final DataController? data = GetIt.I<DataController>();
+  deleteDialog(dynamic dataToDelete, int i) async {
+    final bool? result = await DeleteConfirmationDialog.of(context).show();
 
-    showGeneralDialog(
-      transitionDuration: Duration(milliseconds: 600),
-      barrierDismissible: false,
-      barrierColor: Colors.black.withOpacity(0.75),
-      barrierLabel: '',
-      context: context,
-      transitionBuilder: (_, Animation<double> a1, Animation<double> a2, __) {
-        final double curvedValue =
-            Curves.easeInOutBack.transform(a1.value) - 1.0;
-        return Transform(
-          transform: Matrix4.translationValues(0.0, curvedValue * 800, 0.0),
-          child: DeleteConfirmationDialog(
-            () => data!.removeFromFav(dataToDelete),
-          ),
-        );
-      },
-      pageBuilder: ((_, __, ___) => SizedBox()),
-    );
+    if (result == true) {
+      GetIt.I<DataController>().removeFromFav(dataToDelete);
+    }
   }
 
   @override
@@ -291,7 +275,6 @@ class FavCard extends StatelessWidget {
   final void Function() backToGeneralLocation;
 
   Widget backToMainLocation(dynamic item, BuildContext context) {
-    ThemeProvider themeProvider = context.watch();
     return Container(
       height: 30,
       alignment: Alignment.bottomRight,
@@ -299,15 +282,15 @@ class FavCard extends StatelessWidget {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            Image.asset(themeProvider.images.eraseIcon),
+            Image.asset(Images.referenceIcon),
             SizedBox(width: 10),
             Text(
               item is AllahName ? item.name : item.sectionName,
-              style: TextStyle(
-                  fontSize: 14,
-                  color: Color(0xff6f85d5),
-                  fontFamily: 'SST Light',
-                  height: 1),
+              style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                    fontSize: 14,
+                    color: Color(0xff6f85d5),
+                    height: 1,
+                  ),
               textScaleFactor: 1,
             ),
           ],
@@ -319,6 +302,7 @@ class FavCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ThemeProvider themeProvider = context.watch();
     return CardTemplate(
       ribbon: ribbon,
       actions: <Widget>[
@@ -334,7 +318,7 @@ class FavCard extends StatelessWidget {
           onPressed: backToGeneralLocation,
         ),
         GestureDetector(
-          child: Image.asset('assets/icons/erase.png'),
+          child: Image.asset(Images.eraseIcon),
           onTap: remove,
         ),
       ],

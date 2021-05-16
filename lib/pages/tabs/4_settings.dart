@@ -926,10 +926,7 @@ class _SettingsState extends State<Settings>
                   ),
                   Divider(),
                   switcherOption(
-                    image: context
-                        .watch<ThemeProvider>()
-                        .images
-                        .generalNotificationsIcons,
+                    image: Images.generalNotificationsIcons,
                     title: 'إشعارات عامة',
                     value: settings.generalNotification,
                     onChanged: (bool value) {
@@ -1105,8 +1102,8 @@ class Card extends StatelessWidget {
     return CardTemplate(
       ribbon: Ribbon.ribbon1,
       actions: <Widget>[
-        Image.asset('assets/icons/outline_heart.png'),
-        Image.asset('assets/icons/copy.png'),
+        Image.asset(Images.outlineHeartIcon),
+        Image.asset(Images.copyIcon),
       ],
       child: Text(
         !tashkeel! ? Tashkeel.remove(data!) : data!,

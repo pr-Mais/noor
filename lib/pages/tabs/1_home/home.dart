@@ -15,6 +15,7 @@ import 'package:noor/exports/utils.dart' show backToExactLocation, Tashkeel;
 import 'package:noor/exports/controllers.dart' show ThemeProvider;
 import 'package:noor/exports/services.dart' show SharedPrefsService;
 import 'package:noor/exports/models.dart' show AllahName, DataModel, Thekr;
+import 'package:noor/exports/constants.dart' show NoorCategory;
 
 class Home extends StatefulWidget {
   Home({
@@ -117,7 +118,7 @@ class _HomeState extends State<Home>
       tmp = Tashkeel.remove(allLists[i].text);
       tmp = mask(tmp);
       if ((tmp!.contains(query) || allLists[i].text.contains(query)) &&
-          allLists[i].section != 5) {
+          allLists[i].category != NoorCategory.MYAD3YAH) {
         results.add(allLists[i]);
         if (allLists[i].runtimeType == Thekr) {
           title.add(allLists[i].sectionName);
@@ -364,7 +365,7 @@ class _AnimatedHeaderState extends State<AnimatedHeader>
                     ),
                   );
                 },
-                child: Image.asset('assets/CloudTop.png'),
+                child: Image.asset(Images.cloudBottom),
               ),
             if (Theme.of(context).brightness == Brightness.light)
               ValueListenableBuilder<Animation<Offset>>(
@@ -378,7 +379,7 @@ class _AnimatedHeaderState extends State<AnimatedHeader>
                     ),
                   );
                 },
-                child: Image.asset('assets/CloudBottom.png'),
+                child: Image.asset(Images.cloutTop),
               ),
             if (Theme.of(context).brightness == Brightness.dark)
               Align(

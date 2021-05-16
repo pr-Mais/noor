@@ -19,13 +19,20 @@ class Images {
   final String myAd3yahBg = '';
   final String addMyAd3yah = '';
 
-  final String copyIcon = 'assets/icons/copy.png';
-  final String editeIcon = 'assets/icons/edite.png';
-  final String eraseIcon = 'assets/icons/erase.png';
-  final String outlineHeartIcon = 'assets/icons/outline_heart.png';
-  final String filledHeartIcon = 'assets/icons/filled_heart.png';
-  final String referenceIcon = 'assets/icons/back.png';
-  final String generalNotificationsIcons = '';
+  // Bellow images aren't tied to theme mode
+  // So they can be static and accessed directly
+  static String cloutTop = 'assets/cloud_top.png';
+  static String cloudBottom = 'assets/cloud_bottom.png';
+  static String circleStar = 'assets/circle_star.png';
+  static String star = 'assets/star.png';
+
+  static String copyIcon = 'assets/icons/copy.png';
+  static String editeIcon = 'assets/icons/edite.png';
+  static String eraseIcon = 'assets/icons/erase.png';
+  static String outlineHeartIcon = 'assets/icons/outline_heart.png';
+  static String filledHeartIcon = 'assets/icons/filled_heart.png';
+  static String referenceIcon = 'assets/icons/back.png';
+  static String generalNotificationsIcons = '';
 }
 
 class LightAppImages extends Images {

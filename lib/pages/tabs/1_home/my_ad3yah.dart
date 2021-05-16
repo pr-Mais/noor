@@ -176,25 +176,12 @@ class _MyAd3yahState extends State<MyAd3yah> with TickerProviderStateMixin {
   }
 
   //delete dialog confirmation
-  deleteDialog(Doaa dataToDelete) {
-    showGeneralDialog(
-      transitionDuration: Duration(milliseconds: 600),
-      barrierDismissible: false,
-      barrierColor: Colors.black.withOpacity(0.75),
-      barrierLabel: '',
-      context: context,
-      transitionBuilder: (_, Animation<double> a1, Animation<double> a2, __) {
-        final double curvedValue =
-            Curves.easeInOutBack.transform(a1.value) - 1.0;
-        return Transform(
-          transform: Matrix4.translationValues(0.0, curvedValue * 800, 0.0),
-          child: DeleteConfirmationDialog(
-            () => GetIt.I<DataController>().remove(dataToDelete),
-          ),
-        );
-      },
-      pageBuilder: (_, __, ___) => SizedBox(),
-    );
+  deleteDialog(Doaa dataToDelete) async {
+    final bool? result = await DeleteConfirmationDialog.of(context).show();
+
+    if (result == true) {
+      GetIt.I<DataController>().remove(dataToDelete);
+    }
 
     _firstController.clear();
     _secondController.clear();
@@ -316,20 +303,18 @@ class _MyAd3yahState extends State<MyAd3yah> with TickerProviderStateMixin {
   }
 
   Widget card(Doaa item) {
-    final ThemeProvider themeProvider = context.watch();
-
     return CardTemplate(
       ribbon: Ribbon.ribbon5,
       key: ValueKey<Doaa>(item),
       actions: <Widget>[
         FavAction(item),
         GestureDetector(
-          child: Image.asset(themeProvider.images.editeIcon),
+          child: Image.asset(Images.editeIcon),
           onTap: () => addDoaa(data: item),
         ),
         CopyAction(item.text),
         GestureDetector(
-          child: Image.asset(themeProvider.images.eraseIcon),
+          child: Image.asset(Images.eraseIcon),
           onTap: () => deleteDialog(item),
         ),
       ],

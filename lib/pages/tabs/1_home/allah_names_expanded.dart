@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 import 'package:noor/exports/models.dart' show DataModel, AllahName;
-import 'package:noor/exports/constants.dart' show Ribbon;
+import 'package:noor/exports/constants.dart' show Images, Ribbon;
 import 'package:noor/exports/components.dart'
     show
         NoorCloseButton,
@@ -60,7 +60,6 @@ class _AllahNamesListState extends State<AllahNamesList>
   }
 
   Widget backToMainLocation(AllahName name) {
-    ThemeProvider themeProvider = context.watch();
     return Container(
       height: 30,
       alignment: Alignment.bottomRight,
@@ -68,7 +67,7 @@ class _AllahNamesListState extends State<AllahNamesList>
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            Image.asset(themeProvider.images.referenceIcon),
+            Image.asset(Images.referenceIcon),
             SizedBox(width: 10),
             Text(
               'ذُكِرَ في',

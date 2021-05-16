@@ -2,11 +2,32 @@ import 'package:flutter/material.dart';
 
 class DeleteConfirmationDialog extends StatelessWidget {
   const DeleteConfirmationDialog(
-    this.onDelete, {
+    this.context, {
     Key? key,
   }) : super(key: key);
+  final BuildContext context;
 
-  final void Function() onDelete;
+  static DeleteConfirmationDialog of(BuildContext context) {
+    return DeleteConfirmationDialog(context);
+  }
+
+  Future<bool?> show() async {
+    return await showGeneralDialog(
+      transitionDuration: Duration(milliseconds: 600),
+      barrierColor: Colors.black.withOpacity(0.75),
+      barrierLabel: '',
+      context: context,
+      transitionBuilder: (_, Animation<double> a1, Animation<double> a2, __) {
+        final double curvedValue =
+            Curves.easeInOutBack.transform(a1.value) - 1.0;
+        return Transform(
+          transform: Matrix4.translationValues(0.0, curvedValue * 800, 0.0),
+          child: DeleteConfirmationDialog(context),
+        );
+      },
+      pageBuilder: (_, __, ___) => SizedBox(),
+    );
+  }
 
   // TODO(Mais): Refactor
   button(
@@ -67,33 +88,41 @@ class DeleteConfirmationDialog extends StatelessWidget {
               ),
             ),
             Align(
-                alignment: Alignment.bottomCenter,
-                child: Container(
-                  constraints: BoxConstraints.expand(height: 40),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      button(
-                          text: 'حذف',
-                          border: Border(left: BorderSide(width: 0.5, color: Colors.white)),
-                          radius: BorderRadius.only(bottomRight: Radius.circular(15)),
-                          textColor: Colors.lightBlue[100],
-                          onPress: () async {
-                            onDelete();
-                            Navigator.of(context).pop();
-                          }),
-                      button(
-                          text: 'إلغاء',
-                          border: Border(right: BorderSide(width: 0.5, color: Colors.white)),
-                          radius: BorderRadius.only(bottomLeft: Radius.circular(15)),
-                          textColor: Colors.white,
-                          onPress: () {
-                            Navigator.of(context).pop();
-                          }),
-                    ],
-                  ),
-                ))
+              alignment: Alignment.bottomCenter,
+              child: Container(
+                constraints: BoxConstraints.expand(height: 40),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    button(
+                        text: 'حذف',
+                        border: Border(
+                          left: BorderSide(width: 0.5, color: Colors.white),
+                        ),
+                        radius: BorderRadius.only(
+                          bottomRight: Radius.circular(15),
+                        ),
+                        textColor: Colors.lightBlue[100],
+                        onPress: () async {
+                          Navigator.of(context).pop(true);
+                        }),
+                    button(
+                        text: 'إلغاء',
+                        border: Border(
+                          right: BorderSide(width: 0.5, color: Colors.white),
+                        ),
+                        radius: BorderRadius.only(
+                          bottomLeft: Radius.circular(15),
+                        ),
+                        textColor: Colors.white,
+                        onPress: () {
+                          Navigator.of(context).pop(false);
+                        }),
+                  ],
+                ),
+              ),
+            )
           ],
         ),
       ),

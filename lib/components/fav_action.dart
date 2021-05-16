@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-
 import 'package:get_it/get_it.dart';
-import 'package:noor/controllers/theme_controller.dart';
+
 import 'package:noor/exports/controllers.dart' show DataController;
+import 'package:noor/exports/constants.dart' show Images;
 
 class FavAction extends StatefulWidget {
   FavAction(this.item, {Key? key})
@@ -19,7 +18,6 @@ class _FavActionState extends State<FavAction> {
   @override
   Widget build(BuildContext context) {
     final DataController dataController = GetIt.I<DataController>();
-    final ThemeProvider themeProvider = context.watch<ThemeProvider>();
 
     return GestureDetector(
       onTap: () {
@@ -28,8 +26,8 @@ class _FavActionState extends State<FavAction> {
             : dataController.addToFav(widget.item);
       },
       child: AnimatedCrossFade(
-        firstChild: Image.asset(themeProvider.images.outlineHeartIcon),
-        secondChild: Image.asset(themeProvider.images.filledHeartIcon),
+        firstChild: Image.asset(Images.outlineHeartIcon),
+        secondChild: Image.asset(Images.filledHeartIcon),
         crossFadeState: widget.item.isFav
             ? CrossFadeState.showSecond
             : CrossFadeState.showFirst,

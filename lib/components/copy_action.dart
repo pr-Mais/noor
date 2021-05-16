@@ -1,18 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:provider/provider.dart';
 
-import 'package:noor/exports/controllers.dart' show ThemeProvider;
+import 'package:noor/exports/constants.dart' show Images;
 
 class CopyAction extends StatelessWidget {
   const CopyAction(this.text, {Key? key}) : super(key: key);
   final String text;
   @override
   Widget build(BuildContext context) {
-    final ThemeProvider themeProvider = context.watch<ThemeProvider>();
-
     return GestureDetector(
-      child: Image.asset(themeProvider.images.copyIcon),
+      child: Image.asset(Images.copyIcon),
       onTap: () => onCopy(text, context),
     );
   }

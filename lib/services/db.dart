@@ -109,8 +109,8 @@ class DBService with ChangeNotifier {
   }
 
   delete(Doaa doaa) async {
-    final Database db = await (database as FutureOr<Database>);
-    db.delete(
+    final Database? db = await database;
+    db?.delete(
       tableName,
       where: 'id = ?',
       whereArgs: <String>[doaa.id],
