@@ -33,7 +33,7 @@ class NoorApp extends StatelessWidget {
 class MaterialAppWithTheme extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final ThemeProvider providerTheme = context.watch<ThemeProvider>();
+    final ThemeProvider themeProvider = context.watch<ThemeProvider>();
 
     return MaterialApp(
       localizationsDelegates: <LocalizationsDelegate<dynamic>>[
@@ -48,7 +48,7 @@ class MaterialAppWithTheme extends StatelessWidget {
       locale: Locale('ar'),
       debugShowCheckedModeBanner: false,
       title: 'نُور',
-      themeMode: providerTheme.theme,
+      themeMode: themeProvider.theme,
       theme: lightTheme,
       darkTheme: darkTheme,
       builder: (BuildContext context, Widget? child) {

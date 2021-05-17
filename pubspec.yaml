@@ -52,15 +52,16 @@ flutter:
 
   assets:
     - assets/
-    - assets/home-cards/
-    - assets/home-cards/light/
-    - assets/home-cards/dark/
-    - assets/backgrounds/
-    - assets/fav-buttons/
+    - assets/images/
+    - assets/images/ribbons/
+    - assets/images/social-buttons/
+    - assets/images/home-header/
+    - assets/images/home-cards/light/
+    - assets/images/home-cards/dark/
+    - assets/images/backgrounds/
+    - assets/images/fav-buttons/
     - assets/icons/
     - assets/icons/ad3yah/
-    - assets/ribbons/
-    - assets/social-buttons/
     - assets/json/
 
   fonts:

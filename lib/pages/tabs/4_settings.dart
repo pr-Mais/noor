@@ -90,15 +90,19 @@ class _SettingsState extends State<Settings>
           SizedBox(
             width: 20,
             child: image != null
-                ? Image.asset(image, height: 16)
-                : Icon(icon, size: icon == NoorSettingsIcons.bulb_on ? 20 : 16),
+                ? Image.asset(
+                    image,
+                    height: 18,
+                  )
+                : Icon(icon, size: 18),
           ),
-          SizedBox(
-            width: 5.0,
-          ),
+          SizedBox(width: 10.0),
           Text(
             text,
-            style: Theme.of(context).textTheme.subtitle,
+            style: Theme.of(context)
+                .textTheme
+                .bodyText1
+                ?.copyWith(height: 1, fontSize: 12),
           ),
         ],
       ),
@@ -926,7 +930,7 @@ class _SettingsState extends State<Settings>
                   ),
                   Divider(),
                   switcherOption(
-                    image: Images.generalNotificationsIcons,
+                    image: images.generalNotificationsIcon,
                     title: 'إشعارات عامة',
                     value: settings.generalNotification,
                     onChanged: (bool value) {

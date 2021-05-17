@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get_it/get_it.dart';
 import 'package:noor/services/remote_config.dart';
 
@@ -325,10 +326,8 @@ class _AnimatedHeaderState extends State<AnimatedHeader>
 
   Future<void> _setupReceivingFCM() async {
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      if (message != null) {
-        SharedPrefsService.putBool('CONFIG_STATE', true);
-        _loadRemoteConfig();
-      }
+      SharedPrefsService.putBool('CONFIG_STATE', true);
+      _loadRemoteConfig();
     });
   }
 
@@ -365,7 +364,7 @@ class _AnimatedHeaderState extends State<AnimatedHeader>
                     ),
                   );
                 },
-                child: Image.asset(Images.cloudBottom),
+                child: Image.asset(Images.cloudBottom, width: 100),
               ),
             if (Theme.of(context).brightness == Brightness.light)
               ValueListenableBuilder<Animation<Offset>>(
@@ -379,7 +378,7 @@ class _AnimatedHeaderState extends State<AnimatedHeader>
                     ),
                   );
                 },
-                child: Image.asset(Images.cloutTop),
+                child: Image.asset(Images.cloutTop, width: 100),
               ),
             if (Theme.of(context).brightness == Brightness.dark)
               Align(
@@ -394,9 +393,12 @@ class _AnimatedHeaderState extends State<AnimatedHeader>
                   child: SingleChildScrollView(
                     child: Column(
                       children: <Widget>[
-                        const SizedBox(height: 8),
-                        const NoorLogo(),
-                        const SizedBox(height: 8),
+                        const SizedBox(height: 20),
+                        SvgPicture.asset(
+                          'assets/images/logo-dark.svg',
+                          width: 50,
+                        ),
+                        const SizedBox(height: 15),
                         ValueListenableBuilder<String>(
                           valueListenable: remoteConfigNotifier,
                           builder: (_, String value, Widget? child) {
@@ -412,9 +414,10 @@ class _AnimatedHeaderState extends State<AnimatedHeader>
                                 key: ValueKey<String>(value),
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
-                                    fontFamily: 'SST Roman',
-                                    color: Colors.white,
-                                    fontSize: 15),
+                                  color: Colors.white,
+                                  fontSize: 15,
+                                  height: 1.5,
+                                ),
                               ),
                             );
                           },

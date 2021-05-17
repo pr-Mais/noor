@@ -13,8 +13,7 @@ import 'package:noor/exports/components.dart'
         NoorIcons,
         NoorSettingsIcons;
 import 'package:noor/exports/models.dart' show AllahName;
-import 'package:noor/exports/constants.dart'
-    show FavButtons, Images, NoorCategory;
+import 'package:noor/exports/constants.dart' show Images, NoorCategory;
 import 'package:noor/exports/pages.dart'
     show Ad3yahList, AllahNamesList, AthkarList, MyAd3yah;
 import 'package:noor/exports/controllers.dart'
@@ -121,7 +120,21 @@ class _FavoriteState extends State<Favorite>
     super.build(context);
 
     final Images images = context.read<ThemeProvider>().images;
-    final DataController? data = GetIt.I<DataController>();
+    final DataController data = GetIt.I<DataController>();
+
+    void onSectionTap(int i) {
+      section.value = i;
+      setState(
+        () {
+          sectionList = i == 0
+              ? favList
+              : favList
+                  .where((dynamic element) =>
+                      element.category.index + 1 == section.value)
+                  .toList();
+        },
+      );
+    }
 
     return Scaffold(
       body: SafeArea(
@@ -134,24 +147,14 @@ class _FavoriteState extends State<Favorite>
               height: 45,
               child: ListView.separated(
                 padding: EdgeInsets.symmetric(horizontal: 20.0),
-                separatorBuilder: (context, __) => const SizedBox(width: 10.0),
+                separatorBuilder: (_, __) => const SizedBox(width: 10.0),
                 scrollDirection: Axis.horizontal,
-                itemCount: FavButtons.list.length,
-                itemBuilder: (context, int i) {
+                itemCount: Images.favButtonsList.length,
+                itemBuilder: (_, int i) {
                   return ImageButton(
                     width: 110,
-                    image: FavButtons.list[i],
-                    onTap: () {
-                      section.value = i;
-                      setState(() {
-                        sectionList = i == 0
-                            ? favList
-                            : favList
-                                .where((dynamic element) =>
-                                    element.category.index + 1 == section.value)
-                                .toList();
-                      });
-                    },
+                    image: Images.favButtonsList[i],
+                    onTap: () => onSectionTap(i),
                   );
                 },
               ),
@@ -215,7 +218,7 @@ class _FavoriteState extends State<Favorite>
                                     ),
                                     childCount: sectionList.length,
                                   ),
-                                  onReorder: data!.swapFav,
+                                  onReorder: data.swapFav,
                                 ),
                               ],
                             ),

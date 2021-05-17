@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:noor/exports/constants.dart' show Images;
 
 class ThekrTitleCard extends StatelessWidget {
   ThekrTitleCard({this.title});
@@ -50,15 +51,13 @@ class ThekrTitleCard extends StatelessWidget {
                     borderRadius: BorderRadius.circular(15.0),
                     image: DecorationImage(
                       fit: BoxFit.fill,
-                      image: AssetImage(
-                        'assets/titleBackground.png',
-                      ),
+                      image: AssetImage(Images.titleBg),
                     )),
               ),
             ),
             Positioned(
               child: Image.asset(
-                'assets/titleLeaf.png',
+                Images.athkarTitleLeaf,
                 height: 110.0,
               ),
               bottom: 10.0,

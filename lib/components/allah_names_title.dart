@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:noor/exports/constants.dart' show Images;
 
 class NameTitleCard extends StatelessWidget {
   NameTitleCard({this.title});
@@ -47,15 +48,13 @@ class NameTitleCard extends StatelessWidget {
                 borderRadius: BorderRadius.circular(15.0),
                 image: DecorationImage(
                   fit: BoxFit.fill,
-                  image: AssetImage(
-                    'assets/titleBackground.png',
-                  ),
+                  image: AssetImage(Images.titleBg),
                 ),
               ),
             ),
             Positioned(
               child: Image.asset(
-                'assets/nameTitleLeaf.png',
+                Images.allahNameTitleLeaf,
                 height: 100.0,
               ),
               bottom: 10.0,
