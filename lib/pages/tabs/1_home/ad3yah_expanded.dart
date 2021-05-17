@@ -6,7 +6,6 @@ import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:noor/exports/components.dart'
     show NoorCloseButton, CardTemplate, FavAction, CardText, CopyAction;
 import 'package:noor/exports/models.dart' show Doaa, DataModel;
-import 'package:noor/exports/controllers.dart' show SettingsModel;
 
 class Ad3yahList extends StatefulWidget {
   const Ad3yahList({

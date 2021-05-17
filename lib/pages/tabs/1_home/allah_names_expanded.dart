@@ -13,7 +13,6 @@ import 'package:noor/exports/components.dart'
         FavAction,
         CopyAction,
         CardText;
-import 'package:noor/exports/controllers.dart' show ThemeModel;
 
 class AllahNamesList extends StatefulWidget {
   const AllahNamesList({

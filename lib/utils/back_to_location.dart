@@ -17,7 +17,9 @@ backToExactLocation(dynamic item, BuildContext context) async {
     ...dataModel.myAd3yah,
     ...dataModel.allahNames,
   ]);
-  List<dynamic> tmpList = allLists.where((dynamic element) => element.category == item.category).toList();
+  List<dynamic> tmpList = allLists
+      .where((dynamic element) => element.category == item.category)
+      .toList();
   final int index = tmpList.indexOf(item);
 
   switch (item.category) {
@@ -29,7 +31,8 @@ backToExactLocation(dynamic item, BuildContext context) async {
       );
       break;
     case NoorCategory.MYAD3YAH:
-      final int index = tmpList.indexWhere((dynamic element) => element == item);
+      final int index =
+          tmpList.indexWhere((dynamic element) => element == item);
 
       Navigator.of(context).push(
         MaterialPageRoute<MyAd3yah>(
