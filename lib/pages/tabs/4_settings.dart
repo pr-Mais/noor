@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:noor/models/data.dart';
 import 'package:noor/services/fcm.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
@@ -11,9 +12,8 @@ import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
 import 'package:noor/exports/components.dart'
-    show CardTemplate, NoorSettingsIcons;
+    show CardTemplate, CardText, NoorSettingsIcons;
 import 'package:noor/exports/services.dart' show SharedPrefsService;
-import 'package:noor/exports/utils.dart' show Tashkeel;
 import 'package:noor/exports/controllers.dart' show ThemeModel, SettingsModel;
 import 'package:noor/exports/constants.dart' show Images, Links, Ribbon;
 
@@ -55,16 +55,17 @@ class _SettingsState extends State<Settings>
 
   var morningTemp;
   var nightTemp;
-  List fonts = ['١٦', '١٨', '٢٠', '٢٢'];
-  var activeLabelStyle =
-      const TextStyle(color: Color(0xff6db7e5), fontSize: 18, height: 1);
-  var inactiveLabelStyle = TextStyle(
+  List<String> fonts = <String>['١٦', '١٨', '٢٠', '٢٢'];
+  TextStyle activeLabelStyle = const TextStyle(
+    color: Color(0xff6db7e5),
+    fontSize: 18,
+    height: 1,
+  );
+  TextStyle inactiveLabelStyle = TextStyle(
     color: Colors.grey[400],
   );
-  String placeholderText =
-      'أعوذ بـالـلـه من الشيطان الـرجـيم ﴿اللَّهُ لاَ إِلَٰهَ إِلاَّ هُـوَ الْـحَيُّ الْـقَيُّومُ لاَ تَأخذُهُ سنَةٌ ولا نومٌ لهُ ما في السَّمَاوَاتِ وما في الأَرضِ من ذا الَّذِي يَشْفَعُ عِنْدَهُ إِلاَّ بإِذنهِ يعْلَمُ ما بينَ أيدِيهِمْ وما خلفَهُمْ ولا يُحيطُونَ بِشيءٍ مِّن عِلْمِهِ إِلاَّ بِمَا شَاء وَسعَ كُرْسيُّهُ السَّمَاوَاتِ وَالأَرْضَ وَلاَ يَؤودُهُ حِفظُهُمَا وهوَ العَليُّ العَظيمُ﴾ [البقرة: ٢٥٥].';
 
-  Widget title(text, {color = const Color(0xff6f85d5)}) {
+  Widget title(String text) {
     return Padding(
       padding: const EdgeInsets.only(
         right: 20.0,
@@ -72,7 +73,7 @@ class _SettingsState extends State<Settings>
       child: Text(
         text,
         textAlign: TextAlign.start,
-        style: TextStyle(color: color, fontFamily: 'SST', fontSize: 15),
+        style: Theme.of(context).textTheme.subtitle1,
         textScaleFactor: 1,
       ),
     );
@@ -275,11 +276,7 @@ class _SettingsState extends State<Settings>
                 children: <Widget>[
                   title('الخط'),
                   const Divider(),
-                  Card(
-                    data: placeholderText,
-                    scaleFactor: settings.fontSize,
-                    tashkeel: settings.tashkeel,
-                  ),
+                  Card(),
                   const Divider(),
                   subTitle(
                     'حجم الخط',
@@ -298,8 +295,8 @@ class _SettingsState extends State<Settings>
                             ),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: List.from(
-                                [
+                              children: List<Widget>.from(
+                                <Widget>[
                                   animatedSizeText(0, 16),
                                   animatedSizeText(1, 18),
                                   animatedSizeText(2, 20),
@@ -346,7 +343,7 @@ class _SettingsState extends State<Settings>
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        fontTypeButton('SST Roman'),
+                        fontTypeButton('SST Arabic'),
                         fontTypeButton('Dubai'),
                         fontTypeButton('Geeza')
                       ],
@@ -421,8 +418,9 @@ class _SettingsState extends State<Settings>
                       children: <Widget>[
                         Padding(
                           padding: const EdgeInsets.only(right: 20),
-                          child: title('نوع الهزاز لصفحة الأذكار',
-                              color: Theme.of(context).textTheme.body1!.color),
+                          child: title(
+                            'نوع الهزاز لصفحة الأذكار',
+                          ),
                         ),
                         VerticalSpace(),
                         segmentedControlOption(
@@ -477,8 +475,9 @@ class _SettingsState extends State<Settings>
                       children: <Widget>[
                         Padding(
                           padding: const EdgeInsets.only(right: 20),
-                          child: title('نوع الهزاز لصفحة العداد',
-                              color: Theme.of(context).textTheme.body1!.color),
+                          child: title(
+                            'نوع الهزاز لصفحة العداد',
+                          ),
                         ),
                         VerticalSpace(),
                         segmentedControlOption(
@@ -1090,28 +1089,15 @@ class VerticalSpace extends StatelessWidget {
 }
 
 class Card extends StatelessWidget {
-  Card({
-    this.data,
-    this.scaleFactor,
-    this.tashkeel,
-  });
-
-  final String? data;
-  final double? scaleFactor;
-  final bool? tashkeel;
-
   @override
   Widget build(BuildContext context) {
     return CardTemplate(
-      ribbon: Ribbon.ribbon1,
+      ribbon: context.read<DataModel>().athkar[1].ribbon,
       actions: <Widget>[
         Image.asset(Images.outlineHeartIcon),
         Image.asset(Images.copyIcon),
       ],
-      child: Text(
-        !tashkeel! ? Tashkeel.remove(data!) : data!,
-        textScaleFactor: scaleFactor,
-      ),
+      child: CardText(text: context.read<DataModel>().athkar[1].text),
     );
   }
 }
