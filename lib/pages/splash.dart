@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
 import 'package:noor/exports/pages.dart' show RootHome;
+import 'package:noor/exports/components.dart' show NoorLogo;
 
 class SplashScreen extends StatefulWidget {
-  SplashScreen({Key key}) : super(key: key);
+  SplashScreen({Key? key}) : super(key: key);
 
   @override
   _SplashScreenState createState() => _SplashScreenState();
@@ -42,10 +43,7 @@ class _SplashScreenState extends State<SplashScreen> {
         child: AnimatedOpacity(
           duration: Duration(milliseconds: 500),
           opacity: logoOpacity,
-          child: Image.asset(
-            'assets/NoorLogo.png',
-            width: 150,
-          ),
+          child: NoorLogo(80),
         ),
       ),
     );

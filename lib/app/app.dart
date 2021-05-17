@@ -5,9 +5,9 @@ import 'package:provider/single_child_widget.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'package:noor/exports/pages.dart' show SplashScreen;
-import 'package:noor/exports/models.dart' show DataModel, SettingsProvider;
+import 'package:noor/exports/models.dart' show DataModel, SettingsModel;
 import 'package:noor/exports/components.dart' show CustomScrollBehavior;
-import 'package:noor/exports/controllers.dart' show ThemeProvider;
+import 'package:noor/exports/controllers.dart' show ThemeModel;
 import 'package:noor/exports/constants.dart' show lightTheme, darkTheme;
 
 class NoorApp extends StatelessWidget {
@@ -15,16 +15,15 @@ class NoorApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: <SingleChildWidget>[
-        ChangeNotifierProvider<ThemeProvider>.value(
-          value: ThemeProvider(),
+        ChangeNotifierProvider<ThemeModel>.value(
+          value: ThemeModel(),
         ),
         ChangeNotifierProvider<DataModel>.value(
           value: GetIt.I<DataModel>(),
         ),
-        ChangeNotifierProvider<SettingsProvider>(
-          create: (_) => SettingsProvider(),
+        ChangeNotifierProvider<SettingsModel>(
+          create: (_) => GetIt.I<SettingsModel>(),
         ),
-        
       ],
       child: MaterialAppWithTheme(),
     );
@@ -34,7 +33,7 @@ class NoorApp extends StatelessWidget {
 class MaterialAppWithTheme extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final ThemeProvider providerTheme = context.watch<ThemeProvider>();
+    final ThemeModel themeProvider = context.watch<ThemeModel>();
 
     return MaterialApp(
       localizationsDelegates: <LocalizationsDelegate<dynamic>>[
@@ -49,16 +48,16 @@ class MaterialAppWithTheme extends StatelessWidget {
       locale: Locale('ar'),
       debugShowCheckedModeBanner: false,
       title: 'نُور',
-      themeMode: providerTheme.theme,
-      theme: lightTheme,
-      darkTheme: darkTheme,
-      builder: (BuildContext context, Widget child) {
+      themeMode: themeProvider.theme,
+      theme: lightTheme(),
+      darkTheme: darkTheme(),
+      builder: (BuildContext context, Widget? child) {
         final MediaQueryData data = MediaQuery.of(context);
         return MediaQuery(
           data: data.copyWith(textScaleFactor: 1.0),
           child: ScrollConfiguration(
             behavior: CustomScrollBehavior(),
-            child: child,
+            child: child!,
           ),
         );
       },

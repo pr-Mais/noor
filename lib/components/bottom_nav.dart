@@ -3,11 +3,11 @@ import 'package:noor/exports/components.dart' show NoorIcons;
 
 class BottomNav extends StatefulWidget {
   BottomNav({
-    Key key,
+    Key? key,
     this.onTap,
   }) : super(key: key);
 
-  final ValueChanged<int> onTap;
+  final ValueChanged<int>? onTap;
 
   @override
   _BottomNavState createState() => _BottomNavState();
@@ -27,7 +27,7 @@ class _BottomNavState extends State<BottomNav> {
         unselectedFontSize: 0,
         onTap: (int index) {
           currentIndex.value = index;
-          widget.onTap(index);
+          widget.onTap!(index);
         },
         elevation: 0.0,
         type: BottomNavigationBarType.fixed,
@@ -54,7 +54,7 @@ class _BottomNavState extends State<BottomNav> {
           BottomNavigationBarItem(
             icon: BottomItem(
               icon: NoorIcons.counter,
-              text: 'السُّبحة',
+              text: 'السبحة',
               currentIndex: currentIndex,
               index: 2,
             ),
@@ -77,11 +77,11 @@ class _BottomNavState extends State<BottomNav> {
 
 class BottomItem extends StatefulWidget {
   const BottomItem({
-    Key key,
-    @required this.text,
-    @required this.icon,
-    @required this.index,
-    @required this.currentIndex,
+    Key? key,
+    required this.text,
+    required this.icon,
+    required this.index,
+    required this.currentIndex,
   }) : super(key: key);
 
   final String text;
@@ -93,10 +93,11 @@ class BottomItem extends StatefulWidget {
   _BottomItemState createState() => _BottomItemState();
 }
 
-class _BottomItemState extends State<BottomItem> with SingleTickerProviderStateMixin {
-  AnimationController controller;
-  Animation<Offset> textOffset1;
-  Animation<Offset> iconOffset1;
+class _BottomItemState extends State<BottomItem>
+    with SingleTickerProviderStateMixin {
+  late AnimationController controller;
+  late Animation<Offset> textOffset1;
+  late Animation<Offset> iconOffset1;
 
   double iconOffset = -0.1;
   double textOffset = 0.0;
@@ -110,11 +111,21 @@ class _BottomItemState extends State<BottomItem> with SingleTickerProviderStateM
       reverseDuration: Duration(milliseconds: duration),
     );
 
-    textOffset1 = Tween<Offset>(begin: Offset(0.0, textOffset), end: Offset(0.0, 1.0)).animate(
-      CurvedAnimation(parent: controller, curve: Curves.elasticOut, reverseCurve: Curves.elasticIn),
+    textOffset1 =
+        Tween<Offset>(begin: Offset(0.0, textOffset), end: Offset(0.0, 1.0))
+            .animate(
+      CurvedAnimation(
+          parent: controller,
+          curve: Curves.elasticOut,
+          reverseCurve: Curves.elasticIn),
     );
-    iconOffset1 = Tween<Offset>(begin: Offset(0.0, -1.0), end: Offset(0.0, iconOffset)).animate(
-      CurvedAnimation(parent: controller, curve: Curves.elasticOut, reverseCurve: Curves.elasticIn),
+    iconOffset1 =
+        Tween<Offset>(begin: Offset(0.0, -1.0), end: Offset(0.0, iconOffset))
+            .animate(
+      CurvedAnimation(
+          parent: controller,
+          curve: Curves.elasticOut,
+          reverseCurve: Curves.elasticIn),
     );
 
     if (widget.currentIndex.value != widget.index) {
@@ -166,10 +177,9 @@ class _BottomItemState extends State<BottomItem> with SingleTickerProviderStateM
                       Text(
                         widget.text,
                         style: TextStyle(
-                          color: Theme.of(context).primaryColor,
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold
-                        ),
+                            color: Theme.of(context).primaryColor,
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold),
                       ),
                       Container(
                         decoration: BoxDecoration(

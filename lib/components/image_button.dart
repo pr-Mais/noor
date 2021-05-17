@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 
 class ImageButton extends StatelessWidget {
   const ImageButton({
-    Key key,
+    Key? key,
     this.onTap,
-    @required this.image,
+    required this.image,
     this.height,
     this.width,
   }) : super(key: key);
-  final Function() onTap;
+  final Function()? onTap;
   final String image;
-  final double width;
-  final double height;
+  final double? width;
+  final double? height;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -23,7 +23,8 @@ class ImageButton extends StatelessWidget {
       height: height,
       child: Material(
         type: MaterialType.transparency,
-        shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(25)),
+        shape:
+            RoundedRectangleBorder(borderRadius: new BorderRadius.circular(25)),
         child: SizedBox(
           child: InkWell(
             highlightColor: Colors.black.withOpacity(0.1),

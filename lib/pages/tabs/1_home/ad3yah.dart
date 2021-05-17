@@ -3,9 +3,9 @@ import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
 
 import 'package:noor/exports/pages.dart' show Ad3yahList, MyAd3yah;
-import 'package:noor/exports/constants.dart' show Titles;
+import 'package:noor/exports/constants.dart' show Titles, NoorCategory;
 import 'package:noor/exports/components.dart' show NoorCloseButton, ListItem;
-import 'package:noor/exports/controllers.dart' show ThemeProvider;
+import 'package:noor/exports/controllers.dart' show ThemeModel;
 
 class Ad3yah extends StatefulWidget {
   const Ad3yah();
@@ -17,13 +17,14 @@ class _Ad3yahState extends State<Ad3yah> with SingleTickerProviderStateMixin {
   int index = 0;
   double currentScroll = 0;
   double maxHeight = 180;
-  Animation<double> animation;
-  AnimationController controller;
+  late Animation<double> animation;
+  late AnimationController controller;
 
   initState() {
     super.initState();
 
-    controller = AnimationController(duration: const Duration(milliseconds: 300), vsync: this);
+    controller = AnimationController(
+        duration: const Duration(milliseconds: 300), vsync: this);
     animation = Tween<double>(begin: maxHeight, end: 0).animate(CurvedAnimation(
       parent: controller,
       curve: Curves.easeInCubic,
@@ -41,6 +42,8 @@ class _Ad3yahState extends State<Ad3yah> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeModel themeProvider = context.watch<ThemeModel>();
+
     return Scaffold(
       body: Column(
         children: <Widget>[
@@ -53,9 +56,7 @@ class _Ad3yahState extends State<Ad3yah> with SingleTickerProviderStateMixin {
                       width: MediaQuery.of(context).size.width,
                       height: maxHeight,
                       child: Image.asset(
-                        Theme.of(context).brightness == Brightness.light
-                            ? 'assets/home-cards/light/Ad3yah.png'
-                            : 'assets/home-cards/dark/Ad3yah.png',
+                        themeProvider.images.ad3yahCard,
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -66,11 +67,12 @@ class _Ad3yahState extends State<Ad3yah> with SingleTickerProviderStateMixin {
                   },
                 ),
               ),
-              Positioned(left: 10.0, top: 40.0, child: NoorCloseButton(size: 35)),
+              Positioned(
+                  left: 10.0, top: 40.0, child: NoorCloseButton(size: 35)),
             ],
           ),
-          Consumer<ThemeProvider>(
-            builder: (_, ThemeProvider theme, __) {
+          Consumer<ThemeModel>(
+            builder: (_, ThemeModel theme, __) {
               return Expanded(
                 child: ListView(
                   padding: EdgeInsets.only(top: 15.0),
@@ -79,23 +81,23 @@ class _Ad3yahState extends State<Ad3yah> with SingleTickerProviderStateMixin {
                   children: <Ad3yahTitleCard>[
                     Ad3yahTitleCard(
                       title: Titles.quraan,
-                      icon: theme.images.quraan,
-                      section: 0,
+                      icon: theme.images.quraanIcon,
+                      category: NoorCategory.QURAAN,
                     ),
                     Ad3yahTitleCard(
                       title: Titles.sunnah,
-                      icon: theme.images.sunnah,
-                      section: 1,
+                      icon: theme.images.sunnahIcon,
+                      category: NoorCategory.SUNNAH,
                     ),
                     Ad3yahTitleCard(
                       title: Titles.ruqya,
-                      icon: theme.images.ruqya,
-                      section: 2,
+                      icon: theme.images.ruqyaIcon,
+                      category: NoorCategory.RUQIYA,
                     ),
                     Ad3yahTitleCard(
                       title: Titles.myAd3yah,
-                      icon: theme.images.myAd3yah,
-                      section: 3,
+                      icon: theme.images.myAd3yahIcon,
+                      category: NoorCategory.MYAD3YAH,
                     ),
                   ],
                 ),
@@ -110,15 +112,15 @@ class _Ad3yahState extends State<Ad3yah> with SingleTickerProviderStateMixin {
 
 class Ad3yahTitleCard extends StatelessWidget {
   const Ad3yahTitleCard({
-    Key key,
-    @required this.icon,
-    @required this.title,
-    @required this.section,
+    Key? key,
+    required this.icon,
+    required this.title,
+    required this.category,
   }) : super(key: key);
 
   final String icon;
   final String title;
-  final int section;
+  final NoorCategory category;
 
   @override
   Widget build(BuildContext context) {
@@ -126,7 +128,7 @@ class Ad3yahTitleCard extends StatelessWidget {
       icon: icon,
       title: title,
       onTap: () {
-        if (section == 3) {
+        if (category == NoorCategory.MYAD3YAH) {
           Navigator.of(context).push(
             MaterialPageRoute<MyAd3yah>(
               builder: (_) => MyAd3yah(),
@@ -136,7 +138,7 @@ class Ad3yahTitleCard extends StatelessWidget {
         } else {
           Navigator.of(context).push(
             MaterialPageRoute<Ad3yahList>(
-              builder: (_) => Ad3yahList(section: section),
+              builder: (_) => Ad3yahList(category: category),
               fullscreenDialog: true,
             ),
           );

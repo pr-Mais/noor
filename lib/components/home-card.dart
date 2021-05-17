@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 
 class HomeCard extends StatelessWidget {
   const HomeCard({
-    @required this.image,
-    @required this.page,
-    @required this.tag,
+    required this.image,
+    required this.page,
+    required this.tag,
   });
   final String image;
   final Widget page;
@@ -38,7 +38,7 @@ class HomeCard extends StatelessWidget {
             borderRadius: BorderRadius.circular(20),
             boxShadow: <BoxShadow>[
               BoxShadow(
-                blurRadius: 10,
+                blurRadius: 8,
                 color: Colors.black12,
               )
             ],
@@ -50,7 +50,8 @@ class HomeCard extends StatelessWidget {
               height: MediaQuery.of(context).size.height * 0.25,
               child: Card(
                 elevation: 0,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20.0)),
                 borderOnForeground: true,
                 clipBehavior: Clip.hardEdge,
                 child: Hero(

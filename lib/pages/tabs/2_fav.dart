@@ -5,27 +5,36 @@ import 'package:noor/models/data.dart';
 import 'package:provider/provider.dart';
 import 'package:reorderables/reorderables.dart';
 
-import 'package:noor/exports/components.dart' show CardTemplate, CustomDialog, ImageButton, NoorIcons, NoorSettingsIcons;
-import 'package:noor/exports/models.dart' show AllahName, SettingsProvider;
-import 'package:noor/exports/constants.dart' show FavButtons, Ribbon, Images;
-import 'package:noor/exports/pages.dart' show Ad3yahList, MyAd3yah, AthkarList, AllahNamesList;
-import 'package:noor/exports/controllers.dart' show DataController, ThemeProvider;
-import 'package:noor/exports/utils.dart' show Tashkeel, backToLocation;
+import 'package:noor/exports/components.dart'
+    show
+        CardTemplate,
+        DeleteConfirmationDialog,
+        ImageButton,
+        NoorIcons,
+        NoorSettingsIcons;
+import 'package:noor/exports/models.dart' show AllahName;
+import 'package:noor/exports/constants.dart' show Images, NoorCategory;
+import 'package:noor/exports/pages.dart'
+    show Ad3yahList, AllahNamesList, AthkarList, MyAd3yah;
+import 'package:noor/exports/controllers.dart' show DataController, ThemeModel;
+import 'package:noor/exports/utils.dart' show backToExactLocation;
+import 'package:noor/exports/components.dart' show CardText;
 
 class Favorite extends StatefulWidget {
   Favorite({
-    Key key,
+    Key? key,
   }) : super(key: key);
   _FavoriteState createState() => _FavoriteState();
 }
 
-class _FavoriteState extends State<Favorite> with AutomaticKeepAliveClientMixin {
+class _FavoriteState extends State<Favorite>
+    with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
 
   ScrollController _scrollController = ScrollController();
-  List<dynamic> list;
   List<dynamic> sectionList = <dynamic>[];
+  List<dynamic> favList = <dynamic>[];
 
   ValueNotifier<int> section = ValueNotifier<int>(0);
 
@@ -39,24 +48,16 @@ class _FavoriteState extends State<Favorite> with AutomaticKeepAliveClientMixin 
     NoorSettingsIcons.allahnames,
   ];
 
-  Map<int, String> ribbons = <int, String>{
-    1: Ribbon.ribbon1,
-    2: Ribbon.ribbon2,
-    3: Ribbon.ribbon3,
-    4: Ribbon.ribbon4,
-    5: Ribbon.ribbon5,
-    6: Ribbon.ribbon6,
-  };
-
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    list = Provider.of<DataModel>(context).favList ?? <dynamic>[];
-    sectionList = list;
+    favList = context.watch<DataModel>().favList;
+    sectionList = favList;
   }
 
   backToMainPage(dynamic item) async {
     final DataModel dataModel = context.read<DataModel>();
+
     final List<dynamic> allLists = List<dynamic>.from(<dynamic>[
       ...dataModel.athkar,
       ...dataModel.quraan,
@@ -64,70 +65,75 @@ class _FavoriteState extends State<Favorite> with AutomaticKeepAliveClientMixin 
       ...dataModel.ruqiya,
       ...dataModel.allahNames,
     ]);
-    final tmpList = allLists.where((element) => element.section == item.section).toList();
-    final index = tmpList.indexWhere((element) => element.sectionName == item.sectionName);
-    switch (item.section) {
-      case 1:
-        Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => AthkarList(
-            index: index,
+    final tmpList =
+        allLists.where((element) => element.category == item.category).toList();
+    final index = tmpList
+        .indexWhere((element) => element.sectionName == item.sectionName);
+    switch (item.category) {
+      case NoorCategory.ATHKAR:
+        Navigator.of(context).push(
+          MaterialPageRoute<AthkarList>(
+            builder: (context) => AthkarList(
+              index: index,
+            ),
           ),
-        ));
+        );
         break;
-      case 5:
-        Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => MyAd3yah(),
-        ));
+      case NoorCategory.MYAD3YAH:
+        Navigator.of(context).push(
+          MaterialPageRoute<MyAd3yah>(
+            builder: (context) => MyAd3yah(),
+          ),
+        );
         break;
-      case 6:
-        Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => AllahNamesList(),
-        ));
+      case NoorCategory.ALLAHNAME:
+        Navigator.of(context).push(
+          MaterialPageRoute<AllahNamesList>(
+            builder: (context) => AllahNamesList(),
+          ),
+        );
         break;
       default:
         Navigator.of(context).push(
           MaterialPageRoute<Ad3yahList>(
             builder: (_) => Ad3yahList(
               index: index,
-              section: item.section - 2,
+              category: item.category,
             ),
           ),
         );
     }
   }
 
-  // TODO(Mais): Refactor into a widget
   //delete dialog confirmation
-  deleteDialog(dynamic dataToDelete, int i) {
-    final DataController data = GetIt.I<DataController>();
+  deleteDialog(dynamic dataToDelete, int i) async {
+    final bool? result = await DeleteConfirmationDialog.of(context).show();
 
-    showGeneralDialog(
-      transitionDuration: Duration(milliseconds: 600),
-      barrierDismissible: false,
-      barrierColor: Colors.black.withOpacity(0.75),
-      barrierLabel: '',
-      context: context,
-      transitionBuilder: (_, Animation<double> a1, Animation<double> a2, __) {
-        final double curvedValue = Curves.easeInOutBack.transform(a1.value) - 1.0;
-        return Transform(
-          transform: Matrix4.translationValues(0.0, curvedValue * 800, 0.0),
-          child: CustomDialog(
-            onDelete: () {
-              data.removeFromFav(dataToDelete);
-            },
-          ),
-        );
-      },
-      pageBuilder: (context, animation, secondaryAnimation) => null,
-    );
+    if (result == true) {
+      GetIt.I<DataController>().removeFromFav(dataToDelete);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
 
-    final Images images = context.read<ThemeProvider>().images;
+    final Images images = context.read<ThemeModel>().images;
     final DataController data = GetIt.I<DataController>();
+
+    void onSectionTap(int i) {
+      section.value = i;
+      setState(
+        () {
+          sectionList = i == 0
+              ? favList
+              : favList
+                  .where((dynamic element) =>
+                      element.category.index + 1 == section.value)
+                  .toList();
+        },
+      );
+    }
 
     return Scaffold(
       body: SafeArea(
@@ -142,19 +148,12 @@ class _FavoriteState extends State<Favorite> with AutomaticKeepAliveClientMixin 
                 padding: EdgeInsets.symmetric(horizontal: 20.0),
                 separatorBuilder: (_, __) => const SizedBox(width: 10.0),
                 scrollDirection: Axis.horizontal,
-                itemCount: FavButtons.list.length,
+                itemCount: Images.favButtonsList.length,
                 itemBuilder: (_, int i) {
                   return ImageButton(
                     width: 110,
-                    image: FavButtons.list[i],
-                    onTap: () {
-                      section.value = i;
-                      setState(() {
-                        sectionList = section.value == 0
-                            ? list
-                            : list.where((dynamic element) => element.section == section.value).toList();
-                      });
-                    },
+                    image: Images.favButtonsList[i],
+                    onTap: () => onSectionTap(i),
                   );
                 },
               ),
@@ -176,11 +175,14 @@ class _FavoriteState extends State<Favorite> with AutomaticKeepAliveClientMixin 
                         ? Scrollbar(
                             controller: _scrollController,
                             child: CustomScrollView(
+                              controller: _scrollController,
                               slivers: <Widget>[
                                 ReorderableSliverList(
                                   key: ValueKey<String>('List'),
                                   controller: _scrollController,
-                                  buildDraggableFeedback: (_, BoxConstraints constraints, Widget child) {
+                                  buildDraggableFeedback: (_,
+                                      BoxConstraints constraints,
+                                      Widget child) {
                                     return Material(
                                       type: MaterialType.transparency,
                                       child: SizedBox(
@@ -189,21 +191,35 @@ class _FavoriteState extends State<Favorite> with AutomaticKeepAliveClientMixin 
                                       ),
                                     );
                                   },
-                                  delegate: ReorderableSliverChildBuilderDelegate(
-                                    (BuildContext context, int index) => FavCard(
+                                  buildItemsContainer:
+                                      (context, direction, children) {
+                                    return Container(
+                                      height: 2,
+                                      color: Colors.yellow,
+                                    );
+                                  },
+                                  delegate:
+                                      ReorderableSliverChildBuilderDelegate(
+                                    (BuildContext context, int index) =>
+                                        FavCard(
                                       key: ValueKey<int>(index),
-                                      icon: icons[sectionList.toList()[index].section],
-                                      item: sectionList.toList()[index],
+                                      icon: icons[
+                                          sectionList[index].category.index +
+                                              1],
+                                      item: sectionList[index],
                                       remove: () {
-                                        deleteDialog(sectionList.toList()[index],
-                                            sectionList.indexOf(sectionList.toList()[index]));
+                                        deleteDialog(
+                                            sectionList[index],
+                                            sectionList
+                                                .indexOf(sectionList[index]));
                                       },
-                                      ribbon: ribbons[sectionList.toList()[index].section],
+                                      ribbon: sectionList[index].ribbon,
                                       backToLocation: () {
-                                        backToLocation(sectionList.toList()[index], context);
+                                        backToExactLocation(
+                                            sectionList[index], context);
                                       },
                                       backToGeneralLocation: () {
-                                        backToMainPage(sectionList.toList()[index]);
+                                        backToMainPage(sectionList[index]);
                                       },
                                     ),
                                     childCount: sectionList.length,
@@ -214,6 +230,7 @@ class _FavoriteState extends State<Favorite> with AutomaticKeepAliveClientMixin 
                             ),
                           )
                         : Scrollbar(
+                            key: ValueKey<int>(section.value),
                             controller: _scrollController,
                             child: ListView(
                               controller: _scrollController,
@@ -222,14 +239,15 @@ class _FavoriteState extends State<Favorite> with AutomaticKeepAliveClientMixin 
                                 for (dynamic item in sectionList.toList())
                                   FavCard(
                                     key: ValueKey<dynamic>(item),
-                                    icon: icons[item.section],
+                                    icon: icons[item.category.index + 1],
                                     item: item,
                                     remove: () {
-                                      deleteDialog(item, sectionList.indexOf(item));
+                                      deleteDialog(
+                                          item, sectionList.indexOf(item));
                                     },
-                                    ribbon: ribbons[item.section],
+                                    ribbon: item.ribbon,
                                     backToLocation: () {
-                                      backToLocation(item, context);
+                                      backToExactLocation(item, context);
                                     },
                                     backToGeneralLocation: () {
                                       backToMainPage(item);
@@ -249,37 +267,32 @@ class _FavoriteState extends State<Favorite> with AutomaticKeepAliveClientMixin 
 
 class FavCard extends StatelessWidget {
   FavCard({
-    Key key,
-    this.item,
-    this.icon,
-    this.ribbon,
-    this.remove,
-    this.backToLocation,
-    this.backToGeneralLocation,
+    Key? key,
+    required this.item,
+    required this.icon,
+    required this.ribbon,
+    required this.remove,
+    required this.backToLocation,
+    required this.backToGeneralLocation,
   }) : super(key: key);
+
   final dynamic item;
   final String ribbon;
   final IconData icon;
-  final Function remove;
-  final Function backToLocation;
-  final Function backToGeneralLocation;
+  final void Function() remove;
+  final void Function() backToLocation;
+  final void Function() backToGeneralLocation;
 
-  Widget backToMainLocation(String location) {
+  Widget backToMainLocation(dynamic item, BuildContext context) {
     return Container(
       height: 30,
       alignment: Alignment.bottomRight,
-      child: TextButton(
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Image.asset('assets/icons/back.png'),
-            SizedBox(width: 10),
-            Text(
-              location,
-              style: TextStyle(fontSize: 14, color: Color(0xff6f85d5), fontFamily: 'SST Light', height: 1),
-              textScaleFactor: 1,
-            ),
-          ],
+      child: TextButton.icon(
+        icon: Image.asset(Images.referenceIcon),
+        label: Text(
+          item is AllahName ? item.name : item.sectionName,
+          textScaleFactor: 1,
+          style: Theme.of(context).textTheme.button,
         ),
         onPressed: backToLocation,
       ),
@@ -288,8 +301,6 @@ class FavCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final SettingsProvider settings = context.watch<SettingsProvider>();
-
     return CardTemplate(
       ribbon: ribbon,
       actions: <Widget>[
@@ -299,25 +310,23 @@ class FavCard extends StatelessWidget {
           splashColor: Colors.transparent,
           icon: Icon(
             icon,
-            size: item.runtimeType == AllahName ? 22 : 32,
+            size: item is AllahName ? 22 : 32,
             color: Colors.white,
           ),
           onPressed: backToGeneralLocation,
         ),
         GestureDetector(
-          child: Image.asset('assets/icons/erase.png'),
-          onTap: () {
-            remove();
-          },
+          child: Image.asset(Images.eraseIcon),
+          onTap: remove,
         ),
       ],
-      additionalContent: item.section == 5
-          ? Text(
-              !settings.tashkeel ? Tashkeel.remove(item.info) : item.info,
-              textScaleFactor: settings.fontSize,
+      additionalContent: item.category == NoorCategory.MYAD3YAH
+          ? CardText(
+              text: item.info,
+              color: Theme.of(context).primaryColor,
             )
           : null,
-      actionButton: backToMainLocation(item is AllahName ? item.name : item.sectionName),
+      actionButton: backToMainLocation(item, context),
       child: item is AllahName
           ? SingleChildScrollView(
               child: Builder(
@@ -326,25 +335,15 @@ class FavCard extends StatelessWidget {
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text(
-                        !settings.tashkeel ? Tashkeel.remove('${textList[0].trim()}.') : '${textList[0].trim()}.',
-                        textScaleFactor: settings.fontSize,
-                      ),
+                      CardText(text: textList[0].trim()),
                       SizedBox(height: 10),
-                      Text(
-                        !settings.tashkeel ? Tashkeel.remove('${textList[1].trim()}.') : '${textList[1].trim()}.',
-                        textScaleFactor: settings.fontSize,
-                        textAlign: TextAlign.right,
-                      )
+                      CardText(text: textList[1].trim()),
                     ],
                   );
                 },
               ),
             )
-          : Text(
-              settings.tashkeel ? item.text : Tashkeel.remove(item.text),
-              textScaleFactor: settings.fontSize,
-            ),
+          : CardText(text: item.text),
     );
   }
 }

@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:noor/models/data.dart';
+import 'package:noor/services/fcm.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -10,21 +11,22 @@ import 'package:intl/intl.dart' as intl;
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
-import 'package:noor/exports/components.dart' show CardTemplate, NoorSettingsIcons;
-import 'package:noor/exports/services.dart' show SharedPrefsUtil;
-import 'package:noor/exports/utils.dart' show Tashkeel;
-import 'package:noor/exports/controllers.dart' show ThemeProvider, SettingsProvider;
+import 'package:noor/exports/components.dart'
+    show CardTemplate, CardText, NoorSettingsIcons;
+import 'package:noor/exports/services.dart' show SharedPrefsService;
+import 'package:noor/exports/controllers.dart' show ThemeModel, SettingsModel;
 import 'package:noor/exports/constants.dart' show Images, Links, Ribbon;
 
 class Settings extends StatefulWidget {
   Settings({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   _SettingsState createState() => _SettingsState();
 }
 
-class _SettingsState extends State<Settings> with TickerProviderStateMixin, AutomaticKeepAliveClientMixin {
+class _SettingsState extends State<Settings>
+    with TickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   var morningNotiEnabled;
   var nightNotiEnabled;
   var morningNotiTime;
@@ -37,15 +39,14 @@ class _SettingsState extends State<Settings> with TickerProviderStateMixin, Auto
   void initState() {
     tz.initializeTimeZones();
 
-    morningNotiEnabled =
-        SharedPrefsUtil.getBool('morningNotiEnabled') && SharedPrefsUtil.getString('morningNotiTime').isNotEmpty;
-    morningNotiTime = SharedPrefsUtil.getString('morningNotiTime').isNotEmpty
-        ? DateTime.parse(SharedPrefsUtil.getString('morningNotiTime'))
+    morningNotiEnabled = SharedPrefsService.getBool('morningNotiEnabled');
+    morningNotiTime = SharedPrefsService.getString('morningNotiTime').isNotEmpty
+        ? DateTime.parse(SharedPrefsService.getString('morningNotiTime'))
         : null;
-    nightNotiEnabled =
-        SharedPrefsUtil.getBool('nightNotiEnabled') && SharedPrefsUtil.getString('nightNotiTime').isNotEmpty;
-    nightNotiTime = SharedPrefsUtil.getString('nightNotiTime').isNotEmpty
-        ? DateTime.parse(SharedPrefsUtil.getString('nightNotiTime'))
+    nightNotiEnabled = SharedPrefsService.getBool('nightNotiEnabled') &&
+        SharedPrefsService.getString('nightNotiTime').isNotEmpty;
+    nightNotiTime = SharedPrefsService.getString('nightNotiTime').isNotEmpty
+        ? DateTime.parse(SharedPrefsService.getString('nightNotiTime'))
         : null;
 
     super.initState();
@@ -53,15 +54,17 @@ class _SettingsState extends State<Settings> with TickerProviderStateMixin, Auto
 
   var morningTemp;
   var nightTemp;
-  List fonts = ['١٦', '١٨', '٢٠', '٢٢'];
-  var activeLabelStyle = const TextStyle(color: Color(0xff6db7e5), fontSize: 18, height: 1);
-  var inactiveLabelStyle = TextStyle(
+  List<String> fonts = <String>['١٦', '١٨', '٢٠', '٢٢'];
+  TextStyle activeLabelStyle = const TextStyle(
+    color: Color(0xff6db7e5),
+    fontSize: 18,
+    height: 1,
+  );
+  TextStyle inactiveLabelStyle = TextStyle(
     color: Colors.grey[400],
   );
-  String placeholderText =
-      'أعوذ بـالـلـه من الشيطان الـرجـيم ﴿اللَّهُ لاَ إِلَٰهَ إِلاَّ هُـوَ الْـحَيُّ الْـقَيُّومُ لاَ تَأخذُهُ سنَةٌ ولا نومٌ لهُ ما في السَّمَاوَاتِ وما في الأَرضِ من ذا الَّذِي يَشْفَعُ عِنْدَهُ إِلاَّ بإِذنهِ يعْلَمُ ما بينَ أيدِيهِمْ وما خلفَهُمْ ولا يُحيطُونَ بِشيءٍ مِّن عِلْمِهِ إِلاَّ بِمَا شَاء وَسعَ كُرْسيُّهُ السَّمَاوَاتِ وَالأَرْضَ وَلاَ يَؤودُهُ حِفظُهُمَا وهوَ العَليُّ العَظيمُ﴾ [البقرة: ٢٥٥].';
 
-  Widget title(text, {color = const Color(0xff6f85d5)}) {
+  Widget title(String text) {
     return Padding(
       padding: const EdgeInsets.only(
         right: 20.0,
@@ -69,13 +72,13 @@ class _SettingsState extends State<Settings> with TickerProviderStateMixin, Auto
       child: Text(
         text,
         textAlign: TextAlign.start,
-        style: TextStyle(color: color, fontFamily: 'SST', fontSize: 15),
+        style: Theme.of(context).textTheme.subtitle1,
         textScaleFactor: 1,
       ),
     );
   }
 
-  Widget subTitle(String text, IconData icon, {String image}) {
+  Widget subTitle(String text, IconData? icon, {String? image}) {
     return Padding(
       padding: const EdgeInsets.only(
         right: 30.0,
@@ -86,15 +89,19 @@ class _SettingsState extends State<Settings> with TickerProviderStateMixin, Auto
           SizedBox(
             width: 20,
             child: image != null
-                ? Image.asset(image, height: 16)
-                : Icon(icon, size: icon == NoorSettingsIcons.bulb_on ? 20 : 16),
+                ? Image.asset(
+                    image,
+                    height: 18,
+                  )
+                : Icon(icon, size: 18),
           ),
-          SizedBox(
-            width: 5.0,
-          ),
+          SizedBox(width: 10.0),
           Text(
             text,
-            style: Theme.of(context).textTheme.subtitle,
+            style: Theme.of(context)
+                .textTheme
+                .bodyText1
+                ?.copyWith(height: 1, fontSize: 12),
           ),
         ],
       ),
@@ -102,13 +109,13 @@ class _SettingsState extends State<Settings> with TickerProviderStateMixin, Auto
   }
 
   Widget switcherOption({
-    IconData icon,
-    title,
+    IconData? icon,
+    required String title,
     option1,
     option2,
-    onChanged,
-    value,
-    String image,
+    required Function(bool) onChanged,
+    required bool value,
+    String? image,
   }) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -129,7 +136,12 @@ class _SettingsState extends State<Settings> with TickerProviderStateMixin, Auto
     );
   }
 
-  segmentedControlOption({icon, title, onChanged, value}) {
+  segmentedControlOption({
+    required IconData icon,
+    required String title,
+    required void Function(String?) onChanged,
+    required String value,
+  }) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
@@ -146,17 +158,23 @@ class _SettingsState extends State<Settings> with TickerProviderStateMixin, Auto
                 'strong': Text(
                   'قوي',
                   style: TextStyle(
-                      color: value == 'strong' ? Colors.white : Colors.grey, fontSize: 11, fontFamily: 'SST Roman'),
+                    color: value == 'strong' ? Colors.white : Colors.grey,
+                    fontSize: 11,
+                  ),
                 ),
                 'light': Text(
                   'خفيف',
                   style: TextStyle(
-                      color: value == 'light' ? Colors.white : Colors.grey, fontSize: 11, fontFamily: 'SST Roman'),
+                    color: value == 'light' ? Colors.white : Colors.grey,
+                    fontSize: 11,
+                  ),
                 ),
                 'none': Text(
                   'إيقاف',
                   style: TextStyle(
-                      color: value == 'none' ? Colors.white : Colors.grey, fontSize: 11, fontFamily: 'SST Roman'),
+                    color: value == 'none' ? Colors.white : Colors.grey,
+                    fontSize: 11,
+                  ),
                 )
               },
               groupValue: value,
@@ -168,13 +186,15 @@ class _SettingsState extends State<Settings> with TickerProviderStateMixin, Auto
     );
   }
 
-  formatTime(dateTime) {
-    return dateTime == null ? 'اختر وقت' : intl.DateFormat('h:mm a', 'ar').format(dateTime);
+  formatTime(DateTime? dateTime) {
+    return dateTime == null
+        ? 'اختر وقت'
+        : intl.DateFormat('h:mm a', 'ar').format(dateTime);
   }
 
   changeTheme(value) async {
-    context.read<SettingsProvider>().theme = value;
-    context.read<ThemeProvider>().userTheme = value;
+    context.read<SettingsModel>().theme = value;
+    context.read<ThemeModel>().userTheme = value;
   }
 
   Widget radioBtn(icon, title, value) {
@@ -185,7 +205,7 @@ class _SettingsState extends State<Settings> with TickerProviderStateMixin, Auto
         controlAffinity: ListTileControlAffinity.trailing,
         title: subTitle(title, icon),
         activeColor: Theme.of(context).primaryColor,
-        groupValue: context.watch<SettingsProvider>().theme,
+        groupValue: context.watch<SettingsModel>().theme,
         value: value,
         onChanged: changeTheme,
       ),
@@ -199,7 +219,8 @@ class _SettingsState extends State<Settings> with TickerProviderStateMixin, Auto
   }
 
   void setDailyNotification(DateTime dateTime, period, id) async {
-    FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = new FlutterLocalNotificationsPlugin();
+    FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+        new FlutterLocalNotificationsPlugin();
 
     var androidPlatformChannelSpecifics = new AndroidNotificationDetails(
       '$id',
@@ -207,7 +228,8 @@ class _SettingsState extends State<Settings> with TickerProviderStateMixin, Auto
       'repeatDailyAtTime $dateTime',
       showWhen: true,
     );
-    var platformChannelSpecifics = NotificationDetails(android: androidPlatformChannelSpecifics);
+    var platformChannelSpecifics =
+        NotificationDetails(android: androidPlatformChannelSpecifics);
     await flutterLocalNotificationsPlugin.zonedSchedule(
       id,
       'أذكار $period',
@@ -216,13 +238,15 @@ class _SettingsState extends State<Settings> with TickerProviderStateMixin, Auto
       platformChannelSpecifics,
       payload: period,
       matchDateTimeComponents: DateTimeComponents.time,
-      uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
+      uiLocalNotificationDateInterpretation:
+          UILocalNotificationDateInterpretation.absoluteTime,
       androidAllowWhileIdle: true,
     );
   }
 
   void cancelNotification(id) async {
-    FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = new FlutterLocalNotificationsPlugin();
+    FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+        new FlutterLocalNotificationsPlugin();
     await flutterLocalNotificationsPlugin.cancel(id);
   }
 
@@ -235,9 +259,9 @@ class _SettingsState extends State<Settings> with TickerProviderStateMixin, Auto
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    final SettingsProvider settings = context.watch<SettingsProvider>();
-    final Images images = Provider.of<ThemeProvider>(context).images;
-    
+    final SettingsModel settings = context.watch<SettingsModel>();
+    final Images images = Provider.of<ThemeModel>(context).images;
+
     return Scaffold(
       body: Scrollbar(
         controller: _scrollController,
@@ -251,11 +275,7 @@ class _SettingsState extends State<Settings> with TickerProviderStateMixin, Auto
                 children: <Widget>[
                   title('الخط'),
                   const Divider(),
-                  Card(
-                    data: placeholderText,
-                    scaleFactor: settings.fontSize,
-                    tashkeel: settings.tashkeel,
-                  ),
+                  Card(),
                   const Divider(),
                   subTitle(
                     'حجم الخط',
@@ -264,7 +284,8 @@ class _SettingsState extends State<Settings> with TickerProviderStateMixin, Auto
                   Directionality(
                     textDirection: TextDirection.ltr,
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10.0),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 30, vertical: 10.0),
                       child: Stack(
                         children: <Widget>[
                           Padding(
@@ -273,8 +294,8 @@ class _SettingsState extends State<Settings> with TickerProviderStateMixin, Auto
                             ),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: List.from(
-                                [
+                              children: List<Widget>.from(
+                                <Widget>[
                                   animatedSizeText(0, 16),
                                   animatedSizeText(1, 18),
                                   animatedSizeText(2, 20),
@@ -287,16 +308,19 @@ class _SettingsState extends State<Settings> with TickerProviderStateMixin, Auto
                             padding: const EdgeInsets.symmetric(vertical: 10.0),
                             child: SliderTheme(
                               data: SliderThemeData(
-                                activeTrackColor: Theme.of(context).primaryColor,
+                                activeTrackColor:
+                                    Theme.of(context).primaryColor,
                                 thumbColor: Theme.of(context).primaryColor,
                                 inactiveTrackColor: Colors.grey[400],
                                 trackHeight: 2,
-                                inactiveTickMarkColor: Theme.of(context).primaryColor,
+                                inactiveTickMarkColor:
+                                    Theme.of(context).primaryColor,
                                 activeTickMarkColor: Colors.grey[400],
                               ),
                               child: Slider(
                                 divisions: 3,
-                                onChanged: (value) => settings.fontSize = value,
+                                onChanged: (double value) =>
+                                    settings.fontSize = value,
                                 value: settings.fontSize,
                                 min: 1,
                                 max: 1.375,
@@ -313,10 +337,15 @@ class _SettingsState extends State<Settings> with TickerProviderStateMixin, Auto
                     NoorSettingsIcons.font_face,
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(right: 40.0, left: 40.0, top: 10.0),
+                    padding: const EdgeInsets.only(
+                        right: 40.0, left: 40.0, top: 10.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[fontTypeButton('SST Roman'), fontTypeButton('Dubai'), fontTypeButton('Geeza')],
+                      children: <Widget>[
+                        fontTypeButton('SST Arabic'),
+                        fontTypeButton('Dubai'),
+                        fontTypeButton('Geeza')
+                      ],
                     ),
                   ),
                   const Divider(),
@@ -324,7 +353,7 @@ class _SettingsState extends State<Settings> with TickerProviderStateMixin, Auto
                     icon: NoorSettingsIcons.tashkeel,
                     title: 'التشكيل',
                     value: settings.tashkeel,
-                    onChanged: (value) => settings.tashkeel = value,
+                    onChanged: (bool value) => settings.tashkeel = value,
                   ),
                   const Divider(),
                   VerticalSpace(),
@@ -343,27 +372,32 @@ class _SettingsState extends State<Settings> with TickerProviderStateMixin, Auto
                   Container(
                     margin: EdgeInsets.symmetric(horizontal: 30.0),
                     alignment: Alignment.center,
-                    child: CupertinoSlidingSegmentedControl(
+                    child: CupertinoSlidingSegmentedControl<int>(
                       padding: EdgeInsets.all(3),
                       thumbColor: Theme.of(context).primaryColor,
                       children: <int, Widget>{
                         0: Text(
                           'للأذكار ذات تكرار أكثر من مرة',
                           style: TextStyle(
-                            color: !settings.showCounter ? Colors.white : Colors.grey,
+                            color: !settings.showCounter
+                                ? Colors.white
+                                : Colors.grey,
                             fontSize: 11,
                           ),
                         ),
                         1: Text(
                           'لكل الأذكار',
                           style: TextStyle(
-                            color: settings.showCounter ? Colors.white : Colors.grey,
+                            color: settings.showCounter
+                                ? Colors.white
+                                : Colors.grey,
                             fontSize: 11,
                           ),
                         )
                       },
                       groupValue: settings.showCounter ? 1 : 0,
-                      onValueChanged: (value) => settings.showCounter = value == 1,
+                      onValueChanged: (dynamic value) =>
+                          settings.showCounter = value == 1,
                     ),
                   ),
                   const Divider(),
@@ -374,7 +408,7 @@ class _SettingsState extends State<Settings> with TickerProviderStateMixin, Auto
                     icon: NoorSettingsIcons.vibrate,
                     title: 'الهزاز لعداد صفحة الأذكار',
                     value: settings.vibrate,
-                    onChanged: (value) => settings.vibrate = value,
+                    onChanged: (bool value) => settings.vibrate = value,
                   ),
                   const Divider(),
                   AnimatedCrossFade(
@@ -383,15 +417,17 @@ class _SettingsState extends State<Settings> with TickerProviderStateMixin, Auto
                       children: <Widget>[
                         Padding(
                           padding: const EdgeInsets.only(right: 20),
-                          child: title('نوع الهزاز لصفحة الأذكار', color: Theme.of(context).textTheme.body1.color),
+                          child: title(
+                            'نوع الهزاز لصفحة الأذكار',
+                          ),
                         ),
                         VerticalSpace(),
                         segmentedControlOption(
                           icon: NoorSettingsIcons.click,
                           title: 'لكل ضغطة',
                           value: settings.vibrationClick,
-                          onChanged: (value) {
-                            settings.vibrationClick = value;
+                          onChanged: (String? value) {
+                            settings.vibrationClick = value!;
                             if (value == 'strong') {
                               HapticFeedback.lightImpact();
                             }
@@ -405,8 +441,8 @@ class _SettingsState extends State<Settings> with TickerProviderStateMixin, Auto
                           icon: NoorSettingsIcons.done,
                           title: 'عند اكتمال العد',
                           value: settings.vibrationDone,
-                          onChanged: (value) {
-                            settings.vibrationDone = value;
+                          onChanged: (String? value) {
+                            settings.vibrationDone = value!;
                             if (value == 'strong') {
                               HapticFeedback.lightImpact();
                             }
@@ -420,14 +456,16 @@ class _SettingsState extends State<Settings> with TickerProviderStateMixin, Auto
                       ],
                     ),
                     secondChild: Container(),
-                    crossFadeState: settings.vibrate ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+                    crossFadeState: settings.vibrate
+                        ? CrossFadeState.showFirst
+                        : CrossFadeState.showSecond,
                     duration: Duration(milliseconds: 300),
                   ),
                   switcherOption(
                     icon: NoorSettingsIcons.vibrate,
-                    title: 'الهزاز لصفحة العداد',
-                    value: SharedPrefsUtil.getBool('vibrateCounter'),
-                    onChanged: (value) => settings.vibrateCounter = value,
+                    title: 'الهزاز لصفحة السبحة',
+                    value: settings.vibrateCounter,
+                    onChanged: (bool value) => settings.vibrateCounter = value,
                   ),
                   Divider(),
                   AnimatedCrossFade(
@@ -436,15 +474,17 @@ class _SettingsState extends State<Settings> with TickerProviderStateMixin, Auto
                       children: <Widget>[
                         Padding(
                           padding: const EdgeInsets.only(right: 20),
-                          child: title('نوع الهزاز لصفحة العداد', color: Theme.of(context).textTheme.body1.color),
+                          child: title(
+                            'نوع الهزاز لصفحة السبحة',
+                          ),
                         ),
                         VerticalSpace(),
                         segmentedControlOption(
                             icon: NoorSettingsIcons.click,
                             title: 'لكل ضغطة',
                             value: settings.vibrationClickCounter,
-                            onChanged: (value) {
-                              settings.vibrationClickCounter = value;
+                            onChanged: (String? value) {
+                              settings.vibrationClickCounter = value!;
                               if (value == 'strong') {
                                 HapticFeedback.lightImpact();
                               }
@@ -457,8 +497,8 @@ class _SettingsState extends State<Settings> with TickerProviderStateMixin, Auto
                           icon: NoorSettingsIcons.done,
                           title: 'عند مضاعفات المئة',
                           value: settings.vibrationHunderds,
-                          onChanged: (value) {
-                            settings.vibrationHunderds = value;
+                          onChanged: (String? value) {
+                            settings.vibrationHunderds = value!;
                             if (value == 'strong') {
                               HapticFeedback.lightImpact();
                             }
@@ -472,7 +512,9 @@ class _SettingsState extends State<Settings> with TickerProviderStateMixin, Auto
                       ],
                     ),
                     secondChild: Container(),
-                    crossFadeState: settings.vibrateCounter ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+                    crossFadeState: settings.vibrateCounter
+                        ? CrossFadeState.showFirst
+                        : CrossFadeState.showSecond,
                     duration: Duration(milliseconds: 300),
                   ),
                   VerticalSpace(),
@@ -481,7 +523,8 @@ class _SettingsState extends State<Settings> with TickerProviderStateMixin, Auto
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      subTitle('التنبيه لأذكار الصباح', NoorSettingsIcons.morning),
+                      subTitle(
+                          'التنبيه لأذكار الصباح', NoorSettingsIcons.morning),
                       morningNotiEnabled
                           ? SizedBox(
                               width: 100,
@@ -497,63 +540,94 @@ class _SettingsState extends State<Settings> with TickerProviderStateMixin, Auto
                                         children: <Widget>[
                                           Container(
                                             height: 35,
-                                            color: Theme.of(context).dialogTheme.backgroundColor,
+                                            color: Theme.of(context)
+                                                .dialogTheme
+                                                .backgroundColor,
                                             child: Row(
                                               children: <Widget>[
                                                 SizedBox(
                                                   width: 60,
-                                                  child: FlatButton(
+                                                  child: TextButton(
                                                     child: Text(
                                                       'حفظ',
-                                                      style: TextStyle(
-                                                          color: Theme.of(context).brightness == Brightness.light
-                                                              ? Theme.of(context).accentColor
-                                                              : Theme.of(context).primaryColor,
-                                                          fontSize: 12,
-                                                          fontFamily: 'SST Roman'),
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .bodyText1!
+                                                          .copyWith(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                              color: Theme.of(
+                                                                      context)
+                                                                  .accentColor,
+                                                              fontSize: 12),
                                                     ),
                                                     onPressed: () async {
-                                                      Navigator.of(context).pop();
+                                                      Navigator.of(context)
+                                                          .pop();
                                                       if (morningTemp != null) {
                                                         setState(() {
-                                                          morningNotiTime = morningTemp;
+                                                          morningNotiTime =
+                                                              morningTemp;
                                                         });
 
-                                                        SharedPrefsUtil.putString(
-                                                            'morningNotiTime', morningNotiTime.toString());
+                                                        SharedPrefsService
+                                                            .putString(
+                                                                'morningNotiTime',
+                                                                morningNotiTime
+                                                                    .toString());
 
-                                                        setDailyNotification(morningNotiTime, 'الصباح', 0);
+                                                        setDailyNotification(
+                                                            morningNotiTime,
+                                                            'الصباح',
+                                                            0);
                                                       }
-                                                      if (morningNotiTime == null) {
+                                                      if (morningNotiTime ==
+                                                          null) {
                                                         setState(() {
-                                                          morningNotiTime = DateTime.now();
+                                                          morningNotiTime =
+                                                              DateTime.now();
                                                         });
-                                                        SharedPrefsUtil.putString(
-                                                            'morningNotiTime', morningNotiTime.toString());
-                                                        setDailyNotification(morningNotiTime, 'الصباح', 0);
+                                                        SharedPrefsService
+                                                            .putString(
+                                                                'morningNotiTime',
+                                                                morningNotiTime
+                                                                    .toString());
+                                                        setDailyNotification(
+                                                            morningNotiTime,
+                                                            'الصباح',
+                                                            0);
                                                       }
                                                     },
                                                   ),
                                                 ),
                                                 SizedBox(
                                                   width: 60,
-                                                  child: FlatButton(
+                                                  child: TextButton(
                                                     child: Text(
                                                       'إلغاء',
-                                                      style: TextStyle(
-                                                          color: Theme.of(context).brightness == Brightness.light
-                                                              ? Theme.of(context).accentColor
-                                                              : Theme.of(context).primaryColor,
-                                                          fontSize: 12,
-                                                          fontFamily: 'SST Roman'),
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .bodyText1!
+                                                          .copyWith(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                              color: Theme.of(
+                                                                      context)
+                                                                  .accentColor,
+                                                              fontSize: 12),
                                                     ),
                                                     onPressed: () {
-                                                      Navigator.of(context).pop();
+                                                      Navigator.of(context)
+                                                          .pop();
                                                     },
                                                   ),
                                                 ),
                                               ],
-                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
                                             ),
                                           ),
                                           Expanded(
@@ -561,20 +635,25 @@ class _SettingsState extends State<Settings> with TickerProviderStateMixin, Auto
                                               textDirection: TextDirection.ltr,
                                               child: CupertinoTheme(
                                                 data: CupertinoThemeData(
-                                                  textTheme: CupertinoTextThemeData(
-                                                    dateTimePickerTextStyle: TextStyle(
-                                                      locale: Locale('ar'),
-                                                      fontFamily: 'SST',
-                                                      fontSize: 16,
-                                                      color: Theme.of(context).textTheme.body1.color,
-                                                    ),
+                                                  textTheme:
+                                                      CupertinoTextThemeData(
+                                                    dateTimePickerTextStyle:
+                                                        Theme.of(context)
+                                                            .textTheme
+                                                            .bodyText1,
                                                   ),
                                                 ),
                                                 child: CupertinoDatePicker(
-                                                  backgroundColor: Theme.of(context).cardColor,
-                                                  mode: CupertinoDatePickerMode.time,
-                                                  initialDateTime: morningNotiTime ?? DateTime.now(),
-                                                  onDateTimeChanged: (DateTime newDateTime) {
+                                                  backgroundColor:
+                                                      Theme.of(context)
+                                                          .cardColor,
+                                                  mode: CupertinoDatePickerMode
+                                                      .time,
+                                                  initialDateTime:
+                                                      morningNotiTime ??
+                                                          DateTime.now(),
+                                                  onDateTimeChanged:
+                                                      (DateTime newDateTime) {
                                                     setState(() {
                                                       morningTemp = newDateTime;
                                                     });
@@ -592,12 +671,15 @@ class _SettingsState extends State<Settings> with TickerProviderStateMixin, Auto
                                 child: Container(
                                   alignment: Alignment.center,
                                   decoration: BoxDecoration(
-                                    border: Border.all(width: 0.5, color: Theme.of(context).dividerColor),
+                                    border: Border.all(
+                                        width: 0.5,
+                                        color: Theme.of(context).dividerColor),
                                     borderRadius: BorderRadius.circular(5),
                                   ),
                                   child: Text(
                                     formatTime(morningNotiTime),
-                                    style: Theme.of(context).textTheme.subtitle,
+                                    style:
+                                        Theme.of(context).textTheme.subtitle1,
                                   ),
                                 ),
                               ),
@@ -612,10 +694,15 @@ class _SettingsState extends State<Settings> with TickerProviderStateMixin, Auto
                             activeColor: Theme.of(context).primaryColor,
                             onChanged: (value) async {
                               morningNotiEnabled = !morningNotiEnabled;
-                              SharedPrefsUtil.putBool('morningNotiEnabled', value);
-                              if (morningNotiEnabled == false) cancelNotification(0);
-                              if (morningNotiEnabled == true && morningNotiTime != null) {
-                                setDailyNotification(morningNotiTime, 'الصباح', 0);
+                              SharedPrefsService.putBool(
+                                  'morningNotiEnabled', value);
+                              if (morningNotiEnabled == false) {
+                                cancelNotification(0);
+                              }
+                              if (morningNotiEnabled == true &&
+                                  morningNotiTime != null) {
+                                setDailyNotification(
+                                    morningNotiTime, 'الصباح', 0);
                               }
                               setState(() {});
                             },
@@ -628,7 +715,8 @@ class _SettingsState extends State<Settings> with TickerProviderStateMixin, Auto
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      subTitle('التنبيه لأذكار المساء', NoorSettingsIcons.night),
+                      subTitle(
+                          'التنبيه لأذكار المساء', NoorSettingsIcons.night),
                       nightNotiEnabled
                           ? SizedBox(
                               width: 100,
@@ -644,62 +732,93 @@ class _SettingsState extends State<Settings> with TickerProviderStateMixin, Auto
                                         children: <Widget>[
                                           Container(
                                             height: 35,
-                                            color: Theme.of(context).dialogTheme.backgroundColor,
+                                            color: Theme.of(context)
+                                                .dialogTheme
+                                                .backgroundColor,
                                             child: Row(
                                               children: <Widget>[
                                                 SizedBox(
                                                   width: 60,
-                                                  child: FlatButton(
+                                                  child: TextButton(
                                                     child: Text(
                                                       'حفظ',
-                                                      style: TextStyle(
-                                                          color: Theme.of(context).brightness == Brightness.light
-                                                              ? Theme.of(context).accentColor
-                                                              : Theme.of(context).primaryColor,
-                                                          fontSize: 12,
-                                                          fontFamily: 'SST Roman'),
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .bodyText1!
+                                                          .copyWith(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                              color: Theme.of(
+                                                                      context)
+                                                                  .accentColor,
+                                                              fontSize: 12),
                                                     ),
                                                     onPressed: () async {
-                                                      Navigator.of(context).pop();
+                                                      Navigator.of(context)
+                                                          .pop();
                                                       if (nightTemp != null) {
                                                         setState(() {
-                                                          nightNotiTime = nightTemp;
+                                                          nightNotiTime =
+                                                              nightTemp;
                                                         });
-                                                        SharedPrefsUtil.putString(
-                                                            'nightNotiTime', nightNotiTime.toString());
+                                                        SharedPrefsService
+                                                            .putString(
+                                                                'nightNotiTime',
+                                                                nightNotiTime
+                                                                    .toString());
 
-                                                        setDailyNotification(nightNotiTime, 'المساء', 1);
+                                                        setDailyNotification(
+                                                            nightNotiTime,
+                                                            'المساء',
+                                                            1);
                                                       }
-                                                      if (nightNotiTime == null) {
+                                                      if (nightNotiTime ==
+                                                          null) {
                                                         setState(() {
-                                                          nightNotiTime = DateTime.now();
+                                                          nightNotiTime =
+                                                              DateTime.now();
                                                         });
-                                                        SharedPrefsUtil.putString(
-                                                            'nightNotiTime', nightNotiTime.toString());
-                                                        setDailyNotification(nightNotiTime, 'المساء', 1);
+                                                        SharedPrefsService
+                                                            .putString(
+                                                                'nightNotiTime',
+                                                                nightNotiTime
+                                                                    .toString());
+                                                        setDailyNotification(
+                                                            nightNotiTime,
+                                                            'المساء',
+                                                            1);
                                                       }
                                                     },
                                                   ),
                                                 ),
                                                 SizedBox(
                                                   width: 60,
-                                                  child: FlatButton(
+                                                  child: TextButton(
                                                     child: Text(
                                                       'إلغاء',
-                                                      style: TextStyle(
-                                                          color: Theme.of(context).brightness == Brightness.light
-                                                              ? Theme.of(context).accentColor
-                                                              : Theme.of(context).primaryColor,
-                                                          fontSize: 12,
-                                                          fontFamily: 'SST Roman'),
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .bodyText1!
+                                                          .copyWith(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                              color: Theme.of(
+                                                                      context)
+                                                                  .accentColor,
+                                                              fontSize: 12),
                                                     ),
                                                     onPressed: () {
-                                                      Navigator.of(context).pop();
+                                                      Navigator.of(context)
+                                                          .pop();
                                                     },
                                                   ),
                                                 ),
                                               ],
-                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
                                             ),
                                           ),
                                           Expanded(
@@ -707,20 +826,31 @@ class _SettingsState extends State<Settings> with TickerProviderStateMixin, Auto
                                               textDirection: TextDirection.ltr,
                                               child: CupertinoTheme(
                                                 data: CupertinoThemeData(
-                                                  textTheme: CupertinoTextThemeData(
-                                                    dateTimePickerTextStyle: TextStyle(
+                                                  textTheme:
+                                                      CupertinoTextThemeData(
+                                                    dateTimePickerTextStyle:
+                                                        TextStyle(
                                                       locale: Locale('ar'),
                                                       fontFamily: 'SST',
                                                       fontSize: 16,
-                                                      color: Theme.of(context).textTheme.body1.color,
+                                                      color: Theme.of(context)
+                                                          .textTheme
+                                                          .body1!
+                                                          .color,
                                                     ),
                                                   ),
                                                 ),
                                                 child: CupertinoDatePicker(
-                                                  backgroundColor: Theme.of(context).cardColor,
-                                                  mode: CupertinoDatePickerMode.time,
-                                                  initialDateTime: nightNotiTime ?? DateTime.now(),
-                                                  onDateTimeChanged: (DateTime newDateTime) {
+                                                  backgroundColor:
+                                                      Theme.of(context)
+                                                          .cardColor,
+                                                  mode: CupertinoDatePickerMode
+                                                      .time,
+                                                  initialDateTime:
+                                                      nightNotiTime ??
+                                                          DateTime.now(),
+                                                  onDateTimeChanged:
+                                                      (DateTime newDateTime) {
                                                     setState(() {
                                                       nightTemp = newDateTime;
                                                     });
@@ -738,12 +868,15 @@ class _SettingsState extends State<Settings> with TickerProviderStateMixin, Auto
                                 child: Container(
                                   alignment: Alignment.center,
                                   decoration: BoxDecoration(
-                                    border: Border.all(width: 0.5, color: Theme.of(context).dividerColor),
+                                    border: Border.all(
+                                        width: 0.5,
+                                        color: Theme.of(context).dividerColor),
                                     borderRadius: BorderRadius.circular(5),
                                   ),
                                   child: Text(
                                     formatTime(nightNotiTime),
-                                    style: Theme.of(context).textTheme.subtitle,
+                                    style:
+                                        Theme.of(context).textTheme.subtitle1,
                                   ),
                                 ),
                               ),
@@ -759,10 +892,15 @@ class _SettingsState extends State<Settings> with TickerProviderStateMixin, Auto
                             onChanged: (value) async {
                               nightNotiEnabled = !nightNotiEnabled;
 
-                              SharedPrefsUtil.putBool('nightNotiEnabled', value);
-                              if (nightNotiEnabled == false) cancelNotification(1);
-                              if (nightNotiEnabled == true && nightNotiTime != null) {
-                                setDailyNotification(nightNotiTime, 'المساء', 1);
+                              SharedPrefsService.putBool(
+                                  'nightNotiEnabled', value);
+                              if (nightNotiEnabled == false) {
+                                cancelNotification(1);
+                              }
+                              if (nightNotiEnabled == true &&
+                                  nightNotiTime != null) {
+                                setDailyNotification(
+                                    nightNotiTime, 'المساء', 1);
                               }
                               setState(() {});
                             },
@@ -773,23 +911,17 @@ class _SettingsState extends State<Settings> with TickerProviderStateMixin, Auto
                   ),
                   Divider(),
                   switcherOption(
-                      image: Theme.of(context).brightness == Brightness.light
-                          ? 'assets/icons/generalNotificationsLight.png'
-                          : 'assets/icons/generalNotificationsDark.png',
-                      title: 'إشعارات عامة',
-                      value: SharedPrefsUtil.getBool('generalNotifications') ?? false,
-                      onChanged: (value) {
-                        final FirebaseMessaging _fcm = FirebaseMessaging();
-                        SharedPrefsUtil.putBool('generalNotifications', value);
-                        if (!value) {
-                          final FirebaseMessaging _fcm = FirebaseMessaging();
-                          _fcm.unsubscribeFromTopic('general_notifications');
-                        }
-                        if (value) {
-                          _fcm.subscribeToTopic('general_notifications');
-                        }
-                        setState(() {});
-                      }),
+                    image: images.generalNotificationsIcon,
+                    title: 'إشعارات عامة',
+                    value: settings.generalNotification,
+                    onChanged: (bool value) {
+                      if (value) {
+                        FCMService.instance.subscribe();
+                      } else {
+                        FCMService.instance.unsubscribe();
+                      }
+                    },
+                  ),
                   Divider(),
                   VerticalSpace(),
                   title('المظهر'),
@@ -820,14 +952,16 @@ class _SettingsState extends State<Settings> with TickerProviderStateMixin, Auto
                     child: Container(
                       padding: const EdgeInsets.symmetric(vertical: 8),
                       width: MediaQuery.of(context).size.width,
-                      child: subTitle('قسم أسماء الله الحُسنى', NoorSettingsIcons.allahnames),
+                      child: subTitle('قسم أسماء الله الحُسنى',
+                          NoorSettingsIcons.allahnames),
                     ),
                   ),
                   const Divider(),
                   Container(
                     padding: const EdgeInsets.symmetric(vertical: 8),
                     width: MediaQuery.of(context).size.width,
-                    child: subTitle('قسم الرقية الشرعية، كُتيب أَوراد', NoorSettingsIcons.ruqya),
+                    child: subTitle('قسم الرقية الشرعية، كُتيب أَوراد',
+                        NoorSettingsIcons.ruqya),
                   ),
                   const Divider(),
                   SizedBox(height: 10.0),
@@ -871,7 +1005,8 @@ class _SettingsState extends State<Settings> with TickerProviderStateMixin, Auto
                           children: [
                             GestureDetector(
                               onTap: () => launchURL(Links.twitter),
-                              child: Image.asset(images.twitterButton, width: 65),
+                              child:
+                                  Image.asset(images.twitterButton, width: 65),
                             ),
                             SizedBox(width: 10),
                             GestureDetector(
@@ -898,7 +1033,9 @@ class _SettingsState extends State<Settings> with TickerProviderStateMixin, Auto
     return AnimatedSize(
       child: Text(
         fonts[i],
-        style: SharedPrefsUtil.getDouble('fontSize') * 16 == size ? activeLabelStyle : inactiveLabelStyle,
+        style: SharedPrefsService.getDouble('fontSize') * 16 == size
+            ? activeLabelStyle
+            : inactiveLabelStyle,
       ),
       vsync: this,
       duration: Duration(milliseconds: 500),
@@ -907,14 +1044,15 @@ class _SettingsState extends State<Settings> with TickerProviderStateMixin, Auto
 
   Widget fontTypeButton(String font) {
     return FlatButton(
-      onPressed: () => context.read<SettingsProvider>().fontType = font,
+      onPressed: () => context.read<SettingsModel>().fontType = font,
       child: AnimatedDefaultTextStyle(
         style: TextStyle(
             fontFamily: font,
-            color:
-                context.read<SettingsProvider>().fontType == font ? Theme.of(context).primaryColor : Colors.grey[400],
+            color: context.read<SettingsModel>().fontType == font
+                ? Theme.of(context).primaryColor
+                : Colors.grey[400],
             height: 1,
-            fontSize: context.read<SettingsProvider>().fontType == font ? 20 : 16),
+            fontSize: context.read<SettingsModel>().fontType == font ? 20 : 16),
         duration: Duration(milliseconds: 200),
         child: Text('الحمدلله'),
       ),
@@ -924,7 +1062,7 @@ class _SettingsState extends State<Settings> with TickerProviderStateMixin, Auto
 
 class VerticalSpace extends StatelessWidget {
   const VerticalSpace({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -934,28 +1072,15 @@ class VerticalSpace extends StatelessWidget {
 }
 
 class Card extends StatelessWidget {
-  Card({
-    this.data,
-    this.scaleFactor,
-    this.tashkeel,
-  });
-
-  final String data;
-  final double scaleFactor;
-  final bool tashkeel;
-
   @override
   Widget build(BuildContext context) {
     return CardTemplate(
-      ribbon: Ribbon.ribbon1,
+      ribbon: context.read<DataModel>().athkar[1].ribbon,
       actions: <Widget>[
-        Image.asset('assets/icons/outline_heart.png'),
-        Image.asset('assets/icons/copy.png'),
+        Image.asset(Images.outlineHeartIcon),
+        Image.asset(Images.copyIcon),
       ],
-      child: Text(
-        !tashkeel ? Tashkeel.remove(data) : data,
-        textScaleFactor: scaleFactor,
-      ),
+      child: CardText(text: context.read<DataModel>().athkar[1].text),
     );
   }
 }

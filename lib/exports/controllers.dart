@@ -1,3 +1,3 @@
 export 'package:noor/controllers/data_controller.dart';
 export 'package:noor/models/settings.dart';
-export 'package:noor/controllers/theme_controller.dart';
+export 'package:noor/models/theme_model.dart';

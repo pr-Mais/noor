@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:noor/exports/constants.dart' show Images;
 
 class NameTitleCard extends StatelessWidget {
   NameTitleCard({this.title});
-  final String title;
+  final String? title;
 
   @override
   Widget build(BuildContext context) {
@@ -12,15 +13,10 @@ class NameTitleCard extends StatelessWidget {
           children: <Widget>[
             Container(
               child: Text(
-                title,
+                title!,
                 overflow: TextOverflow.clip,
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Colors.white,
-                  height: 1.5,
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: Theme.of(context).textTheme.headline2,
               ),
               margin: EdgeInsets.only(
                 left: 30,
@@ -47,15 +43,13 @@ class NameTitleCard extends StatelessWidget {
                 borderRadius: BorderRadius.circular(15.0),
                 image: DecorationImage(
                   fit: BoxFit.fill,
-                  image: AssetImage(
-                    'assets/titleBackground.png',
-                  ),
+                  image: AssetImage(Images.titleBg),
                 ),
               ),
             ),
             Positioned(
               child: Image.asset(
-                'assets/nameTitleLeaf.png',
+                Images.allahNameTitleLeaf,
                 height: 100.0,
               ),
               bottom: 10.0,

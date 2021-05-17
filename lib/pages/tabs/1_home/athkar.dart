@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:noor/exports/services.dart' show DBService;
-import 'package:noor/exports/controllers.dart' show ThemeProvider;
+import 'package:noor/exports/controllers.dart' show ThemeModel;
 import 'package:noor/exports/constants.dart' show Images;
 import 'package:noor/exports/models.dart' show DataModel, Thekr;
 import 'package:noor/exports/pages.dart' show AthkarList;
@@ -13,12 +13,13 @@ class AthkarPage extends StatefulWidget {
   _AthkarPageState createState() => _AthkarPageState();
 }
 
-class _AthkarPageState extends State<AthkarPage> with SingleTickerProviderStateMixin {
+class _AthkarPageState extends State<AthkarPage>
+    with SingleTickerProviderStateMixin {
   ScrollController scrollController = new ScrollController();
   double currentScroll = 0;
   double maxHeight = 180;
-  Animation<double> animation;
-  AnimationController controller;
+  late Animation<double> animation;
+  late AnimationController controller;
 
   initState() {
     super.initState();
@@ -43,7 +44,7 @@ class _AthkarPageState extends State<AthkarPage> with SingleTickerProviderStateM
 
   @override
   Widget build(BuildContext context) {
-    final Images images = context.read<ThemeProvider>().images;
+    final Images images = context.read<ThemeModel>().images;
 
     return Scaffold(
         body: Column(
@@ -76,13 +77,14 @@ class _AthkarPageState extends State<AthkarPage> with SingleTickerProviderStateM
           child: NotificationListener<Notification>(
             child: Consumer<DataModel>(
               builder: (_, DataModel model, __) {
-                final List<Thekr> athkarTitles = model.athkar.where((Thekr thekr) => thekr.isTitle).toList();
+                final List<Thekr> athkarTitles =
+                    model.athkar.where((Thekr thekr) => thekr.isTitle).toList();
 
                 return Scrollbar(
                   controller: scrollController,
                   child: ListView.builder(
                     physics: AlwaysScrollableScrollPhysics(),
-                    itemCount: athkarTitles.where((Thekr thekr) => thekr.isTitle).length,
+                    itemCount: athkarTitles.length,
                     controller: scrollController,
                     padding: EdgeInsets.only(top: 10),
                     itemBuilder: (BuildContext context, int index) {
@@ -92,7 +94,7 @@ class _AthkarPageState extends State<AthkarPage> with SingleTickerProviderStateM
                       return title.isTitle
                           ? ListItem(
                               title: '${title.text}',
-                              icon: images.athkar,
+                              icon: images.athkarIcon,
                               onTap: () {
                                 Navigator.push(
                                   context,
@@ -109,7 +111,7 @@ class _AthkarPageState extends State<AthkarPage> with SingleTickerProviderStateM
               },
             ),
             onNotification: (_) {
-              WidgetsBinding.instance.addPostFrameCallback((_) {
+              WidgetsBinding.instance!.addPostFrameCallback((_) {
                 if (currentScroll < 100) {
                   controller.forward();
                 }

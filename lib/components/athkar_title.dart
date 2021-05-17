@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:noor/exports/constants.dart' show Images;
 
 class ThekrTitleCard extends StatelessWidget {
   ThekrTitleCard({this.title});
-  final String title;
+  final String? title;
 
   @override
   Widget build(BuildContext context) {
@@ -22,15 +23,10 @@ class ThekrTitleCard extends StatelessWidget {
                 child: Container(
                   height: 95,
                   child: Text(
-                    title,
+                    title!,
                     textAlign: TextAlign.center,
                     overflow: TextOverflow.clip,
-                    style: TextStyle(
-                      color: Colors.white,
-                      height: 1.5,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                    ),
+                    style: Theme.of(context).textTheme.headline2,
                   ),
                   alignment: Alignment.center,
                   padding: EdgeInsets.only(
@@ -50,15 +46,13 @@ class ThekrTitleCard extends StatelessWidget {
                     borderRadius: BorderRadius.circular(15.0),
                     image: DecorationImage(
                       fit: BoxFit.fill,
-                      image: AssetImage(
-                        'assets/titleBackground.png',
-                      ),
+                      image: AssetImage(Images.titleBg),
                     )),
               ),
             ),
             Positioned(
               child: Image.asset(
-                'assets/titleLeaf.png',
+                Images.athkarTitleLeaf,
                 height: 110.0,
               ),
               bottom: 10.0,

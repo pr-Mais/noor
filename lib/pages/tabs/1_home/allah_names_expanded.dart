@@ -1,29 +1,35 @@
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
-import 'package:noor/exports/utils.dart' show Copy, Tashkeel;
 import 'package:noor/exports/models.dart' show DataModel, AllahName;
-import 'package:noor/exports/constants.dart' show Ribbon;
-import 'package:noor/exports/components.dart' show NoorCloseButton, CardTemplate, NoorIcons, NameTitleCard;
-import 'package:noor/exports/controllers.dart' show DataController, SettingsProvider;
+import 'package:noor/exports/constants.dart' show Images, Ribbon;
+import 'package:noor/exports/components.dart'
+    show
+        NoorCloseButton,
+        CardTemplate,
+        NoorIcons,
+        NameTitleCard,
+        FavAction,
+        CopyAction,
+        CardText;
 
 class AllahNamesList extends StatefulWidget {
   const AllahNamesList({
-    Key key,
+    Key? key,
     this.index = 0,
   }) : super(key: key);
   final int index;
   _AllahNamesListState createState() => _AllahNamesListState();
 }
 
-class _AllahNamesListState extends State<AllahNamesList> with SingleTickerProviderStateMixin {
-  ItemScrollController controller;
+class _AllahNamesListState extends State<AllahNamesList>
+    with SingleTickerProviderStateMixin {
+  ItemScrollController? controller;
   ItemPositionsListener listener = ItemPositionsListener.create();
-  Animation<double> animation;
-  AnimationController animationController;
-  ValueNotifier<int> pagePosition;
+  late Animation<double> animation;
+  late AnimationController animationController;
+  late ValueNotifier<int> pagePosition;
 
   List<AllahName> allahNames = <AllahName>[];
 
@@ -31,16 +37,15 @@ class _AllahNamesListState extends State<AllahNamesList> with SingleTickerProvid
   void initState() {
     super.initState();
     pagePosition = ValueNotifier<int>(0);
-    animationController = new AnimationController(
-      vsync: this,
-    );
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      listener.itemPositions.addListener(changeAppBar);
+    });
+
+    animationController = new AnimationController(vsync: this);
     animation = Tween<double>(begin: 0.0, end: 0.1).animate(
       CurvedAnimation(parent: animationController, curve: Curves.elasticIn),
     );
     controller = new ItemScrollController();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      listener.itemPositions.addListener(changeAppBar);
-    });
   }
 
   @override
@@ -57,18 +62,12 @@ class _AllahNamesListState extends State<AllahNamesList> with SingleTickerProvid
     return Container(
       height: 30,
       alignment: Alignment.bottomRight,
-      child: TextButton(
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Image.asset('assets/icons/back.png'),
-            SizedBox(width: 10),
-            Text(
-              'ذُكِرَ في',
-              style: TextStyle(fontSize: 14, color: Color(0xff6f85d5), fontFamily: 'SST Light', height: 1),
-              textScaleFactor: 1,
-            ),
-          ],
+      child: TextButton.icon(
+        icon: Image.asset(Images.referenceIcon),
+        label: Text(
+          'ذُكِرَ في',
+          style: Theme.of(context).textTheme.button,
+          textScaleFactor: 1,
         ),
         onPressed: () {
           Navigator.of(context).push(
@@ -83,12 +82,10 @@ class _AllahNamesListState extends State<AllahNamesList> with SingleTickerProvid
 
   @override
   Widget build(BuildContext context) {
-    final DataController dataProvider = GetIt.I<DataController>();
     final DataModel dataModel = context.watch<DataModel>();
 
     allahNames = dataModel.allahNames;
 
-    final SettingsProvider settings = context.read<SettingsProvider>();
     return Scaffold(
       body: Column(
         mainAxisSize: MainAxisSize.max,
@@ -105,13 +102,16 @@ class _AllahNamesListState extends State<AllahNamesList> with SingleTickerProvid
                   ChangeNotifierProvider<ValueNotifier<int>>.value(
                     value: pagePosition,
                     child: Consumer<ValueNotifier<int>>(
-                      builder: (BuildContext context, ValueNotifier<int> position, _) {
+                      builder: (BuildContext context,
+                          ValueNotifier<int> position, _) {
                         return AnimatedSwitcher(
                           duration: const Duration(milliseconds: 250),
                           child: Text(
                             allahNames[position.value].name,
                             textAlign: TextAlign.center,
-                            key: ValueKey<String>(allahNames[position.value].name),
+                            key: ValueKey<String?>(
+                              allahNames[position.value].name,
+                            ),
                             style: Theme.of(context).textTheme.headline1,
                           ),
                         );
@@ -144,38 +144,19 @@ class _AllahNamesListState extends State<AllahNamesList> with SingleTickerProvid
                       NameTitleCard(title: name.name),
                       CardTemplate(
                         ribbon: Ribbon.ribbon6,
-                        additionalContent: name.inApp ? backToMainLocation(name) : null,
+                        additionalContent:
+                            name.inApp ? backToMainLocation(name) : null,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Text(
-                              !settings.tashkeel ? Tashkeel.remove('${textList[0]}.') : '${textList[0]}.',
-                              textScaleFactor: settings.fontSize,
-                            ),
+                            CardText(text: textList[0] + '.'),
                             SizedBox(height: 10),
-                            Text(
-                              !settings.tashkeel ? Tashkeel.remove('${textList[1]}.') : '${textList[1]}.',
-                              textScaleFactor: settings.fontSize,
-                              textAlign: TextAlign.right,
-                            )
+                            CardText(text: textList[1] + '.'),
                           ],
                         ),
                         actions: <Widget>[
-                          GestureDetector(
-                            onTap: () {
-                              name.isFav == 1 ? dataProvider.removeFromFav(name) : dataProvider.addToFav(name);
-                            },
-                            child: AnimatedCrossFade(
-                              firstChild: Image.asset('assets/icons/outline_heart.png'),
-                              secondChild: Image.asset('assets/icons/filled_heart.png'),
-                              crossFadeState: name.isFav == 1 ? CrossFadeState.showSecond : CrossFadeState.showFirst,
-                              duration: Duration(milliseconds: 500),
-                            ),
-                          ),
-                          GestureDetector(
-                            child: Image.asset('assets/icons/copy.png'),
-                            onTap: () => Copy.onCopy(name.text, context),
-                          ),
+                          FavAction(name),
+                          CopyAction('اسم الله (${name.name}): ${name.text}')
                         ],
                       ),
                     ],
@@ -191,7 +172,7 @@ class _AllahNamesListState extends State<AllahNamesList> with SingleTickerProvid
 }
 
 class ReferenceList extends StatelessWidget {
-  ReferenceList({Key key, this.name}) : super(key: key);
+  ReferenceList({Key? key, required this.name}) : super(key: key);
   final AllahName name;
 
   final List<String> ribbon = <String>[
@@ -214,7 +195,6 @@ class ReferenceList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final SettingsProvider settings = context.watch<SettingsProvider>();
     final DataModel dataModel = context.watch<DataModel>();
 
     final List<dynamic> allLists = List<dynamic>.from(<dynamic>[
@@ -254,28 +234,20 @@ class ReferenceList extends StatelessWidget {
                 itemCount: name.occurances.length,
                 padding: EdgeInsets.zero,
                 itemBuilder: (BuildContext context, int index) {
-                  final dynamic element = allLists.singleWhere((dynamic item) => item.id == name.occurances[index]);
+                  final dynamic element = allLists.singleWhere(
+                    (dynamic item) => item.id == name.occurances[index],
+                  );
 
                   return CardTemplate(
-                    ribbon: ribbon[element.section - 1],
-                    additionalContent: Text(
-                      '${element.sectionName}',                      
-                    ),
-                    child: Text(
-                      !settings.tashkeel ? Tashkeel.remove('${element.text}') : '${element.text}',
-                      textScaleFactor: settings.fontSize,
-                    ),
+                    ribbon: element.ribbon,
+                    additionalContent: Text('${element.sectionName}'),
+                    child: CardText(text: element.text),
                     actions: <Widget>[
                       Icon(
-                        icons[element.section - 1],
+                        icons[element.category.index],
                         color: Colors.white,
                       ),
-                      GestureDetector(
-                        child: Image.asset('assets/icons/copy.png'),
-                        onTap: () {
-                          Copy.onCopy(element.text, context);
-                        },
-                      ),
+                      CopyAction(element.text)
                     ],
                   );
                 },

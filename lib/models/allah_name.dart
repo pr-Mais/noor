@@ -1,37 +1,38 @@
-class AllahName {
-  String id;
-  String name;
-  String text;
-  int isFav;
-  String sectionName;
-  int section;
-  bool inApp;
-  List<String> highlight;
-  List<String> noHighlight;
-  List<String> occurances;
+import 'package:noor/exports/constants.dart' show NoorCategory, Ribbon;
 
-  AllahName({
+class AllahName {
+  late final String id;
+  late final String name;
+  late final String text;
+  final String sectionName = 'أسماء الله الحسنى';
+  final String ribbon = Ribbon.ribbon6;
+  final NoorCategory category = NoorCategory.ALLAHNAME;
+  late bool isFav;
+  late final int section;
+  late final bool inApp;
+  late final List<String> highlight;
+  late final List<String> noHighlight;
+  late final List<String> occurances;
+
+  AllahName._(
     this.id,
     this.name,
     this.text,
     this.isFav,
-    this.sectionName,
-    this.section = 6,
     this.inApp,
     this.highlight,
     this.noHighlight,
     this.occurances,
-  }) : super();
+  );
 
-  factory AllahName.fromMap(Map<String, dynamic> map) => new AllahName(
-        id: map['id'],
-        name: map['name'],
-        text: map['text'],
-        sectionName: 'أسماء الله الحسنى',
-        isFav: 0,
-        inApp: map['inApp'],
-        highlight: map['highlight']?.cast<String>() ?? <String>[],
-        noHighlight: map['noHighlight']?.cast<String>() ?? <String>[],
-        occurances: map['occurances']?.cast<String>() ?? <String>[],
+  factory AllahName.fromMap(Map<String, dynamic> map) => AllahName._(
+        map['id'] as String,
+        map['name'] as String,
+        map['text'] as String,
+        map['isFav'] ?? false,
+        map['inApp'] as bool,
+        map['highlight']?.cast<String>() ?? <String>[],
+        map['noHighlight']?.cast<String>() ?? <String>[],
+        map['occurances']?.cast<String>() ?? <String>[],
       );
 }

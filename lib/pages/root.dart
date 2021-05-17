@@ -3,29 +3,35 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 import 'package:noor/exports/components.dart' show BottomNav;
-import 'package:noor/exports/pages.dart' show Home, Favorite, CounterPage, Settings, AthkarList;
+import 'package:noor/exports/pages.dart'
+    show Home, Favorite, CounterPage, Settings, AthkarList;
 
 class RootHome extends StatefulWidget {
-  RootHome({Key key}) : super(key: key);
+  RootHome({Key? key}) : super(key: key);
 
   _RootHomeState createState() => _RootHomeState();
 }
 
-class _RootHomeState extends State<RootHome> with TickerProviderStateMixin, WidgetsBindingObserver {
-  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = new FlutterLocalNotificationsPlugin();
-  String payload;
+class _RootHomeState extends State<RootHome>
+    with TickerProviderStateMixin, WidgetsBindingObserver {
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      new FlutterLocalNotificationsPlugin();
+  String? payload;
   @override
   void initState() {
     super.initState();
 
-    AndroidInitializationSettings initializationSettingsAndroid = new AndroidInitializationSettings('ic_notification');
-    IOSInitializationSettings initializationSettingsIOS = IOSInitializationSettings();
-    InitializationSettings initializationSettings =
-        InitializationSettings(android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
-    flutterLocalNotificationsPlugin.initialize(initializationSettings, onSelectNotification: onSelectNotification);
+    AndroidInitializationSettings initializationSettingsAndroid =
+        new AndroidInitializationSettings('ic_notification');
+    IOSInitializationSettings initializationSettingsIOS =
+        IOSInitializationSettings();
+    InitializationSettings initializationSettings = InitializationSettings(
+        android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
+    flutterLocalNotificationsPlugin.initialize(initializationSettings,
+        onSelectNotification: onSelectNotification);
   }
 
-  Future<void> onSelectNotification(String payload) async {
+  Future<void> onSelectNotification(String? payload) async {
     setState(() {
       this.payload = payload;
     });
