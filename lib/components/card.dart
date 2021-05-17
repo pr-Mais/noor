@@ -38,13 +38,13 @@ class HomeCard extends StatelessWidget {
             borderRadius: BorderRadius.circular(20),
             boxShadow: <BoxShadow>[
               BoxShadow(
-                blurRadius: 10,
+                blurRadius: 8,
                 color: Colors.black12,
               )
             ],
           ),
           width: double.infinity,
-          margin: EdgeInsets.symmetric(horizontal: 20),
+          margin: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
           child: GestureDetector(
             child: SizedBox(
               height: MediaQuery.of(context).size.height * 0.28,
