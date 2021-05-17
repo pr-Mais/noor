@@ -71,11 +71,8 @@ class _AllahNamesListState extends State<AllahNamesList>
             SizedBox(width: 10),
             Text(
               'ذُكِرَ في',
-              style: TextStyle(
-                  fontSize: 14,
-                  color: Color(0xff6f85d5),
-                  fontFamily: 'SST Light',
-                  height: 1),
+              style:
+                  TextStyle(fontSize: 14, color: Color(0xff6f85d5), height: 1),
               textScaleFactor: 1,
             ),
           ],

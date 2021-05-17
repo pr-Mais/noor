@@ -9,8 +9,8 @@ import 'package:noor/exports/components.dart'
     show NoorCloseButton, ThekrTitleCard, AthkarCard;
 
 class AthkarList extends StatefulWidget {
-  const AthkarList({Key? key, this.index}) : super(key: key);
-  final int? index;
+  const AthkarList({Key? key, this.index = 0}) : super(key: key);
+  final int index;
   _AthkarListState createState() => _AthkarListState();
 }
 
@@ -57,6 +57,7 @@ class _AthkarListState extends State<AthkarList>
     final SettingsModel settings = context.read<SettingsModel>();
 
     counter.decrement();
+
     if (settings.vibrate) {
       switch (settings.vibrationClick) {
         case 'light':
@@ -65,12 +66,12 @@ class _AthkarListState extends State<AthkarList>
         case 'strong':
           HapticFeedback.lightImpact();
           break;
-        default:
-          return;
       }
     }
 
-    if (index < 422 && settings.autoJump && counter._counter == 0) {
+    if (index < context.read<DataModel>().athkar.length &&
+        settings.autoJump &&
+        counter._counter == 0) {
       Future<void>.delayed(Duration(milliseconds: 500)).then(
         (_) {
           controller!.scrollTo(
@@ -98,19 +99,21 @@ class _AthkarListState extends State<AthkarList>
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   SizedBox(width: 45),
-                  Consumer<DataModel>(
-                    builder: (BuildContext context, DataModel model, _) {
-                      return AnimatedSwitcher(
-                        child: Text(
-                          model.athkar[pagePosition + 2].sectionName,
-                          textAlign: TextAlign.center,
-                          key: ValueKey<String?>(
-                              model.athkar[pagePosition + 2].sectionName),
-                          style: Theme.of(context).textTheme.headline1,
-                        ),
-                        duration: const Duration(milliseconds: 250),
-                      );
-                    },
+                  Expanded(
+                    child: Consumer<DataModel>(
+                      builder: (BuildContext context, DataModel model, _) {
+                        return AnimatedSwitcher(
+                          child: Text(
+                            model.athkar[pagePosition + 2].sectionName,
+                            textAlign: TextAlign.center,
+                            key: ValueKey<String?>(
+                                model.athkar[pagePosition + 2].sectionName),
+                            style: Theme.of(context).textTheme.headline1,
+                          ),
+                          duration: const Duration(milliseconds: 250),
+                        );
+                      },
+                    ),
                   ),
                   NoorCloseButton(color: Theme.of(context).accentColor),
                 ],
@@ -139,7 +142,7 @@ class _AthkarListState extends State<AthkarList>
                           itemPositionsListener: listener,
                           itemCount: athkar.length,
                           addAutomaticKeepAlives: true,
-                          initialScrollIndex: widget.index!,
+                          initialScrollIndex: widget.index,
                           minCacheExtent: 900,
                           padding: EdgeInsets.only(bottom: 20),
                           itemBuilder: (_, int index) {

@@ -26,12 +26,7 @@ class ThekrTitleCard extends StatelessWidget {
                     title!,
                     textAlign: TextAlign.center,
                     overflow: TextOverflow.clip,
-                    style: TextStyle(
-                      color: Colors.white,
-                      height: 1.5,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                    ),
+                    style: Theme.of(context).textTheme.headline2,
                   ),
                   alignment: Alignment.center,
                   padding: EdgeInsets.only(

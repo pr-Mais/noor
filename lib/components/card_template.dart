@@ -83,18 +83,10 @@ class CardTemplate extends StatelessWidget {
               child: Scrollbar(
                 radius: Radius.circular(4),
                 child: SingleChildScrollView(
-                  child: DefaultTextStyle.merge(
-                    textAlign: TextAlign.justify,
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyText1!
-                        .copyWith(fontFamily: settings.fontType),
-                    child: Container(
-                      width: double.infinity,
-                      margin:
-                          const EdgeInsets.only(left: 15, right: 15, top: 5),
-                      child: child,
-                    ),
+                  child: Container(
+                    width: double.infinity,
+                    margin: const EdgeInsets.only(left: 15, right: 15, top: 5),
+                    child: child,
                   ),
                 ),
               ),

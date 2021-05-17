@@ -49,8 +49,8 @@ class MaterialAppWithTheme extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'نُور',
       themeMode: themeProvider.theme,
-      theme: lightTheme,
-      darkTheme: darkTheme,
+      theme: lightTheme(),
+      darkTheme: darkTheme(),
       builder: (BuildContext context, Widget? child) {
         final MediaQueryData data = MediaQuery.of(context);
         return MediaQuery(

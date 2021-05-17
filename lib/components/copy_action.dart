@@ -22,7 +22,7 @@ class CopyAction extends StatelessWidget {
       barrierColor: Colors.black.withOpacity(0.2),
       transitionDuration: Duration(milliseconds: 500),
       context: context,
-      pageBuilder: (context, anim1, anim2) {
+      pageBuilder: (BuildContext context, _, __) {
         return Align(
           alignment: Alignment.bottomCenter,
           child: Container(
@@ -31,12 +31,10 @@ class CopyAction extends StatelessWidget {
             child: Text(
               'تم النسخ بنجاح',
               textDirection: TextDirection.rtl,
-              style: TextStyle(
-                color: Colors.white,
-                fontFamily: 'SST Light',
-                fontSize: 17,
-                decoration: TextDecoration.none,
-              ),
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyText1
+                  ?.copyWith(color: Colors.white),
             ),
             margin: const EdgeInsets.only(bottom: 30, left: 30, right: 30),
             decoration: BoxDecoration(

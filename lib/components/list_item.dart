@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 class ListItem extends StatelessWidget {
   const ListItem({
     Key? key,
-    this.title,
-    this.icon,
-    this.onTap,
+    required this.title,
+    required this.icon,
+    required this.onTap,
   }) : super(key: key);
-  final String? title;
-  final String? icon;
-  final Function? onTap;
+  final String title;
+  final String icon;
+  final Function onTap;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -22,15 +22,11 @@ class ListItem extends StatelessWidget {
             borderRadius: BorderRadius.circular(8),
             clipBehavior: Clip.hardEdge,
             child: ListTile(
-              onTap: onTap as void Function()?,
+              onTap: () => onTap.call(),
               title: Text(
-                title!,
+                title,
                 overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                  fontWeight: FontWeight.normal,
-                  fontFamily: 'SST Roman',
-                  fontSize: 16,
-                ),
+                style: Theme.of(context).textTheme.headline2,
               ),
               trailing: Icon(
                 Icons.arrow_forward_ios,
@@ -40,7 +36,7 @@ class ListItem extends StatelessWidget {
                     : Color(0xff33477f),
               ),
               leading: Image.asset(
-                icon!,
+                icon,
                 width: 40,
               ),
             ),

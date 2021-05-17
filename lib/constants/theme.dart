@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 const double kContentFontSize = 16.0;
 
-ThemeData lightTheme = ThemeData(
+ThemeData lightTheme() => ThemeData(
     brightness: Brightness.light,
-    fontFamily: 'SST Roman',
+    fontFamily: 'SST Arabic',
     primaryColor: Color(0xff6db7e5),
     pageTransitionsTheme: PageTransitionsTheme(
       builders: <TargetPlatform, PageTransitionsBuilder>{
@@ -21,7 +21,7 @@ ThemeData lightTheme = ThemeData(
     textTheme: TextTheme(
       bodyText1: TextStyle(
         fontSize: 16,
-        height: 1.8,
+        height: 1.6,
         color: Colors.black,
         fontWeight: FontWeight.normal,
       ),
@@ -31,9 +31,14 @@ ThemeData lightTheme = ThemeData(
       ),
       headline1: TextStyle(
         fontSize: 16,
-        height: 1.8,
+        height: 1.5,
         color: Color(0xff6f85d5),
         fontWeight: FontWeight.bold,
+      ),
+      headline2: TextStyle(
+        fontSize: 16,
+        height: 1.5,
+        color: Color(0xff6f85d5),
       ),
     ),
     scrollbarTheme: ScrollbarThemeData(radius: Radius.circular(5)),
@@ -46,47 +51,52 @@ ThemeData lightTheme = ThemeData(
     buttonColor: Color(0xff6f85d5),
     cardColor: Colors.grey[200]);
 
-ThemeData darkTheme = ThemeData(
-  brightness: Brightness.dark,
-  fontFamily: 'SST',
-  primaryColor: Color(0xff6db7e5),
-  pageTransitionsTheme: PageTransitionsTheme(
-    builders: <TargetPlatform, PageTransitionsBuilder>{
-      TargetPlatform.android: FadeUpwardsPageTransitionsBuilder(),
-    },
-  ),
-  canvasColor: Color(0xff10122C),
-  dividerColor: Color(0xff3C387B),
-  iconTheme: IconThemeData(color: Color(0xff3C387B), size: 30),
-  unselectedWidgetColor: Colors.grey[300],
-  inputDecorationTheme: InputDecorationTheme(
-    fillColor: Colors.white24,
-    filled: true,
-    hintStyle: TextStyle(color: Colors.white38),
-  ),
-  textTheme: TextTheme(
-    bodyText1: TextStyle(
-      fontSize: 16,
-      height: 1.8,
-      color: Colors.white,
-      fontWeight: FontWeight.normal,
-    ),
-    subtitle1: TextStyle(
-      color: Colors.white,
-      fontSize: 13,
-    ),
-    headline1: TextStyle(
-      fontSize: 16,
-      height: 1.8,
-      color: Colors.white,
-      fontWeight: FontWeight.bold,
-    ),
-  ),
-  accentColor: Colors.white,
-  buttonColor: Color(0xff6f85d5),
-  splashColor: Colors.black.withOpacity(0.1),
-  highlightColor: Color(0xff3C387B).withOpacity(0.5),
-  dialogTheme: DialogTheme(backgroundColor: Color(0xff1B2349)),
-  cardColor: Color(0xff10122C),
-  scrollbarTheme: ScrollbarThemeData(radius: Radius.circular(5)),
-);
+ThemeData darkTheme() => ThemeData(
+      brightness: Brightness.dark,
+      fontFamily: 'SST Arabic',
+      primaryColor: Color(0xff6db7e5),
+      pageTransitionsTheme: PageTransitionsTheme(
+        builders: <TargetPlatform, PageTransitionsBuilder>{
+          TargetPlatform.android: FadeUpwardsPageTransitionsBuilder(),
+        },
+      ),
+      canvasColor: Color(0xff10122C),
+      dividerColor: Color(0xff3C387B),
+      iconTheme: IconThemeData(color: Color(0xff3C387B), size: 30),
+      unselectedWidgetColor: Colors.grey[300],
+      inputDecorationTheme: InputDecorationTheme(
+        fillColor: Colors.white24,
+        filled: true,
+        hintStyle: TextStyle(color: Colors.white38),
+      ),
+      textTheme: TextTheme(
+        bodyText1: TextStyle(
+          fontSize: 16,
+          height: 1.6,
+          color: Colors.white,
+          fontWeight: FontWeight.normal,
+        ),
+        subtitle1: TextStyle(
+          color: Colors.white,
+          fontSize: 13,
+        ),
+        headline1: TextStyle(
+          fontSize: 16,
+          height: 1.5,
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
+        ),
+        headline2: TextStyle(
+          fontSize: 16,
+          height: 1.5,
+          color: Colors.white,
+        ),
+      ),
+      accentColor: Colors.white,
+      buttonColor: Color(0xff6f85d5),
+      splashColor: Colors.black.withOpacity(0.1),
+      highlightColor: Color(0xff3C387B).withOpacity(0.5),
+      dialogTheme: DialogTheme(backgroundColor: Color(0xff1B2349)),
+      cardColor: Color(0xff10122C),
+      scrollbarTheme: ScrollbarThemeData(radius: Radius.circular(5)),
+    );

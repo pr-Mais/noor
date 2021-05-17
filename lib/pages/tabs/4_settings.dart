@@ -158,23 +158,23 @@ class _SettingsState extends State<Settings>
                 'strong': Text(
                   'قوي',
                   style: TextStyle(
-                      color: value == 'strong' ? Colors.white : Colors.grey,
-                      fontSize: 11,
-                      fontFamily: 'SST Roman'),
+                    color: value == 'strong' ? Colors.white : Colors.grey,
+                    fontSize: 11,
+                  ),
                 ),
                 'light': Text(
                   'خفيف',
                   style: TextStyle(
-                      color: value == 'light' ? Colors.white : Colors.grey,
-                      fontSize: 11,
-                      fontFamily: 'SST Roman'),
+                    color: value == 'light' ? Colors.white : Colors.grey,
+                    fontSize: 11,
+                  ),
                 ),
                 'none': Text(
                   'إيقاف',
                   style: TextStyle(
-                      color: value == 'none' ? Colors.white : Colors.grey,
-                      fontSize: 11,
-                      fontFamily: 'SST Roman'),
+                    color: value == 'none' ? Colors.white : Colors.grey,
+                    fontSize: 11,
+                  ),
                 )
               },
               groupValue: value,

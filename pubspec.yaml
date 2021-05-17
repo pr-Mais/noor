@@ -65,15 +65,14 @@ flutter:
     - assets/json/
 
   fonts:
-    - family: SST
-      fonts:
-        - asset: assets/fonts/SST-Arabic-Medium.ttf
-    - family: SST Light
+    - family: SST Arabic
       fonts:
         - asset: assets/fonts/SST-Light.ttf
-    - family: SST Roman
-      fonts:
+          weight: 200
         - asset: assets/fonts/SST-Arabic-Roman.ttf
+          weight: 400
+        - asset: assets/fonts/SST-Arabic-Medium.ttf
+          weight: 700
     - family: Dubai
       fonts:
         - asset: assets/fonts/Dubai-Regular.ttf

@@ -16,12 +16,7 @@ class NameTitleCard extends StatelessWidget {
                 title!,
                 overflow: TextOverflow.clip,
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Colors.white,
-                  height: 1.5,
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: Theme.of(context).textTheme.headline2,
               ),
               margin: EdgeInsets.only(
                 left: 30,
