@@ -207,7 +207,7 @@ class _MyAd3yahState extends State<MyAd3yah> with TickerProviderStateMixin {
             child: Column(
               children: <Widget>[
                 Padding(
-                  padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
+                  padding: const EdgeInsets.only(left: 20, right: 20),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -230,38 +230,43 @@ class _MyAd3yahState extends State<MyAd3yah> with TickerProviderStateMixin {
                     ],
                   ),
                 ),
-                SizedBox(height: 35),
+                SizedBox(height: 20),
                 Expanded(
                   child: AnimatedSwitcher(
                     duration: Duration(milliseconds: 400),
                     child: myAd3yah.isNotEmpty
-                        ? CustomScrollView(
+                        ? Scrollbar(
                             controller: controller,
-                            slivers: <Widget>[
-                              ReorderableSliverList(
-                                key: ValueKey<String>('list'),
-                                controller: controller,
-                                buildDraggableFeedback: (_,
-                                    BoxConstraints constraints, Widget child) {
-                                  return Material(
-                                    type: MaterialType.transparency,
-                                    child: SizedBox(
-                                        width: constraints.maxWidth,
-                                        child: child),
-                                  );
-                                },
-                                delegate: ReorderableSliverChildBuilderDelegate(
-                                  (BuildContext context, int index) {
-                                    return card(myAd3yah[index]);
+                            child: CustomScrollView(
+                              controller: controller,
+                              slivers: <Widget>[
+                                ReorderableSliverList(
+                                  key: ValueKey<String>('list'),
+                                  controller: controller,
+                                  buildDraggableFeedback: (_,
+                                      BoxConstraints constraints,
+                                      Widget child) {
+                                    return Material(
+                                      type: MaterialType.transparency,
+                                      child: SizedBox(
+                                          width: constraints.maxWidth,
+                                          child: child),
+                                    );
                                   },
-                                  childCount: myAd3yah.length,
+                                  delegate:
+                                      ReorderableSliverChildBuilderDelegate(
+                                    (BuildContext context, int index) {
+                                      return card(myAd3yah[index]);
+                                    },
+                                    childCount: myAd3yah.length,
+                                  ),
+                                  onReorder: (int from, int to) async {
+                                    await GetIt.I<DataController>()
+                                        .updateMyAd3yahList(from, to);
+                                  },
                                 ),
-                                onReorder: (int from, int to) async {
-                                  await GetIt.I<DataController>()
-                                      .updateMyAd3yahList(from, to);
-                                },
-                              ),
-                            ],
+                              ],
+                            ),
                           )
                         : Image.asset(images.noAd3yah),
                   ),
@@ -319,7 +324,7 @@ class _MyAd3yahState extends State<MyAd3yah> with TickerProviderStateMixin {
       ],
       child: CardText(text: item.text),
       additionalContent: CardText(
-        text: item.text,
+        text: item.info,
         color: Theme.of(context).primaryColor,
       ),
     );

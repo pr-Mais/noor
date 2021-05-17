@@ -26,7 +26,7 @@ class ListItem extends StatelessWidget {
               title: Text(
                 title,
                 overflow: TextOverflow.ellipsis,
-                style: Theme.of(context).textTheme.headline2,
+                style: Theme.of(context).textTheme.bodyText1,
               ),
               trailing: Icon(
                 Icons.arrow_forward_ios,

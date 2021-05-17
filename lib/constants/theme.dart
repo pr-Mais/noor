@@ -38,7 +38,12 @@ ThemeData lightTheme() => ThemeData(
       headline2: TextStyle(
         fontSize: 16,
         height: 1.5,
+        color: Colors.white,
+      ),
+      button: TextStyle(
+        fontSize: 14,
         color: Color(0xff6f85d5),
+        height: 1,
       ),
     ),
     scrollbarTheme: ScrollbarThemeData(radius: Radius.circular(5)),
@@ -90,6 +95,11 @@ ThemeData darkTheme() => ThemeData(
           fontSize: 16,
           height: 1.5,
           color: Colors.white,
+        ),
+        button: TextStyle(
+          fontSize: 14,
+          color: Color(0xff6f85d5),
+          height: 1,
         ),
       ),
       accentColor: Colors.white,

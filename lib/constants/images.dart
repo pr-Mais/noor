@@ -77,9 +77,9 @@ class LightAppImages extends Images {
   final String ad3yahCard = 'assets/images/home-cards/light/Ad3yah.png';
   final String allahNamesCard = 'assets/images/home-cards/light/AllahNames.png';
   // Backgrounds
-  final String noAd3yah = 'assets/backgrounds/NoAd3yah.png';
-  final String noAd3yahFav = 'assets/backgrounds/NoAd3yahFav.png';
-  final String myAd3yahBg = 'assets/backgrounds/myAd3yahBg.svg';
+  final String noAd3yah = 'assets/images/backgrounds/NoAd3yah.png';
+  final String noAd3yahFav = 'assets/images/backgrounds/NoAd3yahFav.png';
+  final String myAd3yahBg = 'assets/images/backgrounds/myAd3yahBg.svg';
   // Buttons
   final String twitterButton = 'assets/images/social-buttons/twitter-light.png';
   final String igButton = 'assets/images/social-buttons/ig-light.png';

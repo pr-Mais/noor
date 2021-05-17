@@ -353,32 +353,36 @@ class _AnimatedHeaderState extends State<AnimatedHeader>
         child: Stack(
           children: <Widget>[
             if (Theme.of(context).brightness == Brightness.light)
-              ValueListenableBuilder<Animation<Offset>>(
-                valueListenable: widget.bottomCloudAnim,
-                builder: (_, Animation<Offset> value, Widget? child) {
-                  return Positioned(
-                    top: 65,
-                    child: SlideTransition(
-                      position: value,
-                      child: child,
-                    ),
-                  );
-                },
-                child: Image.asset(Images.cloudBottom, width: 100),
+              Positioned(
+                top: 30,
+                child: SafeArea(
+                  child: ValueListenableBuilder<Animation<Offset>>(
+                    valueListenable: widget.bottomCloudAnim,
+                    builder: (_, Animation<Offset> value, Widget? child) {
+                      return SlideTransition(
+                        position: value,
+                        child: child,
+                      );
+                    },
+                    child: Image.asset(Images.cloudBottom, width: 100),
+                  ),
+                ),
               ),
             if (Theme.of(context).brightness == Brightness.light)
-              ValueListenableBuilder<Animation<Offset>>(
-                valueListenable: widget.topCloudAnim,
-                builder: (_, Animation<Offset> value, Widget? child) {
-                  return Positioned(
-                    top: 40,
-                    child: SlideTransition(
-                      position: value,
-                      child: child,
-                    ),
-                  );
-                },
-                child: Image.asset(Images.cloutTop, width: 100),
+              SafeArea(
+                child: ValueListenableBuilder<Animation<Offset>>(
+                  valueListenable: widget.topCloudAnim,
+                  builder: (_, Animation<Offset> value, Widget? child) {
+                    return Positioned(
+                      top: 0,
+                      child: SlideTransition(
+                        position: value,
+                        child: child,
+                      ),
+                    );
+                  },
+                  child: Image.asset(Images.cloutTop, width: 100),
+                ),
               ),
             if (Theme.of(context).brightness == Brightness.dark)
               Align(
@@ -393,10 +397,10 @@ class _AnimatedHeaderState extends State<AnimatedHeader>
                   child: SingleChildScrollView(
                     child: Column(
                       children: <Widget>[
-                        const SizedBox(height: 20),
+                        const SizedBox(height: 10),
                         SvgPicture.asset(
                           'assets/images/logo-dark.svg',
-                          width: 50,
+                          width: 60,
                         ),
                         const SizedBox(height: 15),
                         ValueListenableBuilder<String>(

@@ -63,19 +63,12 @@ class _AllahNamesListState extends State<AllahNamesList>
     return Container(
       height: 30,
       alignment: Alignment.bottomRight,
-      child: TextButton(
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Image.asset(Images.referenceIcon),
-            SizedBox(width: 10),
-            Text(
-              'ذُكِرَ في',
-              style:
-                  TextStyle(fontSize: 14, color: Color(0xff6f85d5), height: 1),
-              textScaleFactor: 1,
-            ),
-          ],
+      child: TextButton.icon(
+        icon: Image.asset(Images.referenceIcon),
+        label: Text(
+          'ذُكِرَ في',
+          style: Theme.of(context).textTheme.button,
+          textScaleFactor: 1,
         ),
         onPressed: () {
           Navigator.of(context).push(

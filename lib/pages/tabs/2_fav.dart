@@ -287,22 +287,12 @@ class FavCard extends StatelessWidget {
     return Container(
       height: 30,
       alignment: Alignment.bottomRight,
-      child: TextButton(
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Image.asset(Images.referenceIcon),
-            SizedBox(width: 10),
-            Text(
-              item is AllahName ? item.name : item.sectionName,
-              style: Theme.of(context).textTheme.bodyText1?.copyWith(
-                    fontSize: 14,
-                    color: Color(0xff6f85d5),
-                    height: 1,
-                  ),
-              textScaleFactor: 1,
-            ),
-          ],
+      child: TextButton.icon(
+        icon: Image.asset(Images.referenceIcon),
+        label: Text(
+          item is AllahName ? item.name : item.sectionName,
+          textScaleFactor: 1,
+          style: Theme.of(context).textTheme.button,
         ),
         onPressed: backToLocation,
       ),
@@ -311,7 +301,6 @@ class FavCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ThemeModel themeProvider = context.watch();
     return CardTemplate(
       ribbon: ribbon,
       actions: <Widget>[
@@ -332,7 +321,10 @@ class FavCard extends StatelessWidget {
         ),
       ],
       additionalContent: item.category == NoorCategory.MYAD3YAH
-          ? CardText(text: item.info)
+          ? CardText(
+              text: item.info,
+              color: Theme.of(context).primaryColor,
+            )
           : null,
       actionButton: backToMainLocation(item, context),
       child: item is AllahName
