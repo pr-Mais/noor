@@ -12,22 +12,25 @@ class CardText extends StatelessWidget {
   Widget build(BuildContext context) {
     final SettingsModel settings = context.watch();
 
-    return DefaultTextStyle.merge(
-      textAlign: TextAlign.justify,
-      style: color != null
-          ? Theme.of(context).textTheme.bodyText1!.copyWith(
-                color: color,
-                fontFamily: settings.fontType,
-              )
-          : Theme.of(context).textTheme.bodyText1!.copyWith(
-                fontFamily: settings.fontType,
-              ),
-      child: AnimatedSwitcher(
-        duration: Duration(milliseconds: 200),
-        child: Text(
-          settings.tashkeel ? text : Tashkeel.remove(text),
-          key: ValueKey<bool>(settings.tashkeel),
-          textScaleFactor: settings.fontSize,
+    return Align(
+      alignment: Alignment.centerRight,
+      child: DefaultTextStyle.merge(
+        textAlign: TextAlign.justify,
+        style: color != null
+            ? Theme.of(context).textTheme.bodyText1!.copyWith(
+                  color: color,
+                  fontFamily: settings.fontType,
+                )
+            : Theme.of(context).textTheme.bodyText1!.copyWith(
+                  fontFamily: settings.fontType,
+                ),
+        child: AnimatedSwitcher(
+          duration: Duration(milliseconds: 200),
+          child: Text(
+            settings.tashkeel ? text : Tashkeel.remove(text),
+            key: ValueKey<bool>(settings.tashkeel),
+            textScaleFactor: settings.fontSize,
+          ),
         ),
       ),
     );

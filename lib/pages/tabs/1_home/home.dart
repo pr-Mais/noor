@@ -10,8 +10,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 import 'package:noor/exports/constants.dart' show Images;
 import 'package:noor/exports/pages.dart' show AllahNames, AthkarPage, Ad3yah;
-import 'package:noor/exports/components.dart'
-    show NoorLogo, GlowingStars, HomeCard;
+import 'package:noor/exports/components.dart' show GlowingStars, HomeCard;
 import 'package:noor/exports/utils.dart' show backToExactLocation, Tashkeel;
 import 'package:noor/exports/controllers.dart' show ThemeModel;
 import 'package:noor/exports/services.dart' show SharedPrefsService;

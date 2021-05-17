@@ -9,18 +9,19 @@ import 'package:noor/exports/components.dart'
     show NoorCloseButton, ThekrTitleCard, AthkarCard;
 
 class AthkarList extends StatefulWidget {
-  const AthkarList({Key? key, this.index = 0}) : super(key: key);
+  const AthkarList({Key? key, required this.index}) : super(key: key);
   final int index;
   _AthkarListState createState() => _AthkarListState();
 }
 
 class _AthkarListState extends State<AthkarList>
     with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
-  ItemScrollController? controller;
+  late ItemScrollController controller;
+  late Animation<double> animation;
+
   ItemPositionsListener listener = ItemPositionsListener.create();
-  Animation<double>? animation;
   late AnimationController animationController;
-  int pagePosition = 0;
+  late int pagePosition;
 
   @override
   get wantKeepAlive => true;
@@ -28,11 +29,14 @@ class _AthkarListState extends State<AthkarList>
   @override
   void initState() {
     super.initState();
-    animationController = new AnimationController(
-      vsync: this,
-    );
+    pagePosition = widget.index;
+    animationController = new AnimationController(vsync: this);
     animation = Tween<double>(begin: 0.0, end: 0.1).animate(
-        CurvedAnimation(parent: animationController, curve: Curves.elasticIn));
+      CurvedAnimation(
+        parent: animationController,
+        curve: Curves.elasticIn,
+      ),
+    );
     controller = new ItemScrollController();
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       listener.itemPositions.addListener(changeAppBar);
@@ -48,7 +52,7 @@ class _AthkarListState extends State<AthkarList>
   changeAppBar() {
     if (pagePosition != listener.itemPositions.value.first.index) {
       setState(() {
-        pagePosition = listener.itemPositions.value.first.index - 1;
+        pagePosition = listener.itemPositions.value.first.index;
       });
     }
   }
@@ -74,7 +78,7 @@ class _AthkarListState extends State<AthkarList>
         counter._counter == 0) {
       Future<void>.delayed(Duration(milliseconds: 500)).then(
         (_) {
-          controller!.scrollTo(
+          controller.scrollTo(
               duration: Duration(milliseconds: 800),
               curve: Curves.easeInOutCubic,
               index: index + 1);
@@ -104,10 +108,11 @@ class _AthkarListState extends State<AthkarList>
                       builder: (BuildContext context, DataModel model, _) {
                         return AnimatedSwitcher(
                           child: Text(
-                            model.athkar[pagePosition + 2].sectionName,
+                            model.athkar[pagePosition].sectionName,
                             textAlign: TextAlign.center,
                             key: ValueKey<String?>(
-                                model.athkar[pagePosition + 2].sectionName),
+                              model.athkar[pagePosition].sectionName,
+                            ),
                             style: Theme.of(context).textTheme.headline1,
                           ),
                           duration: const Duration(milliseconds: 250),
