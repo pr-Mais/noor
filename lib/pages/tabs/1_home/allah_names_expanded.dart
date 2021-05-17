@@ -118,7 +118,8 @@ class _AllahNamesListState extends State<AllahNamesList>
                             allahNames[position.value].name,
                             textAlign: TextAlign.center,
                             key: ValueKey<String?>(
-                                allahNames[position.value].name),
+                              allahNames[position.value].name,
+                            ),
                             style: Theme.of(context).textTheme.headline1,
                           ),
                         );
@@ -156,9 +157,9 @@ class _AllahNamesListState extends State<AllahNamesList>
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            CardText(text: textList[0]),
+                            CardText(text: textList[0] + '.'),
                             SizedBox(height: 10),
-                            CardText(text: textList[0]),
+                            CardText(text: textList[1] + '.'),
                           ],
                         ),
                         actions: <Widget>[

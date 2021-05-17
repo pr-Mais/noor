@@ -39,8 +39,6 @@ class _Ad3yahListState extends State<Ad3yahList> {
 
   @override
   Widget build(BuildContext context) {
-    final SettingsModel settings = context.watch<SettingsModel>();
-
     return Scaffold(
       body: Column(
         children: <Widget>[
@@ -64,29 +62,31 @@ class _Ad3yahListState extends State<Ad3yahList> {
             ),
           ),
           Expanded(
-            child: ScrollablePositionedList.builder(
-              physics: AlwaysScrollableScrollPhysics(),
-              itemCount: data[widget.category.index - 1].length,
-              initialScrollIndex: widget.index,
-              itemScrollController: controller,
-              itemBuilder: (BuildContext context, int index) {
-                Doaa item = data[widget.category.index - 1][index];
+            child: Scrollbar(
+              child: ScrollablePositionedList.builder(
+                physics: AlwaysScrollableScrollPhysics(),
+                itemCount: data[widget.category.index - 1].length,
+                initialScrollIndex: widget.index,
+                itemScrollController: controller,
+                itemBuilder: (BuildContext context, int index) {
+                  Doaa item = data[widget.category.index - 1][index];
 
-                return CardTemplate(
-                  ribbon: item.ribbon,
-                  actions: <Widget>[
-                    FavAction(item),
-                    CopyAction(item.text),
-                  ],
-                  additionalContent: item.info.isNotEmpty
-                      ? Text(
-                          item.info,
-                          textAlign: TextAlign.right,
-                        )
-                      : null,
-                  child: CardText(text: item.text),
-                );
-              },
+                  return CardTemplate(
+                    ribbon: item.ribbon,
+                    actions: <Widget>[
+                      FavAction(item),
+                      CopyAction(item.text),
+                    ],
+                    additionalContent: item.info.isNotEmpty
+                        ? Text(
+                            item.info,
+                            textAlign: TextAlign.right,
+                          )
+                        : null,
+                    child: CardText(text: item.text),
+                  );
+                },
+              ),
             ),
           ),
         ],
