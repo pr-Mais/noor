@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:noor/exports/services.dart' show DBService;
-import 'package:noor/exports/controllers.dart' show ThemeProvider;
+import 'package:noor/exports/controllers.dart' show ThemeModel;
 import 'package:noor/exports/constants.dart' show Images;
 import 'package:noor/exports/models.dart' show DataModel, Thekr;
 import 'package:noor/exports/pages.dart' show AthkarList;
@@ -44,7 +44,7 @@ class _AthkarPageState extends State<AthkarPage>
 
   @override
   Widget build(BuildContext context) {
-    final Images images = context.read<ThemeProvider>().images;
+    final Images images = context.read<ThemeModel>().images;
 
     return Scaffold(
         body: Column(

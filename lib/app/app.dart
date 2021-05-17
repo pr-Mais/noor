@@ -7,7 +7,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:noor/exports/pages.dart' show SplashScreen;
 import 'package:noor/exports/models.dart' show DataModel, SettingsModel;
 import 'package:noor/exports/components.dart' show CustomScrollBehavior;
-import 'package:noor/exports/controllers.dart' show ThemeProvider;
+import 'package:noor/exports/controllers.dart' show ThemeModel;
 import 'package:noor/exports/constants.dart' show lightTheme, darkTheme;
 
 class NoorApp extends StatelessWidget {
@@ -15,8 +15,8 @@ class NoorApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: <SingleChildWidget>[
-        ChangeNotifierProvider<ThemeProvider>.value(
-          value: ThemeProvider(),
+        ChangeNotifierProvider<ThemeModel>.value(
+          value: ThemeModel(),
         ),
         ChangeNotifierProvider<DataModel>.value(
           value: GetIt.I<DataModel>(),
@@ -33,7 +33,7 @@ class NoorApp extends StatelessWidget {
 class MaterialAppWithTheme extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final ThemeProvider themeProvider = context.watch<ThemeProvider>();
+    final ThemeModel themeProvider = context.watch<ThemeModel>();
 
     return MaterialApp(
       localizationsDelegates: <LocalizationsDelegate<dynamic>>[

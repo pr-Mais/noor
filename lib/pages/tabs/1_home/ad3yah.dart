@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:noor/exports/pages.dart' show Ad3yahList, MyAd3yah;
 import 'package:noor/exports/constants.dart' show Titles, NoorCategory;
 import 'package:noor/exports/components.dart' show NoorCloseButton, ListItem;
-import 'package:noor/exports/controllers.dart' show ThemeProvider;
+import 'package:noor/exports/controllers.dart' show ThemeModel;
 
 class Ad3yah extends StatefulWidget {
   const Ad3yah();
@@ -42,7 +42,7 @@ class _Ad3yahState extends State<Ad3yah> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeProvider themeProvider = context.watch<ThemeProvider>();
+    final ThemeModel themeProvider = context.watch<ThemeModel>();
 
     return Scaffold(
       body: Column(
@@ -71,8 +71,8 @@ class _Ad3yahState extends State<Ad3yah> with SingleTickerProviderStateMixin {
                   left: 10.0, top: 40.0, child: NoorCloseButton(size: 35)),
             ],
           ),
-          Consumer<ThemeProvider>(
-            builder: (_, ThemeProvider theme, __) {
+          Consumer<ThemeModel>(
+            builder: (_, ThemeModel theme, __) {
               return Expanded(
                 child: ListView(
                   padding: EdgeInsets.only(top: 15.0),

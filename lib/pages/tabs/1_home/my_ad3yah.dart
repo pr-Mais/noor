@@ -4,8 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:reorderables/reorderables.dart';
 
-import 'package:noor/exports/controllers.dart'
-    show ThemeProvider, DataController;
+import 'package:noor/exports/controllers.dart' show ThemeModel, DataController;
 import 'package:noor/exports/constants.dart' show Images, Ribbon;
 import 'package:noor/exports/models.dart' show DataModel, Doaa;
 import 'package:noor/exports/components.dart'
@@ -189,7 +188,7 @@ class _MyAd3yahState extends State<MyAd3yah> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    final Images images = context.read<ThemeProvider>().images;
+    final Images images = context.read<ThemeModel>().images;
     final DataModel dataModel = Provider.of<DataModel>(context);
 
     final List<Doaa> myAd3yah = dataModel.myAd3yah;

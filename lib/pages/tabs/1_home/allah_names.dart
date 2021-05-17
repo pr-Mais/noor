@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:noor/exports/pages.dart' show AllahNamesList;
 import 'package:noor/exports/models.dart' show DataModel, AllahName;
 import 'package:noor/exports/constants.dart' show Images;
-import 'package:noor/exports/controllers.dart' show ThemeProvider;
+import 'package:noor/exports/controllers.dart' show ThemeModel;
 import 'package:noor/exports/components.dart' show NoorCloseButton, ListItem;
 
 class AllahNames extends StatefulWidget {
@@ -48,7 +48,7 @@ class _AllahNamesState extends State<AllahNames>
 
   @override
   Widget build(BuildContext context) {
-    final Images images = context.read<ThemeProvider>().images;
+    final Images images = context.read<ThemeModel>().images;
 
     return Scaffold(
       body: Column(

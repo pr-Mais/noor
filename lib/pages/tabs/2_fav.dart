@@ -16,8 +16,7 @@ import 'package:noor/exports/models.dart' show AllahName;
 import 'package:noor/exports/constants.dart' show Images, NoorCategory;
 import 'package:noor/exports/pages.dart'
     show Ad3yahList, AllahNamesList, AthkarList, MyAd3yah;
-import 'package:noor/exports/controllers.dart'
-    show DataController, ThemeProvider;
+import 'package:noor/exports/controllers.dart' show DataController, ThemeModel;
 import 'package:noor/exports/utils.dart' show backToExactLocation;
 import 'package:noor/exports/components.dart' show CardText;
 
@@ -119,7 +118,7 @@ class _FavoriteState extends State<Favorite>
   Widget build(BuildContext context) {
     super.build(context);
 
-    final Images images = context.read<ThemeProvider>().images;
+    final Images images = context.read<ThemeModel>().images;
     final DataController data = GetIt.I<DataController>();
 
     void onSectionTap(int i) {
@@ -305,7 +304,7 @@ class FavCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ThemeProvider themeProvider = context.watch();
+    ThemeModel themeProvider = context.watch();
     return CardTemplate(
       ribbon: ribbon,
       actions: <Widget>[

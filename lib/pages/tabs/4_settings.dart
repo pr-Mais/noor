@@ -14,8 +14,7 @@ import 'package:noor/exports/components.dart'
     show CardTemplate, NoorSettingsIcons;
 import 'package:noor/exports/services.dart' show SharedPrefsService;
 import 'package:noor/exports/utils.dart' show Tashkeel;
-import 'package:noor/exports/controllers.dart'
-    show ThemeProvider, SettingsModel;
+import 'package:noor/exports/controllers.dart' show ThemeModel, SettingsModel;
 import 'package:noor/exports/constants.dart' show Images, Links, Ribbon;
 
 class Settings extends StatefulWidget {
@@ -195,7 +194,7 @@ class _SettingsState extends State<Settings>
 
   changeTheme(value) async {
     context.read<SettingsModel>().theme = value;
-    context.read<ThemeProvider>().userTheme = value;
+    context.read<ThemeModel>().userTheme = value;
   }
 
   Widget radioBtn(icon, title, value) {
@@ -261,7 +260,7 @@ class _SettingsState extends State<Settings>
   Widget build(BuildContext context) {
     super.build(context);
     final SettingsModel settings = context.watch<SettingsModel>();
-    final Images images = Provider.of<ThemeProvider>(context).images;
+    final Images images = Provider.of<ThemeModel>(context).images;
 
     return Scaffold(
       body: Scrollbar(

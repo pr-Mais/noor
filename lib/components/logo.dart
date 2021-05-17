@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:noor/exports/controllers.dart' show ThemeProvider;
+import 'package:noor/exports/controllers.dart' show ThemeModel;
 import 'package:provider/provider.dart';
 
 class NoorLogo extends StatelessWidget {
@@ -12,7 +12,7 @@ class NoorLogo extends StatelessWidget {
     return SizedBox.fromSize(
       size: Size(size, size),
       child: SvgPicture.asset(
-        context.watch<ThemeProvider>().images.logo,
+        context.watch<ThemeModel>().images.logo,
       ),
     );
   }

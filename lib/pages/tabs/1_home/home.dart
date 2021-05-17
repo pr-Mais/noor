@@ -13,7 +13,7 @@ import 'package:noor/exports/pages.dart' show AllahNames, AthkarPage, Ad3yah;
 import 'package:noor/exports/components.dart'
     show NoorLogo, GlowingStars, HomeCard;
 import 'package:noor/exports/utils.dart' show backToExactLocation, Tashkeel;
-import 'package:noor/exports/controllers.dart' show ThemeProvider;
+import 'package:noor/exports/controllers.dart' show ThemeModel;
 import 'package:noor/exports/services.dart' show SharedPrefsService;
 import 'package:noor/exports/models.dart' show AllahName, DataModel, Thekr;
 import 'package:noor/exports/constants.dart' show NoorCategory;
@@ -140,7 +140,7 @@ class _HomeState extends State<Home>
   Widget build(BuildContext context) {
     super.build(context);
 
-    final Images images = context.read<ThemeProvider>().images;
+    final Images images = context.read<ThemeModel>().images;
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -334,7 +334,7 @@ class _AnimatedHeaderState extends State<AnimatedHeader>
   @override
   Widget build(BuildContext context) {
     final Images images =
-        Provider.of<ThemeProvider>(context, listen: false).images;
+        Provider.of<ThemeModel>(context, listen: false).images;
     return AnimatedSize(
       curve: Curves.easeInOutCirc,
       duration: Duration(milliseconds: 300),

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:noor/constants/images.dart';
 import 'package:provider/provider.dart';
 
-import 'package:noor/exports/controllers.dart' show ThemeProvider;
+import 'package:noor/exports/controllers.dart' show ThemeModel;
 
 enum StarType { circle, normal }
 
@@ -248,7 +248,7 @@ class _StarState extends State<Star> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeProvider themeProvider = context.watch();
+    final ThemeModel themeProvider = context.watch();
 
     return ValueListenableBuilder<Animation<double>?>(
       valueListenable: opacity,
