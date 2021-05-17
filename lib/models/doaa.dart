@@ -1,4 +1,4 @@
-import 'package:noor/constants/categories.dart';
+import 'package:noor/exports/constants.dart' show NoorCategory;
 
 class Doaa {
   late final String id;

@@ -1,5 +1,4 @@
-import 'package:noor/constants/categories.dart';
-import 'package:noor/constants/ribbons.dart';
+import 'package:noor/exports/constants.dart' show NoorCategory, Ribbon;
 
 class AllahName {
   late final String id;
