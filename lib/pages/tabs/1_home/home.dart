@@ -161,6 +161,7 @@ class _HomeState extends State<Home>
                 child: Column(
                   children: <Widget>[
                     searchBar(),
+                    const SizedBox(height: 10),
                     if (!isWriting)
                       Stack(
                         children: <Widget>[
@@ -172,11 +173,13 @@ class _HomeState extends State<Home>
                                   image: images.athkarCard,
                                   tag: 'athkar',
                                 ),
+                                const SizedBox(height: 10),
                                 HomeCard(
                                   page: const Ad3yah(),
                                   image: images.ad3yahCard,
                                   tag: 'ad3yah',
                                 ),
+                                const SizedBox(height: 10),
                                 HomeCard(
                                   page: const AllahNames(),
                                   image: images.allahNamesCard,

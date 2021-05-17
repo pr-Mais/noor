@@ -44,10 +44,10 @@ class HomeCard extends StatelessWidget {
             ],
           ),
           width: double.infinity,
-          margin: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+          margin: EdgeInsets.symmetric(horizontal: 20),
           child: GestureDetector(
             child: SizedBox(
-              height: MediaQuery.of(context).size.height * 0.25,
+              height: MediaQuery.of(context).size.height * 0.28,
               child: Card(
                 elevation: 0,
                 shape: RoundedRectangleBorder(
