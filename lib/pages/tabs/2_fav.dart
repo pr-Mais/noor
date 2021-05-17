@@ -191,6 +191,13 @@ class _FavoriteState extends State<Favorite>
                                       ),
                                     );
                                   },
+                                  buildItemsContainer:
+                                      (context, direction, children) {
+                                    return Container(
+                                      height: 2,
+                                      color: Colors.yellow,
+                                    );
+                                  },
                                   delegate:
                                       ReorderableSliverChildBuilderDelegate(
                                     (BuildContext context, int index) =>

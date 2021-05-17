@@ -39,8 +39,7 @@ class _SettingsState extends State<Settings>
   void initState() {
     tz.initializeTimeZones();
 
-    morningNotiEnabled = SharedPrefsService.getBool('morningNotiEnabled') &&
-        SharedPrefsService.getString('morningNotiTime').isNotEmpty;
+    morningNotiEnabled = SharedPrefsService.getBool('morningNotiEnabled');
     morningNotiTime = SharedPrefsService.getString('morningNotiTime').isNotEmpty
         ? DateTime.parse(SharedPrefsService.getString('morningNotiTime'))
         : null;
@@ -111,11 +110,11 @@ class _SettingsState extends State<Settings>
 
   Widget switcherOption({
     IconData? icon,
-    required title,
+    required String title,
     option1,
     option2,
-    onChanged,
-    required value,
+    required Function(bool) onChanged,
+    required bool value,
     String? image,
   }) {
     return Row(
@@ -187,7 +186,7 @@ class _SettingsState extends State<Settings>
     );
   }
 
-  formatTime(DateTime dateTime) {
+  formatTime(DateTime? dateTime) {
     return dateTime == null
         ? 'اختر وقت'
         : intl.DateFormat('h:mm a', 'ar').format(dateTime);
@@ -464,7 +463,7 @@ class _SettingsState extends State<Settings>
                   ),
                   switcherOption(
                     icon: NoorSettingsIcons.vibrate,
-                    title: 'الهزاز لصفحة العداد',
+                    title: 'الهزاز لصفحة السبحة',
                     value: settings.vibrateCounter,
                     onChanged: (bool value) => settings.vibrateCounter = value,
                   ),
@@ -476,7 +475,7 @@ class _SettingsState extends State<Settings>
                         Padding(
                           padding: const EdgeInsets.only(right: 20),
                           child: title(
-                            'نوع الهزاز لصفحة العداد',
+                            'نوع الهزاز لصفحة السبحة',
                           ),
                         ),
                         VerticalSpace(),
@@ -548,23 +547,20 @@ class _SettingsState extends State<Settings>
                                               children: <Widget>[
                                                 SizedBox(
                                                   width: 60,
-                                                  child: FlatButton(
+                                                  child: TextButton(
                                                     child: Text(
                                                       'حفظ',
-                                                      style: TextStyle(
-                                                          color: Theme.of(context)
-                                                                      .brightness ==
-                                                                  Brightness
-                                                                      .light
-                                                              ? Theme.of(
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .bodyText1!
+                                                          .copyWith(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                              color: Theme.of(
                                                                       context)
-                                                                  .accentColor
-                                                              : Theme.of(
-                                                                      context)
-                                                                  .primaryColor,
-                                                          fontSize: 12,
-                                                          fontFamily:
-                                                              'SST Roman'),
+                                                                  .accentColor,
+                                                              fontSize: 12),
                                                     ),
                                                     onPressed: () async {
                                                       Navigator.of(context)
@@ -607,23 +603,20 @@ class _SettingsState extends State<Settings>
                                                 ),
                                                 SizedBox(
                                                   width: 60,
-                                                  child: FlatButton(
+                                                  child: TextButton(
                                                     child: Text(
                                                       'إلغاء',
-                                                      style: TextStyle(
-                                                          color: Theme.of(context)
-                                                                      .brightness ==
-                                                                  Brightness
-                                                                      .light
-                                                              ? Theme.of(
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .bodyText1!
+                                                          .copyWith(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                              color: Theme.of(
                                                                       context)
-                                                                  .accentColor
-                                                              : Theme.of(
-                                                                      context)
-                                                                  .primaryColor,
-                                                          fontSize: 12,
-                                                          fontFamily:
-                                                              'SST Roman'),
+                                                                  .accentColor,
+                                                              fontSize: 12),
                                                     ),
                                                     onPressed: () {
                                                       Navigator.of(context)
@@ -645,15 +638,9 @@ class _SettingsState extends State<Settings>
                                                   textTheme:
                                                       CupertinoTextThemeData(
                                                     dateTimePickerTextStyle:
-                                                        TextStyle(
-                                                      locale: Locale('ar'),
-                                                      fontFamily: 'SST',
-                                                      fontSize: 16,
-                                                      color: Theme.of(context)
-                                                          .textTheme
-                                                          .body1!
-                                                          .color,
-                                                    ),
+                                                        Theme.of(context)
+                                                            .textTheme
+                                                            .bodyText1,
                                                   ),
                                                 ),
                                                 child: CupertinoDatePicker(
@@ -691,7 +678,8 @@ class _SettingsState extends State<Settings>
                                   ),
                                   child: Text(
                                     formatTime(morningNotiTime),
-                                    style: Theme.of(context).textTheme.subtitle,
+                                    style:
+                                        Theme.of(context).textTheme.subtitle1,
                                   ),
                                 ),
                               ),
@@ -751,23 +739,20 @@ class _SettingsState extends State<Settings>
                                               children: <Widget>[
                                                 SizedBox(
                                                   width: 60,
-                                                  child: FlatButton(
+                                                  child: TextButton(
                                                     child: Text(
                                                       'حفظ',
-                                                      style: TextStyle(
-                                                          color: Theme.of(context)
-                                                                      .brightness ==
-                                                                  Brightness
-                                                                      .light
-                                                              ? Theme.of(
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .bodyText1!
+                                                          .copyWith(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                              color: Theme.of(
                                                                       context)
-                                                                  .accentColor
-                                                              : Theme.of(
-                                                                      context)
-                                                                  .primaryColor,
-                                                          fontSize: 12,
-                                                          fontFamily:
-                                                              'SST Roman'),
+                                                                  .accentColor,
+                                                              fontSize: 12),
                                                     ),
                                                     onPressed: () async {
                                                       Navigator.of(context)
@@ -809,23 +794,20 @@ class _SettingsState extends State<Settings>
                                                 ),
                                                 SizedBox(
                                                   width: 60,
-                                                  child: FlatButton(
+                                                  child: TextButton(
                                                     child: Text(
                                                       'إلغاء',
-                                                      style: TextStyle(
-                                                          color: Theme.of(context)
-                                                                      .brightness ==
-                                                                  Brightness
-                                                                      .light
-                                                              ? Theme.of(
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .bodyText1!
+                                                          .copyWith(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                              color: Theme.of(
                                                                       context)
-                                                                  .accentColor
-                                                              : Theme.of(
-                                                                      context)
-                                                                  .primaryColor,
-                                                          fontSize: 12,
-                                                          fontFamily:
-                                                              'SST Roman'),
+                                                                  .accentColor,
+                                                              fontSize: 12),
                                                     ),
                                                     onPressed: () {
                                                       Navigator.of(context)
@@ -893,7 +875,8 @@ class _SettingsState extends State<Settings>
                                   ),
                                   child: Text(
                                     formatTime(nightNotiTime),
-                                    style: Theme.of(context).textTheme.subtitle,
+                                    style:
+                                        Theme.of(context).textTheme.subtitle1,
                                   ),
                                 ),
                               ),

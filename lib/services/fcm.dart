@@ -34,7 +34,7 @@ class FCMService {
 
   Future<void> subscribe() async {
     SharedPrefsService.putBool('generalNotifications', true);
-    GetIt.I<SettingsModel>().generalNotification = false;
+    GetIt.I<SettingsModel>().generalNotification = true;
 
     await _firebaseMessaging.subscribeToTopic('general_notifications');
   }
