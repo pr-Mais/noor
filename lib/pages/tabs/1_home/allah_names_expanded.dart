@@ -164,7 +164,7 @@ class _AllahNamesListState extends State<AllahNamesList>
                         ),
                         actions: <Widget>[
                           FavAction(name),
-                          CopyAction('اسم الله ${name.name}: ${name.text}')
+                          CopyAction('اسم الله (${name.name}): ${name.text}')
                         ],
                       ),
                     ],
