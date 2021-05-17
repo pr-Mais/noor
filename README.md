@@ -11,7 +11,7 @@
 
 ## Overview
 
-Noor is a mobile app, designed to help in providing a comfortable reading experience for Muslims, by referencing the book "Hesn Almuslim", and some other references.
+Noor is an islamic mobile app, consists of four main pages: home, favorite, alsabha, and settings. The data is structured in Cards that are easy to read, and has some actions that can be performed with the card content. Noor is designed to help in providing a comfortable reading experience for Muslims, by referencing the book "Hisnul Muslim", and some other references.
 
 This project contains the codebase for the Android version that is on Play Store, it can run on iOS as well. Built with Flutter, and Firebase.
 
