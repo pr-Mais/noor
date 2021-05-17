@@ -22,9 +22,13 @@ class CardText extends StatelessWidget {
           : Theme.of(context).textTheme.bodyText1!.copyWith(
                 fontFamily: settings.fontType,
               ),
-      child: Text(
-        settings.tashkeel ? text : Tashkeel.remove(text),
-        textScaleFactor: settings.fontSize,
+      child: AnimatedSwitcher(
+        duration: Duration(milliseconds: 200),
+        child: Text(
+          settings.tashkeel ? text : Tashkeel.remove(text),
+          key: ValueKey<bool>(settings.tashkeel),
+          textScaleFactor: settings.fontSize,
+        ),
       ),
     );
   }
