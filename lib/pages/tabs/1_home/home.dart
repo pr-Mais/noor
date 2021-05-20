@@ -14,8 +14,7 @@ import 'package:noor/exports/components.dart' show GlowingStars, HomeCard;
 import 'package:noor/exports/utils.dart' show backToExactLocation, Tashkeel;
 import 'package:noor/exports/controllers.dart' show ThemeModel;
 import 'package:noor/exports/services.dart' show SharedPrefsService;
-import 'package:noor/exports/models.dart' show AllahName, DataModel, Thekr;
-import 'package:noor/exports/constants.dart' show NoorCategory;
+import 'package:noor/exports/models.dart' show AllahName, DataModel;
 
 class Home extends StatefulWidget {
   Home({
@@ -30,30 +29,23 @@ class _HomeState extends State<Home>
   bool isWriting = false;
   FocusNode _focusNode = new FocusNode();
   TextEditingController _searchController = new TextEditingController();
-  List results = [];
-  List title = [];
+  List<dynamic> results = [];
+  List<dynamic> title = [];
 
-  String? searchWord;
-
-  late AnimationController cloudController;
-  late Animation<Offset> _topCloudAnim;
-  late Animation<Offset> _bottomCloudAnim;
+  String searchWord = '';
 
   @override
   bool get wantKeepAlive => true;
-
   @override
   void initState() {
+    _searchController.addListener(_searchOperation);
     super.initState();
-
-    setupCloudAnimation();
   }
 
   @override
   void dispose() {
     _focusNode.dispose();
     _searchController.dispose();
-    cloudController.dispose();
     super.dispose();
   }
 
@@ -75,23 +67,10 @@ class _HomeState extends State<Home>
         .show(0, title, body, platformChannelSpecifics, payload: payload);
   }
 
-  setupCloudAnimation() {
-    cloudController =
-        AnimationController(duration: Duration(seconds: 15), vsync: this)
-          ..forward()
-          ..reverse()
-          ..repeat();
-
-    _topCloudAnim =
-        Tween<Offset>(begin: Offset(3.0, 0.0), end: Offset(-5.5, 0.0))
-            .animate(cloudController);
-    _bottomCloudAnim =
-        Tween<Offset>(begin: Offset(-5.5, 0.0), end: Offset(3.0, 0.0))
-            .animate(cloudController);
-  }
-
   //once the user type something, results will start showing
-  void _searchOperation(String query) {
+  void _searchOperation() {
+    // The whitespace in arabic has a special unicode
+    final RegExp arWhitespace = RegExp(r'[\u200f]');
     final DataModel dataModel = GetIt.I<DataModel>();
 
     final List<dynamic> allLists = List<dynamic>.from(
@@ -104,32 +83,35 @@ class _HomeState extends State<Home>
       ],
     );
 
+    String? tmp;
+
     results.clear();
     title.clear();
-    String? tmp;
+
     setState(() {
-      searchWord = query;
+      searchWord = _searchController.text;
       isWriting = true;
-      if (query.isEmpty) {
+      if (_searchController.text.isEmpty) {
         isWriting = false;
       }
     });
-    for (int i = 0; i < allLists.length; i++) {
-      tmp = Tashkeel.remove(allLists[i].text);
-      tmp = mask(tmp);
-      if ((tmp!.contains(query) || allLists[i].text.contains(query)) &&
-          allLists[i].category != NoorCategory.MYAD3YAH) {
-        results.add(allLists[i]);
-        if (allLists[i].runtimeType == Thekr) {
-          title.add(allLists[i].sectionName);
-        } else if (allLists[i].runtimeType == AllahName) {
-          if (allLists[i].name == 'الله جل جلاله') {
-            title.add('اسم ${allLists[i].name}');
+
+    for (dynamic item in allLists) {
+      tmp = Tashkeel.remove(item.text);
+      tmp = mask(tmp)?.replaceAll(arWhitespace, '');
+      searchWord =
+          Tashkeel.remove(searchWord).replaceAll(arWhitespace, '').trim();
+      if (tmp!.contains(searchWord) || item.text.contains(searchWord)) {
+        results.add(item);
+
+        if (item is AllahName) {
+          if (item.name == 'الله جل جلاله') {
+            title.add('اسم ${item.name}');
           } else {
-            title.add('اسم الله ${allLists[i].name}');
+            title.add('اسم الله ${item.name}');
           }
         } else {
-          title.add(allLists[i].sectionName);
+          title.add(item.sectionName);
         }
       }
     }
@@ -139,7 +121,7 @@ class _HomeState extends State<Home>
   Widget build(BuildContext context) {
     super.build(context);
 
-    final Images images = context.read<ThemeModel>().images;
+    final Images images = context.watch<ThemeModel>().images;
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -149,9 +131,6 @@ class _HomeState extends State<Home>
           children: <Widget>[
             AnimatedHeader(
               focusNode: _focusNode,
-              topCloudAnim: ValueNotifier<Animation<Offset>>(_topCloudAnim),
-              bottomCloudAnim:
-                  ValueNotifier<Animation<Offset>>(_bottomCloudAnim),
               isWriting: isWriting,
             ),
             Expanded(
@@ -237,14 +216,15 @@ class _HomeState extends State<Home>
         child: TextField(
           controller: _searchController,
           focusNode: _focusNode,
-          onChanged: (String text) => _searchOperation(text),
           onTap: () {
             if (!_focusNode.hasFocus) {
               setState(() {});
             }
           },
           style: TextStyle(
-              fontSize: 14, color: Theme.of(context).textTheme.body1!.color),
+            fontSize: 14,
+            color: Theme.of(context).textTheme.bodyText1!.color,
+          ),
           decoration: InputDecoration(
             contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 15),
             hintText: 'ابحث عن ذكر أو دعاء',
@@ -292,15 +272,11 @@ class AnimatedHeader extends StatefulWidget {
   const AnimatedHeader({
     Key? key,
     required FocusNode focusNode,
-    required this.topCloudAnim,
-    required this.bottomCloudAnim,
     required this.isWriting,
   })   : focusNode = focusNode,
         super(key: key);
 
   final FocusNode focusNode;
-  final ValueNotifier<Animation<Offset>> topCloudAnim;
-  final ValueNotifier<Animation<Offset>> bottomCloudAnim;
 
   final bool isWriting;
 
@@ -312,11 +288,39 @@ class _AnimatedHeaderState extends State<AnimatedHeader>
     with TickerProviderStateMixin {
   ValueNotifier<String> remoteConfigNotifier = ValueNotifier<String>('');
 
+  late Animation<Offset> _topCloudAnim;
+  late Animation<Offset> _bottomCloudAnim;
+
+  late AnimationController cloudController;
+
   @override
   void initState() {
     _loadRemoteConfig();
     _setupReceivingFCM();
+    _setupCloudAnimation();
+
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    cloudController.dispose();
+    super.dispose();
+  }
+
+  _setupCloudAnimation() {
+    cloudController =
+        AnimationController(duration: Duration(seconds: 15), vsync: this)
+          ..forward()
+          ..reverse()
+          ..repeat();
+
+    _topCloudAnim =
+        Tween<Offset>(begin: Offset(3.0, 0.0), end: Offset(-5.5, 0.0))
+            .animate(cloudController);
+    _bottomCloudAnim =
+        Tween<Offset>(begin: Offset(-5.5, 0.0), end: Offset(3.0, 0.0))
+            .animate(cloudController);
   }
 
   Future<void> _loadRemoteConfig() async {
@@ -356,32 +360,20 @@ class _AnimatedHeaderState extends State<AnimatedHeader>
               Positioned(
                 top: 30,
                 child: SafeArea(
-                  child: ValueListenableBuilder<Animation<Offset>>(
-                    valueListenable: widget.bottomCloudAnim,
-                    builder: (_, Animation<Offset> value, Widget? child) {
-                      return SlideTransition(
-                        position: value,
-                        child: child,
-                      );
-                    },
+                  child: SlideTransition(
+                    position: _bottomCloudAnim,
                     child: Image.asset(Images.cloudBottom, width: 100),
                   ),
                 ),
               ),
             if (Theme.of(context).brightness == Brightness.light)
-              SafeArea(
-                child: ValueListenableBuilder<Animation<Offset>>(
-                  valueListenable: widget.topCloudAnim,
-                  builder: (_, Animation<Offset> value, Widget? child) {
-                    return Positioned(
-                      top: 0,
-                      child: SlideTransition(
-                        position: value,
-                        child: child,
-                      ),
-                    );
-                  },
-                  child: Image.asset(Images.cloutTop, width: 100),
+              Positioned(
+                top: 0,
+                child: SafeArea(
+                  child: SlideTransition(
+                    position: _topCloudAnim,
+                    child: Image.asset(Images.cloutTop, width: 100),
+                  ),
                 ),
               ),
             if (Theme.of(context).brightness == Brightness.dark)
@@ -442,13 +434,13 @@ class _AnimatedHeaderState extends State<AnimatedHeader>
 class SearchResults extends StatefulWidget {
   const SearchResults({
     Key? key,
-    this.results,
-    this.title,
-    this.query,
+    required this.results,
+    required this.title,
+    required this.query,
   }) : super(key: key);
-  final results;
-  final title;
-  final query;
+  final List<dynamic> results;
+  final List<dynamic> title;
+  final String query;
   @override
   _SearchResultsState createState() => _SearchResultsState();
 }
@@ -484,10 +476,10 @@ class _SearchResultsState extends State<SearchResults> {
   List<TextSpan> highlightOccurrences(String source, String query) {
     source = Tashkeel.remove(source);
     query = mask(query)!;
-    if (query == null ||
-        query.isEmpty ||
-        !mask(source)!.contains(mask(query)!)) {
-      return [TextSpan(text: source)];
+    if (query.isEmpty || !mask(source)!.contains(mask(query)!)) {
+      return [
+        TextSpan(text: source),
+      ];
     }
     final matches = query.allMatches(mask(source)!);
 
@@ -565,23 +557,24 @@ class _SearchResultsState extends State<SearchResults> {
                           horizontal: 30.0,
                         ),
                       ),
-                      Padding(
-                        child: Text(
-                          widget.title[index],
-                          overflow: TextOverflow.ellipsis,
-                          softWrap: false,
-                          maxLines: 1,
-                          textDirection: TextDirection.rtl,
-                          textAlign: TextAlign.right,
-                          style: TextStyle(
-                              color: Theme.of(context).primaryColor,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 12),
+                      if (widget.title.isNotEmpty)
+                        Padding(
+                          child: Text(
+                            widget.title[index],
+                            overflow: TextOverflow.ellipsis,
+                            softWrap: false,
+                            maxLines: 1,
+                            textDirection: TextDirection.rtl,
+                            textAlign: TextAlign.right,
+                            style: TextStyle(
+                                color: Theme.of(context).primaryColor,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 12),
+                          ),
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 30.0,
+                          ),
                         ),
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 30.0,
-                        ),
-                      ),
                       Divider(),
                     ],
                   ),
