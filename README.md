@@ -15,6 +15,13 @@ Noor is an islamic mobile app, consists of four main pages: home, favorite, alsa
 
 This project contains the codebase for the Android version that is on Play Store, it can run on iOS as well. Built with Flutter, and Firebase.
 
+## App Preview
+
+<p>
+   <img src="https://user-images.githubusercontent.com/41123719/118995957-3759e700-b990-11eb-99dc-2964369af25a.gif" atl="Noor Light Mode" width="200"/>     
+   <img src="https://user-images.githubusercontent.com/41123719/118996008-40e34f00-b990-11eb-86ac-e82c3c99b61d.gif" atl="Noor Dark Mode" width="200"/>     
+</p>
+
 ## How to run
 
 The assets were replaced by placeholders, so the version you will run locally is different in look than the version in stores.
@@ -58,7 +65,3 @@ For features request, contact us on [noorathkarapplication@gmail.com](mailto:noo
 Shout out to the amazing designer [Shaikha Alqahtani](https://twitter.com/Ishaiookh).
 <br/> The iOS version from Noor was made with native Swift by [Maryam Aljamea](https://twitter.com/0_1Mary).
 
-<p>
-   <img src="https://user-images.githubusercontent.com/41123719/117558449-44b8cc80-b086-11eb-8e1a-bdc4a904e3d1.png" atl="Noor Light Mode" width="200"/>     
-   <img src="https://user-images.githubusercontent.com/41123719/117558446-42567280-b086-11eb-9818-df0c8d1a4c72.png" atl="Noor Dark Mode" width="200"/>     
-</p>
