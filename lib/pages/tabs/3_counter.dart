@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 
 import 'package:noor/exports/components.dart' show NoorIcons;
 import 'package:noor/exports/services.dart' show SharedPrefsService;
 import 'package:noor/exports/utils.dart' show ToArabicNumbers;
+import 'package:noor/exports/controllers.dart' show SettingsModel;
 
 class CounterPage extends StatefulWidget {
   const CounterPage({Key? key}) : super(key: key);
@@ -14,21 +16,18 @@ class CounterPage extends StatefulWidget {
 class _CounterPageState extends State<CounterPage> {
   int counter = SharedPrefsService.getInt('counter');
 
-  String vibrationSettings1 =
-      SharedPrefsService.getString('vibrationClickCounter');
-
-  String vibrationSettings2 = SharedPrefsService.getString('vibrationHunderds');
-
   void incrementCounter() {
+    final SettingsModel settings = context.read<SettingsModel>();
+
     setState(() {
       counter++;
     });
 
     SharedPrefsService.putInt('counter', counter);
 
-    if (SharedPrefsService.getBool('vibrateCounter')) {
+    if (settings.vibrateCounter) {
       if (counter % 100 == 0) {
-        switch (vibrationSettings2) {
+        switch (settings.vibrationHunderds) {
           case 'strong':
             HapticFeedback.lightImpact();
             break;
@@ -41,7 +40,7 @@ class _CounterPageState extends State<CounterPage> {
             HapticFeedback.lightImpact();
         }
       } else {
-        switch (vibrationSettings1) {
+        switch (settings.vibrationClickCounter) {
           case 'strong':
             HapticFeedback.lightImpact();
             break;
