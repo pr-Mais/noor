@@ -1,6 +1,6 @@
 class DefaultSettings {
   static const double fontSize = 1.0;
-  static const String fontType = 'SST Roman';
+  static const String fontType = 'SST Arabic';
   static const bool tashkeel = true;
   static const bool autoJump = true;
   static const bool showCounter = true;

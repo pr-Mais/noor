@@ -241,7 +241,10 @@ class ReferenceList extends StatelessWidget {
                   return CardTemplate(
                     ribbon: element.ribbon,
                     additionalContent: Text('${element.sectionName}'),
-                    child: CardText(text: element.text),
+                    child: CardText(
+                      text: element.text,
+                      item: name,
+                    ),
                     actions: <Widget>[
                       Icon(
                         icons[element.category.index],

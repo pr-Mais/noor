@@ -5,8 +5,10 @@ import 'package:noor/exports/constants.dart' show DefaultSettings;
 class SettingsModel with ChangeNotifier {
   /// Font Size, the scale factor by which the font size is multiplied
   /// prefs key `fontSize`
-  double _fontSize = SharedPrefsService.getDouble('fontSize',
-      defValue: DefaultSettings.fontSize);
+  double _fontSize = SharedPrefsService.getDouble(
+    'fontSize',
+    defValue: DefaultSettings.fontSize,
+  );
   double get fontSize => _fontSize;
   set fontSize(double value) {
     _fontSize = value;
@@ -138,8 +140,10 @@ class SettingsModel with ChangeNotifier {
 
   /// General FCM notifications
   /// prefs key `generalNotifications`
-  bool _generalNotification = SharedPrefsService.getBool('generalNotifications',
-      defValue: DefaultSettings.generalNotifications);
+  bool _generalNotification = SharedPrefsService.getBool(
+    'generalNotifications',
+    defValue: DefaultSettings.generalNotifications,
+  );
   bool get generalNotification => _generalNotification;
   set generalNotification(bool value) {
     _generalNotification = value;
