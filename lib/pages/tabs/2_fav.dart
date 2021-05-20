@@ -51,16 +51,33 @@ class _FavoriteState extends State<Favorite>
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    favList = context.watch<DataModel>().favList;
-    section.addListener(() {
-      setState(() {
-        sectionList = section.value == 0
-            ? favList
-            : favList
-                .where((dynamic element) =>
-                    element.category.index + 1 == section.value)
-                .toList();
-      });
+
+    // This will be triggered whenever an item is added
+    // or removed from favorite somehwere else, so this page
+    // rebuilds to reflect the new list
+    setState(() {
+      favList = context.watch<DataModel>().favList;
+      updateSectionList();
+    });
+
+    // This will run only at the first build of this page
+    // if there were items in favList
+    if (favList.isNotEmpty && sectionList.isEmpty) {
+      updateSectionList();
+    }
+
+    // Updates the sections with corresponding items on click
+    section.addListener(updateSectionList);
+  }
+
+  updateSectionList() {
+    setState(() {
+      sectionList = section.value == 0
+          ? favList
+          : favList
+              .where((dynamic element) =>
+                  element.category.index + 1 == section.value)
+              .toList();
     });
   }
 
@@ -191,25 +208,25 @@ class _FavoriteState extends State<Favorite>
                                   },
                                   delegate:
                                       ReorderableSliverChildBuilderDelegate(
-                                    (BuildContext context, int index) =>
-                                        FavCard(
-                                      key: ValueKey<int>(index),
-                                      icon: icons[
-                                          favList[index].category.index + 1],
-                                      item: favList[index],
-                                      remove: () {
-                                        deleteDialog(favList[index],
-                                            favList.indexOf(favList[index]));
-                                      },
-                                      ribbon: favList[index].ribbon,
-                                      backToLocation: () {
-                                        backToExactLocation(
-                                            favList[index], context);
-                                      },
-                                      backToGeneralLocation: () {
-                                        backToMainPage(favList[index]);
-                                      },
-                                    ),
+                                    (BuildContext context, int index) {
+                                      dynamic item = sectionList[index];
+                                      return FavCard(
+                                        key: ValueKey<int>(index),
+                                        icon: icons[item.category.index + 1],
+                                        item: item,
+                                        remove: () {
+                                          deleteDialog(
+                                              item, favList.indexOf(item));
+                                        },
+                                        ribbon: item.ribbon,
+                                        backToLocation: () {
+                                          backToExactLocation(item, context);
+                                        },
+                                        backToGeneralLocation: () {
+                                          backToMainPage(item);
+                                        },
+                                      );
+                                    },
                                     childCount: favList.length,
                                   ),
                                   onReorder: data.swapFav,
@@ -220,28 +237,29 @@ class _FavoriteState extends State<Favorite>
                         : Scrollbar(
                             key: ValueKey<int>(section.value),
                             controller: _scrollController,
-                            child: ListView(
+                            child: ListView.builder(
+                              itemCount: sectionList.length,
                               controller: _scrollController,
                               key: ValueKey<int>(section.value),
-                              children: <Widget>[
-                                for (dynamic item in sectionList.toList())
-                                  FavCard(
-                                    key: ValueKey<dynamic>(item),
-                                    icon: icons[item.category.index + 1],
-                                    item: item,
-                                    remove: () {
-                                      deleteDialog(
-                                          item, sectionList.indexOf(item));
-                                    },
-                                    ribbon: item.ribbon,
-                                    backToLocation: () {
-                                      backToExactLocation(item, context);
-                                    },
-                                    backToGeneralLocation: () {
-                                      backToMainPage(item);
-                                    },
-                                  )
-                              ],
+                              itemBuilder: (BuildContext context, int index) {
+                                dynamic item = sectionList[index];
+                                return FavCard(
+                                  key: ValueKey<dynamic>(item),
+                                  icon: icons[item.category.index + 1],
+                                  item: item,
+                                  remove: () {
+                                    deleteDialog(
+                                        item, sectionList.indexOf(item));
+                                  },
+                                  ribbon: item.ribbon,
+                                  backToLocation: () {
+                                    backToExactLocation(item, context);
+                                  },
+                                  backToGeneralLocation: () {
+                                    backToMainPage(item);
+                                  },
+                                );
+                              },
                             ),
                           ),
               ),
