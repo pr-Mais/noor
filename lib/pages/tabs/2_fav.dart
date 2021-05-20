@@ -36,7 +36,7 @@ class _FavoriteState extends State<Favorite>
   List<dynamic> sectionList = <dynamic>[];
   List<dynamic> favList = <dynamic>[];
 
-  ValueNotifier<int> section = ValueNotifier<int>(0);
+  late ValueNotifier<int> section = ValueNotifier<int>(0);
 
   List<IconData> icons = <IconData>[
     NoorIcons.all,
@@ -52,7 +52,16 @@ class _FavoriteState extends State<Favorite>
   void didChangeDependencies() {
     super.didChangeDependencies();
     favList = context.watch<DataModel>().favList;
-    sectionList = favList;
+    section.addListener(() {
+      setState(() {
+        sectionList = section.value == 0
+            ? favList
+            : favList
+                .where((dynamic element) =>
+                    element.category.index + 1 == section.value)
+                .toList();
+      });
+    });
   }
 
   backToMainPage(dynamic item) async {
@@ -65,31 +74,30 @@ class _FavoriteState extends State<Favorite>
       ...dataModel.ruqiya,
       ...dataModel.allahNames,
     ]);
-    final tmpList =
-        allLists.where((element) => element.category == item.category).toList();
-    final index = tmpList
-        .indexWhere((element) => element.sectionName == item.sectionName);
+    final List<dynamic> tmpList = allLists
+        .where((dynamic element) => element.category == item.category)
+        .toList();
+    final int index = tmpList.indexWhere(
+        (dynamic element) => element.sectionName == item.sectionName);
     switch (item.category) {
       case NoorCategory.ATHKAR:
         Navigator.of(context).push(
           MaterialPageRoute<AthkarList>(
-            builder: (context) => AthkarList(
-              index: index,
-            ),
+            builder: (_) => AthkarList(index: index),
           ),
         );
         break;
       case NoorCategory.MYAD3YAH:
         Navigator.of(context).push(
           MaterialPageRoute<MyAd3yah>(
-            builder: (context) => MyAd3yah(),
+            builder: (_) => MyAd3yah(),
           ),
         );
         break;
       case NoorCategory.ALLAHNAME:
         Navigator.of(context).push(
           MaterialPageRoute<AllahNamesList>(
-            builder: (context) => AllahNamesList(),
+            builder: (_) => AllahNamesList(),
           ),
         );
         break;
@@ -114,26 +122,16 @@ class _FavoriteState extends State<Favorite>
     }
   }
 
+  void onSectionTap(int i) {
+    section.value = i;
+  }
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
 
     final Images images = context.read<ThemeModel>().images;
     final DataController data = GetIt.I<DataController>();
-
-    void onSectionTap(int i) {
-      section.value = i;
-      setState(
-        () {
-          sectionList = i == 0
-              ? favList
-              : favList
-                  .where((dynamic element) =>
-                      element.category.index + 1 == section.value)
-                  .toList();
-        },
-      );
-    }
 
     return Scaffold(
       body: SafeArea(
@@ -191,38 +189,28 @@ class _FavoriteState extends State<Favorite>
                                       ),
                                     );
                                   },
-                                  buildItemsContainer:
-                                      (context, direction, children) {
-                                    return Container(
-                                      height: 2,
-                                      color: Colors.yellow,
-                                    );
-                                  },
                                   delegate:
                                       ReorderableSliverChildBuilderDelegate(
                                     (BuildContext context, int index) =>
                                         FavCard(
                                       key: ValueKey<int>(index),
                                       icon: icons[
-                                          sectionList[index].category.index +
-                                              1],
-                                      item: sectionList[index],
+                                          favList[index].category.index + 1],
+                                      item: favList[index],
                                       remove: () {
-                                        deleteDialog(
-                                            sectionList[index],
-                                            sectionList
-                                                .indexOf(sectionList[index]));
+                                        deleteDialog(favList[index],
+                                            favList.indexOf(favList[index]));
                                       },
-                                      ribbon: sectionList[index].ribbon,
+                                      ribbon: favList[index].ribbon,
                                       backToLocation: () {
                                         backToExactLocation(
-                                            sectionList[index], context);
+                                            favList[index], context);
                                       },
                                       backToGeneralLocation: () {
-                                        backToMainPage(sectionList[index]);
+                                        backToMainPage(favList[index]);
                                       },
                                     ),
-                                    childCount: sectionList.length,
+                                    childCount: favList.length,
                                   ),
                                   onReorder: data.swapFav,
                                 ),

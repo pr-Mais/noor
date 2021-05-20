@@ -178,6 +178,10 @@ class DataController {
     // Update underlying fav prefs list for persistency
     SharedPrefsService.putStringList('fav', favPrefs);
 
+    if (element.category == NoorCategory.MYAD3YAH) {
+      await DBService.db.update(element);
+    }
+
     updateFavList();
   }
 
@@ -190,6 +194,10 @@ class DataController {
 
     // Update underlying fav prefs list for persistency
     SharedPrefsService.putStringList('fav', favPrefs);
+
+    if (element.category == NoorCategory.MYAD3YAH) {
+      await DBService.db.update(element);
+    }
 
     // Update underlying data model
     updateFavList();
@@ -210,8 +218,7 @@ class DataController {
   }
 
   void insert(Doaa doaa) async {
-    DBService.db.insert(doaa);
-
+    await DBService.db.insert(doaa);
     GetIt.I<DataModel>().myAd3yah = await DBService.db.get();
   }
 
