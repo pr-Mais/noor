@@ -15,7 +15,7 @@ import 'package:noor/exports/components.dart'
     show CardTemplate, CardText, NoorSettingsIcons;
 import 'package:noor/exports/services.dart' show SharedPrefsService;
 import 'package:noor/exports/controllers.dart' show ThemeModel, SettingsModel;
-import 'package:noor/exports/constants.dart' show Images, Links, Ribbon;
+import 'package:noor/exports/constants.dart' show Images, Links;
 
 class Settings extends StatefulWidget {
   Settings({

@@ -1,7 +1,7 @@
 name: noor
 description: أذكار وأدعية من كتاب حصن المسلم
 
-version: 2.4.0+36
+version: 2.4.0+38
 
 environment:
   sdk: '>=2.12.0 <3.0.0'

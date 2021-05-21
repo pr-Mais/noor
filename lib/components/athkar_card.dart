@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:noor/exports/models.dart' show Thekr;
-import 'package:noor/exports/pages.dart' show Counter;
+import 'package:noor/exports/models.dart' show AthkarCounter, Thekr;
 import 'package:noor/exports/constants.dart' show Ribbon;
 import 'package:noor/exports/components.dart'
     show CardTemplate, CardText, CopyAction, FavAction;
@@ -20,7 +19,7 @@ class AthkarCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Counter counter = context.watch<Counter>();
+    final AthkarCounter counter = context.watch<AthkarCounter>();
     final SettingsModel settings = context.watch<SettingsModel>();
 
     return Stack(
@@ -43,7 +42,7 @@ class AthkarCard extends StatelessWidget {
             ? Positioned.fill(
                 child: Align(
                   alignment: Alignment.bottomCenter,
-                  child: counter.getCounter < 1
+                  child: counter.position < 1
                       ? AnimatedContainer(
                           duration: Duration(milliseconds: 400),
                           curve: Curves.bounceInOut,
@@ -67,8 +66,8 @@ class AthkarCard extends StatelessWidget {
                           child: AnimatedSwitcher(
                             duration: const Duration(milliseconds: 250),
                             child: Text(
-                              '${counter.getCounter}'.arabicDigit(),
-                              key: ValueKey<int?>(counter.getCounter),
+                              '${counter.position}'.arabicDigit(),
+                              key: ValueKey<int?>(counter.position),
                               style: TextStyle(
                                   color: Theme.of(context).accentColor,
                                   fontSize: 16,
@@ -76,17 +75,18 @@ class AthkarCard extends StatelessWidget {
                             ),
                           ),
                           decoration: BoxDecoration(
-                              color: Theme.of(context).brightness ==
-                                      Brightness.light
-                                  ? Colors.white
-                                  : Color(0xff202b54),
-                              border: Border.all(
-                                  color: Theme.of(context).brightness ==
-                                          Brightness.light
-                                      ? Colors.grey[400]!
-                                      : Color(0xff33477f),
-                                  width: 2),
-                              borderRadius: BorderRadius.circular(50.0)),
+                            color:
+                                Theme.of(context).brightness == Brightness.light
+                                    ? Colors.white
+                                    : Color(0xff202b54),
+                            border: Border.all(
+                                color: Theme.of(context).brightness ==
+                                        Brightness.light
+                                    ? Colors.grey[400]!
+                                    : Color(0xff33477f),
+                                width: 2),
+                            borderRadius: BorderRadius.circular(50.0),
+                          ),
                           width: 45.0,
                           height: 45.0,
                         ),

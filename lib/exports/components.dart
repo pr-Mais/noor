@@ -11,7 +11,7 @@ export 'package:noor/components/glowing_stars.dart';
 export 'package:noor/components/image_button.dart';
 export 'package:noor/components/list_item.dart';
 export 'package:noor/components/logo.dart';
-export 'package:noor/components/noor_icons_icons.dart';
+export 'package:noor/components/noor_icons.dart';
 export 'package:noor/components/noor_settings_icons.dart';
 export 'package:noor/components/card_text.dart';
 export 'package:noor/components/copy_action.dart';

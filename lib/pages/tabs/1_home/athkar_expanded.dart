@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
-import 'package:noor/exports/models.dart' show DataModel, Thekr;
+import 'package:noor/exports/models.dart' show AthkarCounter, DataModel, Thekr;
 import 'package:noor/exports/controllers.dart' show SettingsModel;
 import 'package:noor/exports/components.dart'
     show NoorCloseButton, ThekrTitleCard, AthkarCard;
@@ -57,25 +57,38 @@ class _AthkarListState extends State<AthkarList>
     }
   }
 
-  onCardTap(int index, Counter counter) {
+  onCardTap(int index, AthkarCounter counter) {
     final SettingsModel settings = context.read<SettingsModel>();
 
     counter.decrement();
 
     if (settings.vibrate) {
-      switch (settings.vibrationClick) {
-        case 'light':
-          HapticFeedback.heavyImpact();
-          break;
-        case 'strong':
-          HapticFeedback.lightImpact();
-          break;
+      if (counter.position > 0) {
+        switch (settings.vibrationClick) {
+          case 'light':
+            HapticFeedback.heavyImpact();
+            break;
+          case 'strong':
+            HapticFeedback.lightImpact();
+            break;
+        }
+      }
+
+      if (counter.position == 0) {
+        switch (settings.vibrationDone) {
+          case 'light':
+            HapticFeedback.heavyImpact();
+            break;
+          case 'strong':
+            HapticFeedback.lightImpact();
+            break;
+        }
       }
     }
 
     if (index < context.read<DataModel>().athkar.length &&
         settings.autoJump &&
-        counter._counter == 0) {
+        counter.position == 0) {
       Future<void>.delayed(Duration(milliseconds: 500)).then(
         (_) {
           controller.scrollTo(
@@ -131,14 +144,14 @@ class _AthkarListState extends State<AthkarList>
                 //get only the atkar from the whole list!
                 List<Thekr> athkar = model.athkar;
 
-                final List<Counter> counterList = athkar
-                    .map((Thekr thekr) => Counter(thekr.counter))
+                final List<AthkarCounter> counterList = athkar
+                    .map((Thekr thekr) => AthkarCounter(thekr.counter))
                     .toList();
 
-                return Provider<List<Counter>>(
+                return Provider<List<AthkarCounter>>(
                   create: (_) => counterList,
-                  child: Consumer<List<Counter>>(
-                    builder: (_, List<Counter> countersList, __) {
+                  child: Consumer<List<AthkarCounter>>(
+                    builder: (_, List<AthkarCounter> countersList, __) {
                       return Scrollbar(
                         child: ScrollablePositionedList.builder(
                           key: ValueKey<String>('list'),
@@ -155,10 +168,11 @@ class _AthkarListState extends State<AthkarList>
                             if (thekr.isTitle) {
                               return ThekrTitleCard(title: thekr.text);
                             } else {
-                              return ChangeNotifierProvider<Counter>.value(
+                              return ChangeNotifierProvider<
+                                  AthkarCounter>.value(
                                 value: countersList[index],
-                                child: Consumer<Counter>(
-                                  builder: (_, Counter counter, __) =>
+                                child: Consumer<AthkarCounter>(
+                                  builder: (_, AthkarCounter counter, __) =>
                                       AthkarCard(
                                     key: ValueKey<int>(index),
                                     thekr: thekr,
@@ -212,18 +226,5 @@ class _PersistedCardState extends State<PersistedCard>
       thekr: widget.thekr,
       onTap: widget.onTap,
     );
-  }
-}
-
-class Counter with ChangeNotifier {
-  int _counter;
-  Counter(this._counter);
-
-  int get getCounter => _counter;
-
-  void decrement() {
-    _counter--;
-
-    notifyListeners();
   }
 }
