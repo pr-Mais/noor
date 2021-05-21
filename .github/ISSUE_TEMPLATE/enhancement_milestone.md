@@ -1,13 +1,13 @@
 ---
-name: Enhancment milestone
+name: Enhancement milestone
 about: Enhance performance or code
 title: ''
-labels: 'enhancment'
+labels: 'enhancement'
 assignees: ''
 
 ---
 
-**Describe the enhancment**
+**Describe the enhancement**
 A clear description of what part you are going to enhance.
 
 **Goal**
