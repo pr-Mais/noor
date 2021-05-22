@@ -61,26 +61,11 @@ flutter:
     - assets/images/home-cards/dark/
     - assets/images/backgrounds/
     - assets/images/fav-buttons/
-    - assets/images_placeholder/
     - assets/icons/
     - assets/icons/titles/
     - assets/icons/fav/
     - assets/icons/settings/
     - assets/icons/bottom-nav/
-
-    # Placeholders
-    - assets/images_placeholder/ribbons/
-    - assets/images_placeholder/social-buttons/
-    - assets/images_placeholder/home-header/
-    - assets/images_placeholder/home-cards/light/
-    - assets/images_placeholder/home-cards/dark/
-    - assets/images_placeholder/backgrounds/
-    - assets/images_placeholder/fav-buttons/
-    - assets/icons_placeholder/
-    - assets/icons_placeholder/titles/
-    - assets/icons_placeholder/fav/
-    - assets/icons_placeholder/settings/
-    - assets/icons_placeholder/bottom-nav/
 
     # Data files
     - assets/json/

@@ -9,9 +9,6 @@ import 'package:noor/exports/services.dart'
     show DBService, SharedPrefsService, FCMService;
 import 'package:noor/exports/models.dart' show SettingsModel;
 
-const bool placeholder =
-    bool.fromEnvironment('PLACEHOLDER', defaultValue: false);
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();

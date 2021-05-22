@@ -8,19 +8,16 @@
                   "name": "Debug",
                   "request": "launch",
                   "type": "dart",
+                  "args": [
+                        "--dart-define",
+                        "PLACEHOLDER=false"
+                  ]
             },
             {
                   "name": "Debug with placeholders",
                   "request": "launch",
                   "type": "dart",
-                  "args": [
-                        "--dart-define",
-                        "ICONS=icons_placeholder",
-                        "--dart-define",
-                        "IMAGES=images_placeholder",
-                        "--dart-define",
-                        "PLACEHOLDER=true"
-                  ]
+
             }
       ]
 }

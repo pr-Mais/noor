@@ -51,22 +51,47 @@ app.*.map.json
 .DS_Store
 
 # Original assets
-assets/icons/*.png
-assets/icons/bottom-nav/*
-assets/icons/settings/*
-assets/icons/titles/*
-assets/icons/fav/*
+assets/icons/*
+!/assets/icons/bottom-nav/
+!/assets/icons/fav/
+!/assets/icons/settings/
+!/assets/icons/titles/
 
-assets/images/*.png
-assets/images/*.svg
+!/assets/icons/p_*
 
-assets/images/ribbons/*
-assets/images/social-buttons/*
-assets/images/home-header/*
-assets/images/home-cards/dark/*
-assets/images/home-cards/light/*
-assets/images/fav-buttons/*
-assets/images/backgrounds/*
+/assets/icons/titles/*
+!/assets/icons/titles/p_*
+
+/assets/icons/bottom-nav/*
+!/assets/icons/bottom-nav/p_*
+
+
+/assets/icons/fav/*
+!/assets/icons/fav/p_*
+
+/assets/icons/settings/*
+!/assets/icons/settings/p_*
+
+
+/assets/images/*
+!/assets/images/p_*
+
+!/assets/images/ribbons/
+!/assets/images/backgrounds/
+!/assets/images/home-cards/
+!/assets/images/home-header/
+!/assets/images/fav-buttons/
+!/assets/images/social-buttons/
+
+/assets/images/backgrounds/*.svg
+!/assets/images/backgrounds/p_*
+/assets/images/fav-buttons/*
+!/assets/images/fav-buttons/p_*
+/assets/images/home-cards/light/*
+/assets/images/home-cards/dark/*
+!/assets/images/home-cards/light/p_*
+!/assets/images/home-cards/dark/p_*
+
 
 # Exclude some assets
 !assets/json/

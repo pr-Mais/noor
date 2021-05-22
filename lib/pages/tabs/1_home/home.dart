@@ -2,13 +2,14 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get_it/get_it.dart';
+import 'package:noor/env_config.dart';
 import 'package:noor/services/remote_config.dart';
 
 import 'package:provider/provider.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
-import 'package:noor/exports/constants.dart' show Images, imagesFolder;
+import 'package:noor/exports/constants.dart' show Images;
 import 'package:noor/exports/pages.dart' show AllahNames, AthkarPage, Ad3yah;
 import 'package:noor/exports/components.dart' show GlowingStars, HomeCard;
 import 'package:noor/exports/utils.dart' show backToExactLocation, Tashkeel;
@@ -410,7 +411,7 @@ class _AnimatedHeaderState extends State<AnimatedHeader>
                       children: <Widget>[
                         const SizedBox(height: 15),
                         SvgPicture.asset(
-                          'assets/$imagesFolder/logo-dark.svg',
+                          'assets/images/${prefix}logo-dark.svg',
                           width: 60,
                         ),
                         const SizedBox(height: 15),
