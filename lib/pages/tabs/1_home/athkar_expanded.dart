@@ -88,7 +88,8 @@ class _AthkarListState extends State<AthkarList>
 
     if (index < context.read<DataModel>().athkar.length &&
         settings.autoJump &&
-        counter.position == 0) {
+        counter.position == 0 &&
+        !context.read<DataModel>().athkar[index + 1].isTitle) {
       Future<void>.delayed(Duration(milliseconds: 500)).then(
         (_) {
           controller.scrollTo(
