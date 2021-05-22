@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:noor/components/adaptive_icon.dart';
 import 'package:noor/models/data.dart';
 import 'package:noor/services/fcm.dart';
 import 'package:provider/provider.dart';
@@ -11,11 +12,10 @@ import 'package:intl/intl.dart' as intl;
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
-import 'package:noor/exports/components.dart'
-    show CardTemplate, CardText, NoorSettingsIcons;
+import 'package:noor/exports/components.dart' show CardTemplate, CardText;
 import 'package:noor/exports/services.dart' show SharedPrefsService;
 import 'package:noor/exports/controllers.dart' show ThemeModel, SettingsModel;
-import 'package:noor/exports/constants.dart' show Images, Links;
+import 'package:noor/exports/constants.dart' show Images, Links, NoorIcons;
 
 class Settings extends StatefulWidget {
   Settings({
@@ -96,23 +96,13 @@ class _SettingsState extends State<Settings>
     );
   }
 
-  Widget subtitleWithIcon(String text, IconData? icon, {String? image}) {
+  Widget subtitleWithIcon(String text, String icon) {
     return Padding(
-      padding: const EdgeInsets.only(
-        right: 30.0,
-      ),
+      padding: const EdgeInsets.only(right: 30.0),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          SizedBox(
-            width: 20,
-            child: image != null
-                ? Image.asset(
-                    image,
-                    height: 18,
-                  )
-                : Icon(icon, size: 18),
-          ),
+          AdaptiveIcon(icon),
           SizedBox(width: 10.0),
           Text(
             text,
@@ -127,7 +117,7 @@ class _SettingsState extends State<Settings>
   }
 
   Widget switcherOption({
-    IconData? icon,
+    required String icon,
     required String title,
     option1,
     option2,
@@ -138,7 +128,7 @@ class _SettingsState extends State<Settings>
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
-        subtitleWithIcon(title, icon, image: image),
+        subtitleWithIcon(title, icon),
         Container(
           margin: EdgeInsets.only(left: 20.0),
           child: Directionality(
@@ -155,7 +145,7 @@ class _SettingsState extends State<Settings>
   }
 
   segmentedControlOption({
-    required IconData icon,
+    required String icon,
     required String title,
     required void Function(String?) onChanged,
     required String value,
@@ -297,7 +287,7 @@ class _SettingsState extends State<Settings>
                   const Divider(),
                   subtitleWithIcon(
                     'حجم الخط',
-                    NoorSettingsIcons.font_size,
+                    NoorIcons.fontSize,
                   ),
                   Directionality(
                     textDirection: TextDirection.ltr,
@@ -352,7 +342,7 @@ class _SettingsState extends State<Settings>
                   const Divider(),
                   subtitleWithIcon(
                     'نوع الخط',
-                    NoorSettingsIcons.font_face,
+                    NoorIcons.fontType,
                   ),
                   Padding(
                     padding: const EdgeInsets.only(
@@ -368,7 +358,7 @@ class _SettingsState extends State<Settings>
                   ),
                   const Divider(),
                   switcherOption(
-                    icon: NoorSettingsIcons.tashkeel,
+                    icon: NoorIcons.tashkeel,
                     title: 'التشكيل',
                     value: settings.tashkeel,
                     onChanged: (bool value) => settings.tashkeel = value,
@@ -378,7 +368,7 @@ class _SettingsState extends State<Settings>
                   title('العداد'),
                   const Divider(),
                   switcherOption(
-                    icon: NoorSettingsIcons.jump,
+                    icon: NoorIcons.jump,
                     title: 'الانتقال التلقائي إلى الذكر التالي',
                     value: settings.autoJump,
                     onChanged: (value) => settings.autoJump = value,
@@ -423,7 +413,7 @@ class _SettingsState extends State<Settings>
                   title('الهزاز'),
                   const Divider(),
                   switcherOption(
-                    icon: NoorSettingsIcons.vibrate,
+                    icon: NoorIcons.vibrate,
                     title: 'الهزاز لعداد صفحة الأذكار',
                     value: settings.vibrate,
                     onChanged: (bool value) => settings.vibrate = value,
@@ -441,7 +431,7 @@ class _SettingsState extends State<Settings>
                         ),
                         VerticalSpace(),
                         segmentedControlOption(
-                          icon: NoorSettingsIcons.click,
+                          icon: NoorIcons.click,
                           title: 'لكل ضغطة',
                           value: settings.vibrationClick,
                           onChanged: (String? value) {
@@ -456,7 +446,7 @@ class _SettingsState extends State<Settings>
                         ),
                         VerticalSpace(),
                         segmentedControlOption(
-                          icon: NoorSettingsIcons.done,
+                          icon: NoorIcons.done,
                           title: 'عند اكتمال العد',
                           value: settings.vibrationDone,
                           onChanged: (String? value) {
@@ -480,7 +470,7 @@ class _SettingsState extends State<Settings>
                     duration: Duration(milliseconds: 300),
                   ),
                   switcherOption(
-                    icon: NoorSettingsIcons.vibrate,
+                    icon: NoorIcons.vibrate,
                     title: 'الهزاز لصفحة السبحة',
                     value: settings.vibrateCounter,
                     onChanged: (bool value) => settings.vibrateCounter = value,
@@ -498,7 +488,7 @@ class _SettingsState extends State<Settings>
                         ),
                         VerticalSpace(),
                         segmentedControlOption(
-                            icon: NoorSettingsIcons.click,
+                            icon: NoorIcons.click,
                             title: 'لكل ضغطة',
                             value: settings.vibrationClickCounter,
                             onChanged: (String? value) {
@@ -512,7 +502,7 @@ class _SettingsState extends State<Settings>
                             }),
                         VerticalSpace(),
                         segmentedControlOption(
-                          icon: NoorSettingsIcons.done,
+                          icon: NoorIcons.done,
                           title: 'عند مضاعفات المئة',
                           value: settings.vibrationHunderds,
                           onChanged: (String? value) {
@@ -542,7 +532,7 @@ class _SettingsState extends State<Settings>
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       subtitleWithIcon(
-                          'التنبيه لأذكار الصباح', NoorSettingsIcons.morning),
+                          'التنبيه لأذكار الصباح', NoorIcons.morning),
                       morningNotiEnabled
                           ? SizedBox(
                               width: 100,
@@ -737,7 +727,7 @@ class _SettingsState extends State<Settings>
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       subtitleWithIcon(
-                          'التنبيه لأذكار المساء', NoorSettingsIcons.night),
+                          'التنبيه لأذكار المساء', NoorIcons.night),
                       nightNotiEnabled
                           ? SizedBox(
                               width: 100,
@@ -934,7 +924,7 @@ class _SettingsState extends State<Settings>
                   ),
                   Divider(),
                   switcherOption(
-                    image: images.generalNotificationsIcon,
+                    icon: NoorIcons.notifications,
                     title: 'إشعارات عامة',
                     value: settings.generalNotification,
                     onChanged: (bool value) {
@@ -950,19 +940,19 @@ class _SettingsState extends State<Settings>
                   title('المظهر'),
                   Divider(),
                   radioBtn(
-                    NoorSettingsIcons.bulb_on,
+                    NoorIcons.lightMode,
                     'الوضع النهاري',
                     'light_theme',
                   ),
                   Divider(),
                   radioBtn(
-                    NoorSettingsIcons.bulb_off,
+                    NoorIcons.darkMode,
                     'الوضع الليلي',
                     'dark_theme',
                   ),
                   Divider(),
                   radioBtn(
-                    NoorSettingsIcons.system_mode,
+                    NoorIcons.systemMode,
                     'وضع النظام',
                     'system_theme',
                   ),
@@ -975,16 +965,16 @@ class _SettingsState extends State<Settings>
                     child: Container(
                       padding: const EdgeInsets.symmetric(vertical: 8),
                       width: MediaQuery.of(context).size.width,
-                      child: subtitleWithIcon('قسم أسماء الله الحُسنى',
-                          NoorSettingsIcons.allahnames),
+                      child: subtitleWithIcon(
+                          'قسم أسماء الله الحُسنى', NoorIcons.allahNames),
                     ),
                   ),
                   const Divider(),
                   Container(
                     padding: const EdgeInsets.symmetric(vertical: 8),
                     width: MediaQuery.of(context).size.width,
-                    child: subtitleWithIcon('قسم الرقية الشرعية، كُتيب أَوراد',
-                        NoorSettingsIcons.ruqya),
+                    child: subtitleWithIcon(
+                        'قسم الرقية الشرعية، كُتيب أَوراد', NoorIcons.ruqiya),
                   ),
                   const Divider(),
                   SizedBox(height: 10.0),
@@ -995,8 +985,7 @@ class _SettingsState extends State<Settings>
                     child: Container(
                       padding: const EdgeInsets.symmetric(vertical: 8),
                       width: MediaQuery.of(context).size.width,
-                      child: subtitleWithIcon(
-                          'قيِّم التطبيق', NoorSettingsIcons.star),
+                      child: subtitleWithIcon('قيِّم التطبيق', NoorIcons.star),
                     ),
                   ),
                   const Divider(),
@@ -1005,8 +994,7 @@ class _SettingsState extends State<Settings>
                     child: Container(
                       padding: const EdgeInsets.symmetric(vertical: 8),
                       width: MediaQuery.of(context).size.width,
-                      child: subtitleWithIcon(
-                          'نشر التطبيق', NoorSettingsIcons.share),
+                      child: subtitleWithIcon('نشر التطبيق', NoorIcons.share),
                     ),
                   ),
                   const Divider(),
@@ -1015,8 +1003,7 @@ class _SettingsState extends State<Settings>
                     child: Container(
                       padding: const EdgeInsets.symmetric(vertical: 8),
                       width: MediaQuery.of(context).size.width,
-                      child: subtitleWithIcon(
-                          'تواصل معنا', NoorSettingsIcons.mail),
+                      child: subtitleWithIcon('تواصل معنا', NoorIcons.mail),
                     ),
                   ),
                   const Divider(),
@@ -1026,8 +1013,7 @@ class _SettingsState extends State<Settings>
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        subtitleWithIcon(
-                            'شبكات التواصل', NoorSettingsIcons.follow),
+                        subtitleWithIcon('شبكات التواصل', NoorIcons.follow),
                         Row(
                           children: [
                             GestureDetector(

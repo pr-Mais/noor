@@ -52,7 +52,9 @@ app.*.map.json
 
 # Original assets
 assets/icons/*.png
-assets/icons/ad3yah/*
+assets/icons/bottom-nav/*
+assets/icons/settings/*
+assets/icons/titles/*
 
 assets/images/*.png
 assets/images/*.svg

@@ -86,7 +86,8 @@ ThemeData darkTheme() => ThemeData(
         ),
         subtitle1: TextStyle(
           color: Colors.white,
-          fontSize: 13,
+          fontWeight: FontWeight.bold,
+          fontSize: 14,
         ),
         headline1: TextStyle(
           fontSize: 16,

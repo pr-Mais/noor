@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:noor/exports/components.dart' show NoorIcons;
+import 'package:flutter_svg/svg.dart';
+import 'package:noor/exports/constants.dart' show NoorIcons;
 
 class BottomNav extends StatefulWidget {
   BottomNav({
@@ -35,7 +36,7 @@ class _BottomNavState extends State<BottomNav> {
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: BottomItem(
-              icon: NoorIcons.leaf,
+              icon: NoorIcons.home,
               text: 'نُور',
               currentIndex: currentIndex,
               index: 0,
@@ -53,7 +54,7 @@ class _BottomNavState extends State<BottomNav> {
           ),
           BottomNavigationBarItem(
             icon: BottomItem(
-              icon: NoorIcons.counter,
+              icon: NoorIcons.subha,
               text: 'السبحة',
               currentIndex: currentIndex,
               index: 2,
@@ -85,7 +86,7 @@ class BottomItem extends StatefulWidget {
   }) : super(key: key);
 
   final String text;
-  final IconData icon;
+  final String icon;
   final int index;
   final ValueNotifier<int> currentIndex;
 
@@ -160,10 +161,10 @@ class _BottomItemState extends State<BottomItem>
                   child: SizedBox(
                     width: 50,
                     height: 50,
-                    child: Icon(
+                    child: SvgPicture.asset(
                       widget.icon,
                       color: Theme.of(context).iconTheme.color,
-                      size: 35,
+                      height: 35,
                     ),
                   ),
                 ),
