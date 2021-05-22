@@ -98,10 +98,11 @@ class _HomeState extends State<Home>
 
     for (dynamic item in allLists) {
       tmp = Tashkeel.remove(item.text);
-      tmp = mask(tmp)?.replaceAll(arWhitespace, '');
-      searchWord =
-          Tashkeel.remove(searchWord).replaceAll(arWhitespace, '').trim();
-      if (tmp!.contains(searchWord) || item.text.contains(searchWord)) {
+      tmp = mask(tmp).replaceAll(arWhitespace, '');
+      searchWord = Tashkeel.remove(searchWord);
+      searchWord = mask(searchWord).replaceAll(arWhitespace, '');
+
+      if (tmp.contains(searchWord) || item.text.contains(searchWord)) {
         results.add(item);
 
         if (item is AllahName) {
@@ -237,10 +238,15 @@ class _HomeState extends State<Home>
           style: TextStyle(
             fontSize: 14,
             color: Theme.of(context).textTheme.bodyText1!.color,
+            fontWeight: FontWeight.normal,
           ),
           decoration: InputDecoration(
             contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 15),
             hintText: 'ابحث عن ذكر أو دعاء',
+            hintStyle: TextStyle(
+              color: Colors.grey,
+              fontWeight: FontWeight.normal,
+            ),
             prefixIcon: Icon(Icons.search,
                 color: Theme.of(context).brightness == Brightness.light
                     ? Colors.grey
@@ -458,7 +464,7 @@ class SearchResults extends StatefulWidget {
   _SearchResultsState createState() => _SearchResultsState();
 }
 
-String? mask(string) {
+String mask(string) {
   var tmp;
   // for each أ، إ، آ in string, replace with ا
   tmp = string.replaceAll(
@@ -488,13 +494,13 @@ String? mask(string) {
 class _SearchResultsState extends State<SearchResults> {
   List<TextSpan> highlightOccurrences(String source, String query) {
     source = Tashkeel.remove(source);
-    query = mask(query)!;
-    if (query.isEmpty || !mask(source)!.contains(mask(query)!)) {
+    query = mask(query);
+    if (query.isEmpty || !mask(source).contains(mask(query))) {
       return [
         TextSpan(text: source),
       ];
     }
-    final matches = query.allMatches(mask(source)!);
+    final matches = query.allMatches(mask(source));
 
     int lastMatchEnd = 0;
 
