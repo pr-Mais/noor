@@ -78,7 +78,25 @@ class _SettingsState extends State<Settings>
     );
   }
 
-  Widget subTitle(String text, IconData? icon, {String? image}) {
+  Widget subtitle(String text) {
+    return Padding(
+      padding: const EdgeInsets.only(
+        right: 20.0,
+      ),
+      child: Text(
+        text,
+        textAlign: TextAlign.start,
+        style: Theme.of(context).textTheme.bodyText1?.copyWith(
+              height: 1,
+              fontSize: 12,
+              fontWeight: FontWeight.bold,
+            ),
+        textScaleFactor: 1,
+      ),
+    );
+  }
+
+  Widget subtitleWithIcon(String text, IconData? icon, {String? image}) {
     return Padding(
       padding: const EdgeInsets.only(
         right: 30.0,
@@ -98,10 +116,10 @@ class _SettingsState extends State<Settings>
           SizedBox(width: 10.0),
           Text(
             text,
-            style: Theme.of(context)
-                .textTheme
-                .bodyText1
-                ?.copyWith(height: 1, fontSize: 12),
+            style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                  height: 1,
+                  fontSize: 12,
+                ),
           ),
         ],
       ),
@@ -120,7 +138,7 @@ class _SettingsState extends State<Settings>
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
-        subTitle(title, icon, image: image),
+        subtitleWithIcon(title, icon, image: image),
         Container(
           margin: EdgeInsets.only(left: 20.0),
           child: Directionality(
@@ -145,7 +163,7 @@ class _SettingsState extends State<Settings>
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
-        subTitle(title, icon),
+        subtitleWithIcon(title, icon),
         Flexible(
           fit: FlexFit.loose,
           child: Container(
@@ -203,7 +221,7 @@ class _SettingsState extends State<Settings>
       dense: false,
       child: RadioListTile(
         controlAffinity: ListTileControlAffinity.trailing,
-        title: subTitle(title, icon),
+        title: subtitleWithIcon(title, icon),
         activeColor: Theme.of(context).primaryColor,
         groupValue: context.watch<SettingsModel>().theme,
         value: value,
@@ -277,7 +295,7 @@ class _SettingsState extends State<Settings>
                   const Divider(),
                   Card(),
                   const Divider(),
-                  subTitle(
+                  subtitleWithIcon(
                     'حجم الخط',
                     NoorSettingsIcons.font_size,
                   ),
@@ -332,7 +350,7 @@ class _SettingsState extends State<Settings>
                     ),
                   ),
                   const Divider(),
-                  subTitle(
+                  subtitleWithIcon(
                     'نوع الخط',
                     NoorSettingsIcons.font_face,
                   ),
@@ -416,8 +434,8 @@ class _SettingsState extends State<Settings>
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Padding(
-                          padding: const EdgeInsets.only(right: 20),
-                          child: title(
+                          padding: const EdgeInsets.only(right: 10),
+                          child: subtitle(
                             'نوع الهزاز لصفحة الأذكار',
                           ),
                         ),
@@ -473,8 +491,8 @@ class _SettingsState extends State<Settings>
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Padding(
-                          padding: const EdgeInsets.only(right: 20),
-                          child: title(
+                          padding: const EdgeInsets.only(right: 10),
+                          child: subtitle(
                             'نوع الهزاز لصفحة السبحة',
                           ),
                         ),
@@ -523,7 +541,7 @@ class _SettingsState extends State<Settings>
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      subTitle(
+                      subtitleWithIcon(
                           'التنبيه لأذكار الصباح', NoorSettingsIcons.morning),
                       morningNotiEnabled
                           ? SizedBox(
@@ -672,14 +690,17 @@ class _SettingsState extends State<Settings>
                                   alignment: Alignment.center,
                                   decoration: BoxDecoration(
                                     border: Border.all(
-                                        width: 0.5,
-                                        color: Theme.of(context).dividerColor),
+                                      width: 0.5,
+                                      color: Theme.of(context).dividerColor,
+                                    ),
                                     borderRadius: BorderRadius.circular(5),
                                   ),
                                   child: Text(
                                     formatTime(morningNotiTime),
-                                    style:
-                                        Theme.of(context).textTheme.subtitle1,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyText1!
+                                        .copyWith(fontSize: 12),
                                   ),
                                 ),
                               ),
@@ -715,7 +736,7 @@ class _SettingsState extends State<Settings>
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      subTitle(
+                      subtitleWithIcon(
                           'التنبيه لأذكار المساء', NoorSettingsIcons.night),
                       nightNotiEnabled
                           ? SizedBox(
@@ -831,7 +852,7 @@ class _SettingsState extends State<Settings>
                                                     dateTimePickerTextStyle:
                                                         TextStyle(
                                                       locale: Locale('ar'),
-                                                      fontFamily: 'SST',
+                                                      fontFamily: 'SST Arabic',
                                                       fontSize: 16,
                                                       color: Theme.of(context)
                                                           .textTheme
@@ -875,8 +896,10 @@ class _SettingsState extends State<Settings>
                                   ),
                                   child: Text(
                                     formatTime(nightNotiTime),
-                                    style:
-                                        Theme.of(context).textTheme.subtitle1,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyText1!
+                                        .copyWith(fontSize: 12),
                                   ),
                                 ),
                               ),
@@ -952,7 +975,7 @@ class _SettingsState extends State<Settings>
                     child: Container(
                       padding: const EdgeInsets.symmetric(vertical: 8),
                       width: MediaQuery.of(context).size.width,
-                      child: subTitle('قسم أسماء الله الحُسنى',
+                      child: subtitleWithIcon('قسم أسماء الله الحُسنى',
                           NoorSettingsIcons.allahnames),
                     ),
                   ),
@@ -960,7 +983,7 @@ class _SettingsState extends State<Settings>
                   Container(
                     padding: const EdgeInsets.symmetric(vertical: 8),
                     width: MediaQuery.of(context).size.width,
-                    child: subTitle('قسم الرقية الشرعية، كُتيب أَوراد',
+                    child: subtitleWithIcon('قسم الرقية الشرعية، كُتيب أَوراد',
                         NoorSettingsIcons.ruqya),
                   ),
                   const Divider(),
@@ -972,7 +995,8 @@ class _SettingsState extends State<Settings>
                     child: Container(
                       padding: const EdgeInsets.symmetric(vertical: 8),
                       width: MediaQuery.of(context).size.width,
-                      child: subTitle('قيِّم التطبيق', NoorSettingsIcons.star),
+                      child: subtitleWithIcon(
+                          'قيِّم التطبيق', NoorSettingsIcons.star),
                     ),
                   ),
                   const Divider(),
@@ -981,7 +1005,8 @@ class _SettingsState extends State<Settings>
                     child: Container(
                       padding: const EdgeInsets.symmetric(vertical: 8),
                       width: MediaQuery.of(context).size.width,
-                      child: subTitle('نشر التطبيق', NoorSettingsIcons.share),
+                      child: subtitleWithIcon(
+                          'نشر التطبيق', NoorSettingsIcons.share),
                     ),
                   ),
                   const Divider(),
@@ -990,7 +1015,8 @@ class _SettingsState extends State<Settings>
                     child: Container(
                       padding: const EdgeInsets.symmetric(vertical: 8),
                       width: MediaQuery.of(context).size.width,
-                      child: subTitle('تواصل معنا', NoorSettingsIcons.mail),
+                      child: subtitleWithIcon(
+                          'تواصل معنا', NoorSettingsIcons.mail),
                     ),
                   ),
                   const Divider(),
@@ -1000,7 +1026,8 @@ class _SettingsState extends State<Settings>
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        subTitle('شبكات التواصل', NoorSettingsIcons.follow),
+                        subtitleWithIcon(
+                            'شبكات التواصل', NoorSettingsIcons.follow),
                         Row(
                           children: [
                             GestureDetector(

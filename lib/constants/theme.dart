@@ -27,8 +27,9 @@ ThemeData lightTheme() => ThemeData(
         fontWeight: FontWeight.normal,
       ),
       subtitle1: TextStyle(
-        color: Colors.black87,
-        fontSize: 13,
+        color: Color(0xff6f85d5),
+        fontWeight: FontWeight.bold,
+        fontSize: 14,
       ),
       headline1: TextStyle(
         fontSize: 16,
