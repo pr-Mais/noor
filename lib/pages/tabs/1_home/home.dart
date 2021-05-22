@@ -8,7 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
-import 'package:noor/exports/constants.dart' show Images;
+import 'package:noor/exports/constants.dart' show Images, imagesFolder;
 import 'package:noor/exports/pages.dart' show AllahNames, AthkarPage, Ad3yah;
 import 'package:noor/exports/components.dart' show GlowingStars, HomeCard;
 import 'package:noor/exports/utils.dart' show backToExactLocation, Tashkeel;
@@ -123,86 +123,99 @@ class _HomeState extends State<Home>
 
     final Images images = context.watch<ThemeModel>().images;
 
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      body: SafeArea(
-        top: false,
-        child: Column(
-          children: <Widget>[
-            AnimatedHeader(
-              focusNode: _focusNode,
-              isWriting: isWriting,
-            ),
-            Expanded(
-              flex: isWriting ? 0 : 1,
-              child: SingleChildScrollView(
-                child: Column(
-                  children: <Widget>[
-                    searchBar(),
-                    const SizedBox(height: 10),
-                    if (!isWriting)
-                      Stack(
-                        children: <Widget>[
-                          if (!isWriting)
-                            Column(
-                              children: <Widget>[
-                                HomeCard(
-                                  page: const AthkarPage(),
-                                  image: images.athkarCard,
-                                  tag: 'athkar',
-                                ),
-                                HomeCard(
-                                  page: const Ad3yah(),
-                                  image: images.ad3yahCard,
-                                  tag: 'ad3yah',
-                                ),
-                                HomeCard(
-                                  page: const AllahNames(),
-                                  image: images.allahNamesCard,
-                                  tag: 'allah names',
-                                ),
-                              ],
-                            ),
-                          Visibility(
-                            visible: !isWriting && _focusNode.hasFocus,
-                            child: AnimatedOpacity(
-                              duration: Duration(milliseconds: 400),
-                              opacity: _focusNode.hasFocus ? 1.0 : 0.0,
-                              child: GestureDetector(
-                                onTap: () {
-                                  if (_focusNode.hasFocus) {
-                                    _searchController.clear();
-                                    FocusScope.of(context)
-                                        .requestFocus(new FocusNode());
-                                    setState(() {
-                                      isWriting = false;
-                                    });
-                                  }
-                                },
-                                child: Container(
-                                  color: Colors.transparent,
-                                  height: _focusNode.hasFocus && !isWriting
-                                      ? MediaQuery.of(context).size.height
-                                      : 0,
+    return WillPopScope(
+      onWillPop: () {
+        if (_focusNode.hasFocus || isWriting) {
+          _searchController.clear();
+          _focusNode.unfocus();
+          setState(() {
+            isWriting = false;
+          });
+        }
+
+        return Future<bool>.value(false);
+      },
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        body: SafeArea(
+          top: false,
+          child: Column(
+            children: <Widget>[
+              AnimatedHeader(
+                focusNode: _focusNode,
+                isWriting: isWriting,
+              ),
+              Expanded(
+                flex: isWriting ? 0 : 1,
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: <Widget>[
+                      searchBar(),
+                      const SizedBox(height: 10),
+                      if (!isWriting)
+                        Stack(
+                          children: <Widget>[
+                            if (!isWriting)
+                              Column(
+                                children: <Widget>[
+                                  HomeCard(
+                                    page: const AthkarPage(),
+                                    image: images.athkarCard,
+                                    tag: 'athkar',
+                                  ),
+                                  HomeCard(
+                                    page: const Ad3yah(),
+                                    image: images.ad3yahCard,
+                                    tag: 'ad3yah',
+                                  ),
+                                  HomeCard(
+                                    page: const AllahNames(),
+                                    image: images.allahNamesCard,
+                                    tag: 'allah names',
+                                  ),
+                                ],
+                              ),
+                            Visibility(
+                              visible: !isWriting && _focusNode.hasFocus,
+                              child: AnimatedOpacity(
+                                duration: Duration(milliseconds: 400),
+                                opacity: _focusNode.hasFocus ? 1.0 : 0.0,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    if (_focusNode.hasFocus) {
+                                      _searchController.clear();
+                                      FocusScope.of(context)
+                                          .requestFocus(new FocusNode());
+                                      setState(() {
+                                        isWriting = false;
+                                      });
+                                    }
+                                  },
+                                  child: Container(
+                                    color: Colors.transparent,
+                                    height: _focusNode.hasFocus && !isWriting
+                                        ? MediaQuery.of(context).size.height
+                                        : 0,
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                  ],
+                          ],
+                        ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            if (isWriting)
-              Expanded(
-                child: SearchResults(
-                  query: searchWord,
-                  results: results,
-                  title: title,
+              if (isWriting)
+                Expanded(
+                  child: SearchResults(
+                    query: searchWord,
+                    results: results,
+                    title: title,
+                  ),
                 ),
-              ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -358,7 +371,7 @@ class _AnimatedHeaderState extends State<AnimatedHeader>
           children: <Widget>[
             if (Theme.of(context).brightness == Brightness.light)
               Positioned(
-                top: 30,
+                top: 40,
                 child: SafeArea(
                   child: SlideTransition(
                     position: _bottomCloudAnim,
@@ -368,7 +381,7 @@ class _AnimatedHeaderState extends State<AnimatedHeader>
               ),
             if (Theme.of(context).brightness == Brightness.light)
               Positioned(
-                top: 0,
+                top: 10,
                 child: SafeArea(
                   child: SlideTransition(
                     position: _topCloudAnim,
@@ -389,9 +402,9 @@ class _AnimatedHeaderState extends State<AnimatedHeader>
                   child: SingleChildScrollView(
                     child: Column(
                       children: <Widget>[
-                        const SizedBox(height: 10),
+                        const SizedBox(height: 15),
                         SvgPicture.asset(
-                          'assets/images/logo-dark.svg',
+                          'assets/$imagesFolder/logo-dark.svg',
                           width: 60,
                         ),
                         const SizedBox(height: 15),
