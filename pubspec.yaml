@@ -84,7 +84,7 @@ flutter:
   fonts:
     - family: SST Arabic
       fonts:
-        - asset: assets/fonts/SST-Light.ttf
+        - asset: assets/fonts/SST-Arabic-Light.ttf
           weight: 200
         - asset: assets/fonts/SST-Arabic-Roman.ttf
           weight: 400
