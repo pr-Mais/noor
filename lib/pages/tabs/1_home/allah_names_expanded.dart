@@ -184,13 +184,14 @@ class ReferenceList extends StatelessWidget {
     Ribbon.ribbon6,
   ];
 
-  final List<IconData> icons = <IconData>[
-    NoorIcons.leaf,
-    NoorIcons.quraan,
-    NoorIcons.sunnah,
-    NoorIcons.ruqyah,
-    NoorIcons.myad3yah,
+  final List<String> icons = <String>[
+    Images.athkarFavIcon,
+    Images.quraanFavIcon,
+    Images.sunnahFavIcon,
+    Images.ruqyaFavIcon,
+    Images.allahNamesFavIcon,
   ];
+
   final ScrollController scrollController = ScrollController();
 
   @override
@@ -246,10 +247,7 @@ class ReferenceList extends StatelessWidget {
                       item: name,
                     ),
                     actions: <Widget>[
-                      Icon(
-                        icons[element.category.index],
-                        color: Colors.white,
-                      ),
+                      Image.asset(icons[element.category.index]),
                       CopyAction(element.text)
                     ],
                   );

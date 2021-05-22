@@ -51,6 +51,7 @@ flutter:
   uses-material-design: true
 
   assets:
+    # Original (not available in the public repo)
     - assets/
     - assets/images/
     - assets/images/ribbons/
@@ -60,8 +61,24 @@ flutter:
     - assets/images/home-cards/dark/
     - assets/images/backgrounds/
     - assets/images/fav-buttons/
+    - assets/images_placeholder/
     - assets/icons/
-    - assets/icons/ad3yah/
+    - assets/icons/titles/
+    - assets/icons/fav/
+
+    # Placeholders
+    - assets/images_placeholder/ribbons/
+    - assets/images_placeholder/social-buttons/
+    - assets/images_placeholder/home-header/
+    - assets/images_placeholder/home-cards/light/
+    - assets/images_placeholder/home-cards/dark/
+    - assets/images_placeholder/backgrounds/
+    - assets/images_placeholder/fav-buttons/
+    - assets/icons_placeholder/
+    - assets/icons_placeholder/titles/
+    - assets/icons_placeholder/fav/
+
+    # Data files
     - assets/json/
 
   fonts:

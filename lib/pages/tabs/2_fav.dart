@@ -5,6 +5,7 @@ import 'package:noor/models/data.dart';
 import 'package:provider/provider.dart';
 import 'package:reorderables/reorderables.dart';
 
+import 'package:noor/main.dart';
 import 'package:noor/exports/components.dart'
     show
         CardTemplate,
@@ -38,14 +39,14 @@ class _FavoriteState extends State<Favorite>
 
   late ValueNotifier<int> section = ValueNotifier<int>(0);
 
-  List<IconData> icons = <IconData>[
-    NoorIcons.all,
-    NoorIcons.leaf,
-    NoorIcons.quraan,
-    NoorIcons.sunnah,
-    NoorIcons.ruqyah,
-    NoorIcons.myad3yah,
-    NoorSettingsIcons.allahnames,
+  List<String> icons = <String>[
+    Images.allFavIcon,
+    Images.athkarFavIcon,
+    Images.quraanFavIcon,
+    Images.sunnahFavIcon,
+    Images.ruqyaFavIcon,
+    Images.myAd3yahFavIcon,
+    Images.allahNamesFavIcon,
   ];
 
   @override
@@ -284,7 +285,7 @@ class FavCard extends StatelessWidget {
 
   final dynamic item;
   final String ribbon;
-  final IconData icon;
+  final String icon;
   final void Function() remove;
   final void Function() backToLocation;
   final void Function() backToGeneralLocation;
@@ -310,16 +311,9 @@ class FavCard extends StatelessWidget {
     return CardTemplate(
       ribbon: ribbon,
       actions: <Widget>[
-        IconButton(
-          padding: EdgeInsets.zero,
-          highlightColor: Colors.transparent,
-          splashColor: Colors.transparent,
-          icon: Icon(
-            icon,
-            size: item is AllahName ? 22 : 32,
-            color: Colors.white,
-          ),
-          onPressed: backToGeneralLocation,
+        GestureDetector(
+          child: Image.asset(icon),
+          onTap: backToGeneralLocation,
         ),
         GestureDetector(
           child: Image.asset(Images.eraseIcon),

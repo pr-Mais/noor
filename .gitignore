@@ -51,7 +51,19 @@ app.*.map.json
 .DS_Store
 
 # Original assets
-assets/*
+assets/icons/*.png
+assets/icons/ad3yah/*
+
+assets/images/*.png
+assets/images/*.svg
+
+assets/images/ribbons/*
+assets/images/social-buttons/*
+assets/images/home-header/*
+assets/images/home-cards/dark/*
+assets/images/home-cards/light/*
+assets/images/fav-buttons/*
+assets/images/backgrounds/*
 
 # Exclude some assets
 !assets/json/

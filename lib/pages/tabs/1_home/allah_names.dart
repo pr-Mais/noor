@@ -91,7 +91,7 @@ class _AllahNamesState extends State<AllahNames>
                       final AllahName title = allahNames[index];
                       return ListItem(
                         title: '${title.name}',
-                        icon: images.allahNamesIcon,
+                        icon: images.allahNamesTitleIcon,
                         onTap: () {
                           Navigator.of(context).push(
                             MaterialPageRoute<AllahNamesList>(

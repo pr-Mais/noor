@@ -81,22 +81,22 @@ class _Ad3yahState extends State<Ad3yah> with SingleTickerProviderStateMixin {
                   children: <Ad3yahTitleCard>[
                     Ad3yahTitleCard(
                       title: Titles.quraan,
-                      icon: theme.images.quraanIcon,
+                      icon: theme.images.quraanTitleIcon,
                       category: NoorCategory.QURAAN,
                     ),
                     Ad3yahTitleCard(
                       title: Titles.sunnah,
-                      icon: theme.images.sunnahIcon,
+                      icon: theme.images.sunnahTitleIcon,
                       category: NoorCategory.SUNNAH,
                     ),
                     Ad3yahTitleCard(
                       title: Titles.ruqya,
-                      icon: theme.images.ruqyaIcon,
+                      icon: theme.images.ruqyaTitleIcon,
                       category: NoorCategory.RUQIYA,
                     ),
                     Ad3yahTitleCard(
                       title: Titles.myAd3yah,
-                      icon: theme.images.myAd3yahIcon,
+                      icon: theme.images.myAd3yahTitleIcon,
                       category: NoorCategory.MYAD3YAH,
                     ),
                   ],

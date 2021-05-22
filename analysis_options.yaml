@@ -1,6 +1,5 @@
 linter:
   rules:
-    #- avoid_dynamic_calls
     - always_specify_types
     - avoid_unnecessary_containers
     - unnecessary_statements
