@@ -52,11 +52,6 @@ app.*.map.json
 
 # Original assets
 assets/icons/*
-!/assets/icons/bottom-nav/
-!/assets/icons/fav/
-!/assets/icons/settings/
-!/assets/icons/titles/
-
 !/assets/icons/p_*
 
 /assets/icons/titles/*
