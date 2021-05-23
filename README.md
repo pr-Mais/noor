@@ -23,33 +23,29 @@ This project contains the codebase for the Android version that is on Play Store
 </p>
 
 ## How to run
-
 *Note: the assets were replaced by placeholders, so the version you will run locally is different in look than the version in stores.*
+
 ### 1. Firebase Setup
-It's important to put your own Firebase service file in order to run the app, as it uses Remote Config and Firebase Messaging.
+It's important to put your own Firebase service file in order to run the app, as it requires initializing Firebase on launch.
 
 1. Create a [new Firebase project](https://console.firebase.google.com/).
 2. Add a new Android or iOS app, depending on which device you want to use, and follow the configuration steps to connect Noor to your Firebase project.
 3. Go to Remote Config page.
 4. Add a new parameter with name `noorThekr`, with any value of your choice.
-5. Go to Cloud Messaging page, and enable it for your project.
-6. **(Soon)** ~~follow the steps in this repo, which contains the backend function that will be triggered whenevr you update the Remote Config value from the console.~~
+5. **(Soon)** ~~follow the steps in this repo, which contains the backend function that will be triggered whenevr you update the Remote Config value from the console.~~
+
+
 ### 2. Run
 
 1. Clone the project:
-
 ```bash
 git clone https://github.com/pr-Mais/noor.git
 ```
-
 2. Get packages:
-
 ```bash
 flutter pub get
 ```
-
-4. Run:
-
+3. Start an iOS simulator or Android emulator, or a real device, then run:
 ```bash
 flutter run
 ```
