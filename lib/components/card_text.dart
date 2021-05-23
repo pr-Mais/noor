@@ -31,11 +31,11 @@ class CardText extends StatelessWidget {
     this.item,
   }) : super(key: key);
   final String text;
-  final dynamic? item;
+  final dynamic item;
 
   final Color? color;
 
-  String? mask(String string) {
+  String mask(String string) {
     String tmp;
     // for each أ، إ، آ in string, replace with ا
     tmp = string.replaceAll(

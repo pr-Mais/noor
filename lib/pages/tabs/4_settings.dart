@@ -103,7 +103,6 @@ class _SettingsState extends State<Settings>
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           AdaptiveIcon(icon),
-          SizedBox(width: 10.0),
           Text(
             text,
             style: Theme.of(context).textTheme.bodyText1?.copyWith(
