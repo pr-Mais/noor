@@ -8,15 +8,15 @@
                   "name": "Debug",
                   "request": "launch",
                   "type": "dart",
+            },
+            {
+                  "name": "Debug without placeholders",
+                  "request": "launch",
+                  "type": "dart",
                   "args": [
                         "--dart-define",
                         "PLACEHOLDER=false"
                   ]
-            },
-            {
-                  "name": "Debug with placeholders",
-                  "request": "launch",
-                  "type": "dart",
 
             }
       ]
