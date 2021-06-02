@@ -1,13 +1,12 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:firebase_core/firebase_core.dart';
-
 import 'package:noor/app/app.dart';
 import 'package:noor/exports/controllers.dart' show DataController;
 import 'package:noor/exports/models.dart' show DataModel;
+import 'package:noor/exports/models.dart' show SettingsModel;
 import 'package:noor/exports/services.dart'
     show DBService, SharedPrefsService, FCMService;
-import 'package:noor/exports/models.dart' show SettingsModel;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
