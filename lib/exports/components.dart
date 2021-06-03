@@ -25,6 +25,8 @@ export 'package:noor/components/settings/about.dart';
 export 'package:noor/components/settings/appearance.dart';
 export 'package:noor/components/settings/counter.dart';
 export 'package:noor/components/settings/line.dart';
+export 'package:noor/components/settings/notification_selectable_time.dart';
+export 'package:noor/components/settings/notification_tile.dart';
 export 'package:noor/components/settings/notifications.dart';
 export 'package:noor/components/settings/sources.dart';
 export 'package:noor/components/settings/vibration.dart';
