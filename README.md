@@ -32,9 +32,8 @@ It's important to put your own Firebase service file in order to run the app, as
 2. Add a new Android or iOS app, depending on which device you want to use, and follow the configuration steps to connect Noor to your Firebase project.
 3. Go to Remote Config page.
 4. Add a new parameter with name `noorThker`, with any value of your choice.
-5. **(Soon)** ~~follow the steps in this repo, which contains the backend function that will be triggered whenevr you update the Remote Config value from the console.~~
-
-
+5. Go to Cloud Messaging page, and enable it for your project.
+6. **(Soon)** ~~follow the steps in this repo, which contains the backend function that will be triggered whenevr you update the Remote Config value from the console.~~
 ### 2. Run
 
 1. Clone the project:
