@@ -2,20 +2,19 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:noor/components/adaptive_icon.dart';
+import 'package:intl/intl.dart' as intl;
+import 'package:noor/exports/components.dart'
+    show CardTemplate, CardText, SubtitleWithIcon;
+import 'package:noor/exports/constants.dart' show Images, Links, NoorIcons;
+import 'package:noor/exports/controllers.dart' show ThemeModel, SettingsModel;
+import 'package:noor/exports/services.dart' show SharedPrefsService;
 import 'package:noor/models/data.dart';
 import 'package:noor/services/fcm.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:intl/intl.dart' as intl;
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
-
-import 'package:noor/exports/components.dart' show CardTemplate, CardText;
-import 'package:noor/exports/services.dart' show SharedPrefsService;
-import 'package:noor/exports/controllers.dart' show ThemeModel, SettingsModel;
-import 'package:noor/exports/constants.dart' show Images, Links, NoorIcons;
+import 'package:url_launcher/url_launcher.dart';
 
 class Settings extends StatefulWidget {
   Settings({
@@ -96,25 +95,6 @@ class _SettingsState extends State<Settings>
     );
   }
 
-  Widget subtitleWithIcon(String text, String icon) {
-    return Padding(
-      padding: const EdgeInsets.only(right: 30.0),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          AdaptiveIcon(icon),
-          Text(
-            text,
-            style: Theme.of(context).textTheme.bodyText1?.copyWith(
-                  height: 1,
-                  fontSize: 12,
-                ),
-          ),
-        ],
-      ),
-    );
-  }
-
   Widget switcherOption({
     required String icon,
     required String title,
@@ -127,7 +107,7 @@ class _SettingsState extends State<Settings>
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
-        subtitleWithIcon(title, icon),
+        SubtitleWithIcon(text: title, icon: icon),
         Container(
           margin: EdgeInsets.only(left: 20.0),
           child: Directionality(
@@ -152,7 +132,7 @@ class _SettingsState extends State<Settings>
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
-        subtitleWithIcon(title, icon),
+        SubtitleWithIcon(text: title, icon: icon),
         Flexible(
           fit: FlexFit.loose,
           child: Container(
@@ -210,7 +190,7 @@ class _SettingsState extends State<Settings>
       dense: false,
       child: RadioListTile(
         controlAffinity: ListTileControlAffinity.trailing,
-        title: subtitleWithIcon(title, icon),
+        title: SubtitleWithIcon(text: title, icon: icon),
         activeColor: Theme.of(context).primaryColor,
         groupValue: context.watch<SettingsModel>().theme,
         value: value,
@@ -284,10 +264,7 @@ class _SettingsState extends State<Settings>
                   const Divider(),
                   Card(),
                   const Divider(),
-                  subtitleWithIcon(
-                    'حجم الخط',
-                    NoorIcons.fontSize,
-                  ),
+                  SubtitleWithIcon(text: 'حجم الخط', icon: NoorIcons.fontSize),
                   Directionality(
                     textDirection: TextDirection.ltr,
                     child: Padding(
@@ -339,10 +316,7 @@ class _SettingsState extends State<Settings>
                     ),
                   ),
                   const Divider(),
-                  subtitleWithIcon(
-                    'نوع الخط',
-                    NoorIcons.fontType,
-                  ),
+                  SubtitleWithIcon(text: 'نوع الخط', icon: NoorIcons.fontType),
                   Padding(
                     padding: const EdgeInsets.only(
                         right: 40.0, left: 40.0, top: 10.0),
@@ -530,8 +504,10 @@ class _SettingsState extends State<Settings>
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      subtitleWithIcon(
-                          'التنبيه لأذكار الصباح', NoorIcons.morning),
+                      SubtitleWithIcon(
+                        text: 'التنبيه لأذكار الصباح',
+                        icon: NoorIcons.morning,
+                      ),
                       morningNotiEnabled
                           ? SizedBox(
                               width: 100,
@@ -725,8 +701,8 @@ class _SettingsState extends State<Settings>
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      subtitleWithIcon(
-                          'التنبيه لأذكار المساء', NoorIcons.night),
+                      SubtitleWithIcon(
+                          text: 'التنبيه لأذكار المساء', icon: NoorIcons.night),
                       nightNotiEnabled
                           ? SizedBox(
                               width: 100,
@@ -964,16 +940,20 @@ class _SettingsState extends State<Settings>
                     child: Container(
                       padding: const EdgeInsets.symmetric(vertical: 8),
                       width: MediaQuery.of(context).size.width,
-                      child: subtitleWithIcon(
-                          'قسم أسماء الله الحُسنى', NoorIcons.allahNames),
+                      child: SubtitleWithIcon(
+                        text: 'قسم أسماء الله الحُسنى',
+                        icon: NoorIcons.allahNames,
+                      ),
                     ),
                   ),
                   const Divider(),
                   Container(
                     padding: const EdgeInsets.symmetric(vertical: 8),
                     width: MediaQuery.of(context).size.width,
-                    child: subtitleWithIcon(
-                        'قسم الرقية الشرعية، كُتيب أَوراد', NoorIcons.ruqiya),
+                    child: SubtitleWithIcon(
+                      text: 'قسم الرقية الشرعية، كُتيب أَوراد',
+                      icon: NoorIcons.ruqiya,
+                    ),
                   ),
                   const Divider(),
                   SizedBox(height: 10.0),
@@ -984,7 +964,10 @@ class _SettingsState extends State<Settings>
                     child: Container(
                       padding: const EdgeInsets.symmetric(vertical: 8),
                       width: MediaQuery.of(context).size.width,
-                      child: subtitleWithIcon('قيِّم التطبيق', NoorIcons.star),
+                      child: SubtitleWithIcon(
+                        text: 'قيِّم التطبيق',
+                        icon: NoorIcons.star,
+                      ),
                     ),
                   ),
                   const Divider(),
@@ -993,7 +976,10 @@ class _SettingsState extends State<Settings>
                     child: Container(
                       padding: const EdgeInsets.symmetric(vertical: 8),
                       width: MediaQuery.of(context).size.width,
-                      child: subtitleWithIcon('نشر التطبيق', NoorIcons.share),
+                      child: SubtitleWithIcon(
+                        text: 'نشر التطبيق',
+                        icon: NoorIcons.share,
+                      ),
                     ),
                   ),
                   const Divider(),
@@ -1002,7 +988,10 @@ class _SettingsState extends State<Settings>
                     child: Container(
                       padding: const EdgeInsets.symmetric(vertical: 8),
                       width: MediaQuery.of(context).size.width,
-                      child: subtitleWithIcon('تواصل معنا', NoorIcons.mail),
+                      child: SubtitleWithIcon(
+                        text: 'تواصل معنا',
+                        icon: NoorIcons.mail,
+                      ),
                     ),
                   ),
                   const Divider(),
@@ -1012,7 +1001,10 @@ class _SettingsState extends State<Settings>
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        subtitleWithIcon('شبكات التواصل', NoorIcons.follow),
+                        SubtitleWithIcon(
+                          text: 'شبكات التواصل',
+                          icon: NoorIcons.follow,
+                        ),
                         Row(
                           children: [
                             GestureDetector(
