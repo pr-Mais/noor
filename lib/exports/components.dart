@@ -17,4 +17,5 @@ export 'package:noor/components/list_item.dart';
 export 'package:noor/components/logo.dart';
 export 'package:noor/components/noor_icons.dart';
 export 'package:noor/components/noor_settings_icons.dart';
+export 'package:noor/components/notification_item.dart';
 export 'package:noor/components/subtitle_with_icon.dart';
