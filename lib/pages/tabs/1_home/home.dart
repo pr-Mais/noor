@@ -248,22 +248,26 @@ class _HomeState extends State<Home>
               color: Colors.grey,
               fontWeight: FontWeight.normal,
             ),
-            prefixIcon: Icon(Icons.search,
-                color: Theme.of(context).brightness == Brightness.light
-                    ? Colors.grey
-                    : Colors.white),
+            prefixIcon: Icon(
+              Icons.search,
+              color: Theme.of(context).brightness == Brightness.light
+                  ? Colors.grey
+                  : Colors.white,
+            ),
             suffixIcon: isWriting
                 ? IconButton(
-                    icon: Icon(Icons.close,
-                        color: Theme.of(context).brightness == Brightness.light
-                            ? Colors.grey
-                            : Colors.white),
+                    icon: Icon(
+                      Icons.close,
+                      color: Theme.of(context).brightness == Brightness.light
+                          ? Colors.grey
+                          : Colors.white,
+                    ),
                     onPressed: () {
                       _searchController.clear();
-                      FocusScope.of(context).requestFocus(new FocusNode());
-                      setState(() {
-                        isWriting = false;
-                      });
+                      //FocusScope.of(context).requestFocus(new FocusNode());
+                      // setState(() {
+                      //   isWriting = false;
+                      // });
                     },
                   )
                 : null,
@@ -293,7 +297,7 @@ class AnimatedHeader extends StatefulWidget {
     Key? key,
     required FocusNode focusNode,
     required this.isWriting,
-  })   : focusNode = focusNode,
+  })  : focusNode = focusNode,
         super(key: key);
 
   final FocusNode focusNode;
@@ -409,7 +413,7 @@ class _AnimatedHeaderState extends State<AnimatedHeader>
                   child: SingleChildScrollView(
                     child: Column(
                       children: <Widget>[
-                        const SizedBox(height: 15),
+                        const SizedBox(height: 5),
                         SvgPicture.asset(
                           'assets/images/${prefix}logo-dark.svg',
                           width: 60,

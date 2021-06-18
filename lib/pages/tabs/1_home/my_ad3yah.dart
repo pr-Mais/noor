@@ -316,7 +316,8 @@ class _MyAd3yahState extends State<MyAd3yah> with TickerProviderStateMixin {
           child: Image.asset(Images.editeIcon),
           onTap: () => addDoaa(data: item),
         ),
-        CopyAction(item.text),
+        CopyAction(
+            item.text + (item.info.isNotEmpty ? ('. ' + item.info) : '')),
         GestureDetector(
           child: Image.asset(Images.eraseIcon),
           onTap: () => deleteDialog(item),
