@@ -152,6 +152,7 @@ class _HomeState extends State<Home>
                 child: SingleChildScrollView(
                   child: Column(
                     children: <Widget>[
+                      if (_focusNode.hasFocus) const SizedBox(height: 10),
                       searchBar(),
                       const SizedBox(height: 10),
                       if (!isWriting)
