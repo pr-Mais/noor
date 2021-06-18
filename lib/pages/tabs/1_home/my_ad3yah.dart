@@ -125,9 +125,9 @@ class _MyAd3yahState extends State<MyAd3yah> with TickerProviderStateMixin {
                     child: Column(
                       children: <Widget>[
                         input(200.0, 200.0, 'أضِف ذِكر..', _firstController),
-                        Divider(),
+                        const Divider(),
                         input(100.0, 100.0, 'نص إضافي..', _secondController),
-                        SizedBox(height: 40)
+                        const SizedBox(height: 40)
                       ],
                     ),
                   ),
@@ -230,7 +230,7 @@ class _MyAd3yahState extends State<MyAd3yah> with TickerProviderStateMixin {
                     ],
                   ),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 35),
                 Expanded(
                   child: AnimatedSwitcher(
                     duration: Duration(milliseconds: 400),
@@ -249,8 +249,9 @@ class _MyAd3yahState extends State<MyAd3yah> with TickerProviderStateMixin {
                                     return Material(
                                       type: MaterialType.transparency,
                                       child: SizedBox(
-                                          width: constraints.maxWidth,
-                                          child: child),
+                                        width: constraints.maxWidth,
+                                        child: child,
+                                      ),
                                     );
                                   },
                                   delegate:

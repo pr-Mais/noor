@@ -116,7 +116,7 @@ class _AthkarListState extends State<AthkarList>
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  SizedBox(width: 45),
+                  const SizedBox(width: 45),
                   Expanded(
                     child: Consumer<DataModel>(
                       builder: (BuildContext context, DataModel model, _) {

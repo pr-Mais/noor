@@ -49,7 +49,7 @@ class _Ad3yahListState extends State<Ad3yahList> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  SizedBox(width: 45),
+                  const SizedBox(width: 45),
                   Text(
                     categoryTitle[widget.category] ?? '',
                     textAlign: TextAlign.center,

@@ -976,7 +976,7 @@ class _SettingsState extends State<Settings>
                         'قسم الرقية الشرعية، كُتيب أَوراد', NoorIcons.ruqiya),
                   ),
                   const Divider(),
-                  SizedBox(height: 10.0),
+                  const SizedBox(height: 10.0),
                   title('عن التطبيق'),
                   const Divider(),
                   InkWell(
@@ -1020,12 +1020,12 @@ class _SettingsState extends State<Settings>
                               child:
                                   Image.asset(images.twitterButton, width: 65),
                             ),
-                            SizedBox(width: 10),
+                            const SizedBox(width: 10),
                             GestureDetector(
                               onTap: () => launchURL(Links.ig),
                               child: Image.asset(images.igButton, width: 65),
                             ),
-                            SizedBox(width: 20)
+                            const SizedBox(width: 20)
                           ],
                         )
                       ],
