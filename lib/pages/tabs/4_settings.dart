@@ -984,7 +984,7 @@ class _SettingsState extends State<Settings>
                     child: Container(
                       padding: const EdgeInsets.symmetric(vertical: 8),
                       width: MediaQuery.of(context).size.width,
-                      child: subtitleWithIcon('قيِّم التطبيق', NoorIcons.star),
+                      child: subtitleWithIcon('تقييم التطبيق', NoorIcons.star),
                     ),
                   ),
                   const Divider(),
