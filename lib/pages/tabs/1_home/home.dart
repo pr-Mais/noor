@@ -126,16 +126,21 @@ class _HomeState extends State<Home>
     final Images images = context.watch<ThemeModel>().images;
 
     return WillPopScope(
-      onWillPop: () {
-        if (_focusNode.hasFocus || isWriting) {
+      onWillPop: () async {
+        /// Clean the search then return `false` to not pop the app
+        /// if the user is in search mode
+        if (_focusNode.hasFocus || _searchController.text.isNotEmpty) {
           _searchController.clear();
           _focusNode.unfocus();
           setState(() {
             isWriting = false;
           });
+
+          return false;
         }
 
-        return Future<bool>.value(false);
+        /// Return `true` to allow for android's back button to pop the app
+        return true;
       },
       child: Scaffold(
         resizeToAvoidBottomInset: false,
