@@ -4,7 +4,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 import 'package:noor/exports/components.dart' show BottomNav;
 import 'package:noor/exports/pages.dart'
-    show Home, Favorite, CounterPage, Settings, AthkarList;
+    show Home, Favorite, CounterView, Settings, AthkarList;
 
 class RootHome extends StatefulWidget {
   RootHome({Key? key}) : super(key: key);
@@ -62,7 +62,7 @@ class _RootHomeState extends State<RootHome>
         children: <Widget>[
           Home(),
           Favorite(),
-          CounterPage(),
+          CounterView(),
           Settings(),
         ],
       ),

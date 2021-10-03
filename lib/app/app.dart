@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:noor/pages/tabs/3_counter/counter_view_model.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -23,6 +24,9 @@ class NoorApp extends StatelessWidget {
         ),
         ChangeNotifierProvider<SettingsModel>(
           create: (_) => GetIt.I<SettingsModel>(),
+        ),
+        ChangeNotifierProvider<CounterModel>.value(
+          value: CounterModel.init(),
         ),
       ],
       child: MaterialAppWithTheme(),

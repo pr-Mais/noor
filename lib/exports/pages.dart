@@ -15,5 +15,7 @@ export 'package:noor/pages/tabs/1_home/allah_names_expanded.dart';
 export 'package:noor/pages/tabs/1_home/my_ad3yah.dart';
 
 export 'package:noor/pages/tabs/2_fav.dart';
-export 'package:noor/pages/tabs/3_counter.dart';
+
+export 'package:noor/pages/tabs/3_counter/counter_main_view.dart';
+
 export 'package:noor/pages/tabs/4_settings.dart';

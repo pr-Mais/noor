@@ -10,7 +10,7 @@ import 'package:noor/exports/services.dart'
 
 class DataController {
   static Future<DataController> init() async {
-    final List<dynamic> data = await JsonService.init();
+    final List<dynamic> data = await JsonService.instance.init();
     final DataModel dataModel = GetIt.I<DataModel>();
     if (dataModel.athkar.isEmpty) {
       int section = 0;
