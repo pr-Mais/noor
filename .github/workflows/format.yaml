@@ -1,0 +1,33 @@
+name: analyze
+
+env:
+  FLUTTER_VERSION: "2.5.3"
+
+on:
+  pull_request:
+    paths-ignore:
+      - "**.md"
+  push:
+    paths-ignore:
+      - "**.md"
+jobs:
+  format:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2.3.4
+        with:
+          fetch-depth: 0
+      - name: "Install Flutter"
+        run: git clone https://github.com/flutter/flutter.git --depth 1 -b $FLUTTER_VERSION _flutter
+        
+      - name: Add Flutter to Path
+        run: echo "$GITHUB_WORKSPACE/_flutter/bin" >> $GITHUB_PATH
+
+      - name: Install Flutter Dependencies
+        run: flutter pub get
+
+      - name: Flutter Analyze
+        run: flutter analyze .
+
+      - name: Check Flutter Formatting
+        run: flutter format --set-exit-if-changed
