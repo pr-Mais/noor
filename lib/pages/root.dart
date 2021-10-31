@@ -36,7 +36,7 @@ class _RootHomeState extends State<RootHome>
     setState(() {
       this.payload = payload;
     });
-    print(payload);
+
     Navigator.push(
       context,
       MaterialPageRoute<AthkarList>(

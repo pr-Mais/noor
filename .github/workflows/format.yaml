@@ -1,7 +1,7 @@
 name: analyze
 
 env:
-  FLUTTER_VERSION: "2.5.3"
+  FLUTTER_VERSION: stable
 
 on:
   pull_request:
@@ -12,22 +12,15 @@ on:
       - "**.md"
 jobs:
   format:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     steps:
       - uses: actions/checkout@v2.3.4
+      - uses: subosito/flutter-action@v1
         with:
-          fetch-depth: 0
-      - name: "Install Flutter"
-        run: git clone https://github.com/flutter/flutter.git --depth 1 -b $FLUTTER_VERSION _flutter
-        
-      - name: Add Flutter to Path
-        run: echo "$GITHUB_WORKSPACE/_flutter/bin" >> $GITHUB_PATH
+          channel: 'stable'
 
-      - name: Install Flutter Dependencies
-        run: flutter pub get
+      - run: flutter pub get
 
-      - name: Flutter Analyze
-        run: flutter analyze .
+      - run: flutter analyze .
 
-      - name: Check Flutter Formatting
-        run: flutter format --set-exit-if-changed
+      - run: flutter format lib/** --set-exit-if-changed

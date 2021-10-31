@@ -78,6 +78,7 @@ class _AddDialogState extends State<AddDialog> {
       flex: 1,
       child: Container(
         decoration: BoxDecoration(border: border),
+        // ignore: deprecated_member_use
         child: RaisedButton(
           shape: RoundedRectangleBorder(borderRadius: radius),
           elevation: 0.0,

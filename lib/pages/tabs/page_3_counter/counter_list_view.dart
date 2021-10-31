@@ -64,7 +64,7 @@ class _CounterListViewState extends State<CounterListView> {
                       boxShadow: [
                         BoxShadow(
                           color: item.selected
-                              ? Theme.of(context).accentColor
+                              ? Theme.of(context).colorScheme.secondary
                               : Colors.transparent,
                           spreadRadius: 6,
                         )

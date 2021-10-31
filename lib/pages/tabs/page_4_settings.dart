@@ -567,7 +567,8 @@ class _SettingsState extends State<Settings>
                                                                       .bold,
                                                               color: Theme.of(
                                                                       context)
-                                                                  .accentColor,
+                                                                  .colorScheme
+                                                                  .secondary,
                                                               fontSize: 12),
                                                     ),
                                                     onPressed: () async {
@@ -623,7 +624,8 @@ class _SettingsState extends State<Settings>
                                                                       .bold,
                                                               color: Theme.of(
                                                                       context)
-                                                                  .accentColor,
+                                                                  .colorScheme
+                                                                  .secondary,
                                                               fontSize: 12),
                                                     ),
                                                     onPressed: () {
@@ -762,7 +764,8 @@ class _SettingsState extends State<Settings>
                                                                       .bold,
                                                               color: Theme.of(
                                                                       context)
-                                                                  .accentColor,
+                                                                  .colorScheme
+                                                                  .secondary,
                                                               fontSize: 12),
                                                     ),
                                                     onPressed: () async {
@@ -817,7 +820,8 @@ class _SettingsState extends State<Settings>
                                                                       .bold,
                                                               color: Theme.of(
                                                                       context)
-                                                                  .accentColor,
+                                                                  .colorScheme
+                                                                  .secondary,
                                                               fontSize: 12),
                                                     ),
                                                     onPressed: () {
@@ -1056,6 +1060,7 @@ class _SettingsState extends State<Settings>
   }
 
   Widget fontTypeButton(String font) {
+    // ignore: deprecated_member_use
     return FlatButton(
       onPressed: () => context.read<SettingsModel>().fontType = font,
       child: AnimatedDefaultTextStyle(

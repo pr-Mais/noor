@@ -36,7 +36,7 @@ class RemoteConfigService {
         await InternetAddress.lookup('google.com');
         await _remoteConfig.fetchAndActivate();
       } catch (e) {
-        print(e);
+        rethrow;
       }
     }
 

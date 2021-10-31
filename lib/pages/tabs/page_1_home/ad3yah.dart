@@ -133,7 +133,7 @@ class Ad3yahTitleCard extends StatelessWidget {
         if (category == NoorCategory.myad3yah) {
           Navigator.of(context).push(
             MaterialPageRoute<MyAd3yah>(
-              builder: (_) => MyAd3yah(),
+              builder: (_) => const MyAd3yah(),
               fullscreenDialog: true,
             ),
           );

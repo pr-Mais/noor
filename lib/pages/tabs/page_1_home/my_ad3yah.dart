@@ -74,6 +74,7 @@ class _MyAd3yahState extends State<MyAd3yah> with TickerProviderStateMixin {
       flex: 1,
       child: Container(
         decoration: BoxDecoration(border: border),
+        // ignore: deprecated_member_use
         child: RaisedButton(
           shape: RoundedRectangleBorder(borderRadius: radius),
           elevation: 0.0,
@@ -136,7 +137,7 @@ class _MyAd3yahState extends State<MyAd3yah> with TickerProviderStateMixin {
                   Align(
                       alignment: Alignment.bottomCenter,
                       child: Container(
-                        constraints: BoxConstraints.expand(height: 40),
+                        constraints: const BoxConstraints.expand(height: 40),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           mainAxisAlignment: MainAxisAlignment.center,
