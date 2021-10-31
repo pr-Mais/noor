@@ -1,6 +1,6 @@
 import 'package:noor/env_config.dart';
 
-class Images {
+abstract class Images {
   static LightAppImages get light => LightAppImages();
   static DarkAppImages get dark => DarkAppImages();
 
@@ -73,60 +73,94 @@ class Images {
   }
 }
 
-class LightAppImages extends Images {
+class LightAppImages implements Images {
+  @override
   final String logo = 'assets/images/${prefix}logo-light.svg';
 
   // Categories icons
+  @override
   final String athkarTitleIcon = 'assets/icons/titles/${prefix}athkar.png';
+  @override
   final String quraanTitleIcon = 'assets/icons/titles/${prefix}quraan.png';
+  @override
   final String sunnahTitleIcon = 'assets/icons/titles/${prefix}sunnah.png';
+  @override
   final String ruqyaTitleIcon = 'assets/icons/titles/${prefix}ruqiya.png';
+  @override
   final String myAd3yahTitleIcon = 'assets/icons/titles/${prefix}myAd3yah.png';
+  @override
   final String allahNamesTitleIcon =
       'assets/icons/titles/${prefix}allah-names.png';
   // Home assets
+  @override
   final String homeHeader = 'assets/images/home-header/header-light.png';
+  @override
   final String athkarCard =
       'assets/images/home-cards/light/${prefix}Athkar.png';
+  @override
   final String ad3yahCard =
       'assets/images/home-cards/light/${prefix}Ad3yah.png';
+  @override
   final String allahNamesCard =
       'assets/images/home-cards/light/${prefix}AllahNames.png';
   // Backgrounds
+  @override
   final String noAd3yah = 'assets/images/backgrounds/NoAd3yah.png';
+  @override
   final String noAd3yahFav = 'assets/images/backgrounds/NoAd3yahFav.png';
+  @override
   final String myAd3yahBg = 'assets/images/backgrounds/${prefix}myAd3yahBg.svg';
   // Buttons
+  @override
   final String twitterButton = 'assets/images/social-buttons/twitter-light.png';
+  @override
   final String igButton = 'assets/images/social-buttons/ig-light.png';
+  @override
   final String addMyAd3yah = 'assets/icons/${prefix}addDo3aa.png';
 }
 
-class DarkAppImages extends Images {
+class DarkAppImages implements Images {
+  @override
   final String logo = 'assets/images/${prefix}logo-dark.svg';
 
   // Categories icons
+  @override
   final String athkarTitleIcon = 'assets/icons/titles/${prefix}athkar-dark.png';
+  @override
   final String quraanTitleIcon = 'assets/icons/titles/${prefix}quraan-dark.png';
+  @override
   final String sunnahTitleIcon = 'assets/icons/titles/${prefix}sunnah-dark.png';
+  @override
   final String ruqyaTitleIcon = 'assets/icons/titles/${prefix}ruqiya-dark.png';
+  @override
   final String myAd3yahTitleIcon =
       'assets/icons/titles/${prefix}myAd3yah-dark.png';
+  @override
   final String allahNamesTitleIcon =
       'assets/icons/titles/${prefix}allah-names-dark.png';
   // Home assets
+  @override
   final String homeHeader = 'assets/images/home-header/header-dark.png';
+  @override
   final String athkarCard = 'assets/images/home-cards/dark/${prefix}Athkar.png';
+  @override
   final String ad3yahCard = 'assets/images/home-cards/dark/${prefix}Ad3yah.png';
+  @override
   final String allahNamesCard =
       'assets/images/home-cards/dark/${prefix}AllahNames.png';
   // Backgrounds
+  @override
   final String noAd3yah = 'assets/images/backgrounds/NoAd3yahNight.png';
+  @override
   final String noAd3yahFav = 'assets/images/backgrounds/NoAd3yahFavNight.png';
+  @override
   final String myAd3yahBg =
       'assets/images/backgrounds/${prefix}myAd3yahBgDark.svg';
   // Buttons
+  @override
   final String twitterButton = 'assets/images/social-buttons/twitter-dark.png';
+  @override
   final String igButton = 'assets/images/social-buttons/ig-dark.png';
+  @override
   final String addMyAd3yah = 'assets/icons/${prefix}addDo3aa.png';
 }

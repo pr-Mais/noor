@@ -5,14 +5,8 @@ import 'package:noor/models/data.dart';
 import 'package:provider/provider.dart';
 import 'package:reorderables/reorderables.dart';
 
-import 'package:noor/main.dart';
 import 'package:noor/exports/components.dart'
-    show
-        CardTemplate,
-        DeleteConfirmationDialog,
-        ImageButton,
-        NoorIcons,
-        NoorSettingsIcons;
+    show CardTemplate, DeleteConfirmationDialog, ImageButton;
 import 'package:noor/exports/models.dart' show AllahName;
 import 'package:noor/exports/constants.dart' show Images, NoorCategory;
 import 'package:noor/exports/pages.dart'
@@ -22,9 +16,11 @@ import 'package:noor/exports/utils.dart' show backToExactLocation;
 import 'package:noor/exports/components.dart' show CardText;
 
 class Favorite extends StatefulWidget {
-  Favorite({
+  const Favorite({
     Key? key,
   }) : super(key: key);
+
+  @override
   _FavoriteState createState() => _FavoriteState();
 }
 
@@ -33,7 +29,7 @@ class _FavoriteState extends State<Favorite>
   @override
   bool get wantKeepAlive => true;
 
-  ScrollController _scrollController = ScrollController();
+  final _scrollController = ScrollController();
   List<dynamic> sectionList = <dynamic>[];
   List<dynamic> favList = <dynamic>[];
 
@@ -98,24 +94,24 @@ class _FavoriteState extends State<Favorite>
     final int index = tmpList.indexWhere(
         (dynamic element) => element.sectionName == item.sectionName);
     switch (item.category) {
-      case NoorCategory.ATHKAR:
+      case NoorCategory.athkar:
         Navigator.of(context).push(
           MaterialPageRoute<AthkarList>(
             builder: (_) => AthkarList(index: index),
           ),
         );
         break;
-      case NoorCategory.MYAD3YAH:
+      case NoorCategory.myad3yah:
         Navigator.of(context).push(
           MaterialPageRoute<MyAd3yah>(
-            builder: (_) => MyAd3yah(),
+            builder: (_) => const MyAd3yah(),
           ),
         );
         break;
-      case NoorCategory.ALLAHNAME:
+      case NoorCategory.allahname:
         Navigator.of(context).push(
           MaterialPageRoute<AllahNamesList>(
-            builder: (_) => AllahNamesList(),
+            builder: (_) => const AllahNamesList(),
           ),
         );
         break;
@@ -161,7 +157,7 @@ class _FavoriteState extends State<Favorite>
               margin: const EdgeInsets.symmetric(vertical: 22),
               height: 45,
               child: ListView.separated(
-                padding: EdgeInsets.symmetric(horizontal: 20.0),
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
                 separatorBuilder: (_, __) => const SizedBox(width: 10.0),
                 scrollDirection: Axis.horizontal,
                 itemCount: Images.favButtonsList.length,
@@ -176,7 +172,7 @@ class _FavoriteState extends State<Favorite>
             ),
             Expanded(
               child: AnimatedSwitcher(
-                duration: Duration(milliseconds: 300),
+                duration: const Duration(milliseconds: 300),
                 child: sectionList.isEmpty
                     ? Container(
                         key: ValueKey<String>(images.noAd3yahFav),
@@ -194,7 +190,7 @@ class _FavoriteState extends State<Favorite>
                               controller: _scrollController,
                               slivers: <Widget>[
                                 ReorderableSliverList(
-                                  key: ValueKey<String>('List'),
+                                  key: const ValueKey<String>('List'),
                                   controller: _scrollController,
                                   buildDraggableFeedback: (_,
                                       BoxConstraints constraints,
@@ -273,7 +269,7 @@ class _FavoriteState extends State<Favorite>
 }
 
 class FavCard extends StatelessWidget {
-  FavCard({
+  const FavCard({
     Key? key,
     required this.item,
     required this.icon,
@@ -320,7 +316,7 @@ class FavCard extends StatelessWidget {
           onTap: remove,
         ),
       ],
-      additionalContent: item.category == NoorCategory.MYAD3YAH
+      additionalContent: item.category == NoorCategory.myad3yah
           ? CardText(
               text: item.info,
               color: Theme.of(context).primaryColor,
@@ -336,7 +332,7 @@ class FavCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       CardText(text: textList[0].trim()),
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                       CardText(text: textList[1].trim()),
                     ],
                   );

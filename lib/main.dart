@@ -21,5 +21,5 @@ void main() async {
   GetIt.I.registerSingleton<SettingsModel>(SettingsModel());
   GetIt.I.registerSingletonAsync<DataController>(() => DataController.init());
 
-  runApp(NoorApp());
+  runApp(const NoorApp());
 }

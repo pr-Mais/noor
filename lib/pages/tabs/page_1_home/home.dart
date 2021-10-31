@@ -17,19 +17,24 @@ import 'package:noor/exports/controllers.dart' show ThemeModel;
 import 'package:noor/exports/services.dart' show SharedPrefsService;
 import 'package:noor/exports/models.dart' show AllahName, DataModel;
 
+export 'package:noor/pages/tabs/page_1_home/ad3yah_expanded.dart';
+export 'package:noor/pages/tabs/page_1_home/allah_names_expanded.dart';
+export 'package:noor/pages/tabs/page_1_home/athkar_expanded.dart';
+export 'package:noor/pages/tabs/page_1_home/my_ad3yah.dart';
+
 class Home extends StatefulWidget {
-  Home({
+  const Home({
     Key? key,
   }) : super(key: key);
 
+  @override
   _HomeState createState() => _HomeState();
 }
 
-class _HomeState extends State<Home>
-    with TickerProviderStateMixin, AutomaticKeepAliveClientMixin {
+class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
   bool isWriting = false;
-  FocusNode _focusNode = new FocusNode();
-  TextEditingController _searchController = new TextEditingController();
+  final _focusNode = FocusNode();
+  final _searchController = TextEditingController();
   List<dynamic> results = [];
   List<dynamic> title = [];
 
@@ -53,9 +58,9 @@ class _HomeState extends State<Home>
   Future<void> displayNotification(
       String title, String body, String payload) async {
     FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-        new FlutterLocalNotificationsPlugin();
+        FlutterLocalNotificationsPlugin();
     AndroidNotificationDetails androidPlatformChannelSpecifics =
-        AndroidNotificationDetails(
+        const AndroidNotificationDetails(
       'RC',
       'RC notification',
       'RC channel',
@@ -186,14 +191,14 @@ class _HomeState extends State<Home>
                             Visibility(
                               visible: !isWriting && _focusNode.hasFocus,
                               child: AnimatedOpacity(
-                                duration: Duration(milliseconds: 400),
+                                duration: const Duration(milliseconds: 400),
                                 opacity: _focusNode.hasFocus ? 1.0 : 0.0,
                                 child: GestureDetector(
                                   onTap: () {
                                     if (_focusNode.hasFocus) {
                                       _searchController.clear();
                                       FocusScope.of(context)
-                                          .requestFocus(new FocusNode());
+                                          .requestFocus(FocusNode());
                                       setState(() {
                                         isWriting = false;
                                       });
@@ -233,7 +238,7 @@ class _HomeState extends State<Home>
   Widget searchBar() {
     return SafeArea(
       child: Container(
-        padding: EdgeInsets.only(right: 25.0, left: 25.0),
+        padding: const EdgeInsets.only(right: 25.0, left: 25.0),
         child: TextField(
           controller: _searchController,
           focusNode: _focusNode,
@@ -248,9 +253,10 @@ class _HomeState extends State<Home>
             fontWeight: FontWeight.normal,
           ),
           decoration: InputDecoration(
-            contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 15),
+            contentPadding:
+                const EdgeInsets.symmetric(vertical: 0, horizontal: 15),
             hintText: 'ابحث عن ذكر أو دعاء',
-            hintStyle: TextStyle(
+            hintStyle: const TextStyle(
               color: Colors.grey,
               fontWeight: FontWeight.normal,
             ),
@@ -278,7 +284,8 @@ class _HomeState extends State<Home>
                   )
                 : null,
             focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.transparent, width: 2.0),
+              borderSide:
+                  const BorderSide(color: Colors.transparent, width: 2.0),
               borderRadius: BorderRadius.circular(16.0),
             ),
             filled: true,
@@ -287,7 +294,7 @@ class _HomeState extends State<Home>
                 : Colors.white12,
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(16.0),
-              borderSide: BorderSide(
+              borderSide: const BorderSide(
                 color: Colors.transparent,
               ),
             ),
@@ -301,13 +308,11 @@ class _HomeState extends State<Home>
 class AnimatedHeader extends StatefulWidget {
   const AnimatedHeader({
     Key? key,
-    required FocusNode focusNode,
     required this.isWriting,
-  })  : focusNode = focusNode,
-        super(key: key);
+    required this.focusNode,
+  }) : super(key: key);
 
   final FocusNode focusNode;
-
   final bool isWriting;
 
   @override
@@ -340,17 +345,17 @@ class _AnimatedHeaderState extends State<AnimatedHeader>
 
   _setupCloudAnimation() {
     cloudController =
-        AnimationController(duration: Duration(seconds: 15), vsync: this)
+        AnimationController(duration: const Duration(seconds: 15), vsync: this)
           ..forward()
           ..reverse()
           ..repeat();
 
-    _topCloudAnim =
-        Tween<Offset>(begin: Offset(3.0, 0.0), end: Offset(-5.5, 0.0))
-            .animate(cloudController);
-    _bottomCloudAnim =
-        Tween<Offset>(begin: Offset(-5.5, 0.0), end: Offset(3.0, 0.0))
-            .animate(cloudController);
+    _topCloudAnim = Tween<Offset>(
+            begin: const Offset(3.0, 0.0), end: const Offset(-5.5, 0.0))
+        .animate(cloudController);
+    _bottomCloudAnim = Tween<Offset>(
+            begin: const Offset(-5.5, 0.0), end: const Offset(3.0, 0.0))
+        .animate(cloudController);
   }
 
   Future<void> _loadRemoteConfig() async {
@@ -371,8 +376,7 @@ class _AnimatedHeaderState extends State<AnimatedHeader>
         Provider.of<ThemeModel>(context, listen: false).images;
     return AnimatedSize(
       curve: Curves.easeInOutCirc,
-      duration: Duration(milliseconds: 300),
-      vsync: this,
+      duration: const Duration(milliseconds: 300),
       child: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
@@ -407,7 +411,7 @@ class _AnimatedHeaderState extends State<AnimatedHeader>
                 ),
               ),
             if (Theme.of(context).brightness == Brightness.dark)
-              Align(
+              const Align(
                 alignment: Alignment.center,
                 child: GlowingStars(),
               ),
@@ -429,7 +433,7 @@ class _AnimatedHeaderState extends State<AnimatedHeader>
                           valueListenable: remoteConfigNotifier,
                           builder: (_, String value, Widget? child) {
                             return AnimatedSwitcher(
-                              duration: Duration(milliseconds: 500),
+                              duration: const Duration(milliseconds: 500),
                               transitionBuilder:
                                   (Widget child, Animation<double> animation) {
                                 return FadeTransition(
@@ -439,7 +443,7 @@ class _AnimatedHeaderState extends State<AnimatedHeader>
                                 value,
                                 key: ValueKey<String>(value),
                                 textAlign: TextAlign.center,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   color: Colors.white,
                                   fontSize: 15,
                                   height: 1.5,
@@ -476,7 +480,7 @@ class SearchResults extends StatefulWidget {
 }
 
 String mask(string) {
-  var tmp;
+  String tmp;
   // for each أ، إ، آ in string, replace with ا
   tmp = string.replaceAll(
       RegExp(
@@ -548,10 +552,10 @@ class _SearchResultsState extends State<SearchResults> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      child: widget.results.length == 0
-          ? Text('لا توجد نتائج')
+      child: widget.results.isEmpty
+          ? const Text('لا توجد نتائج')
           : ListView.builder(
-              physics: AlwaysScrollableScrollPhysics(),
+              physics: const AlwaysScrollableScrollPhysics(),
               padding: EdgeInsets.only(
                   bottom: MediaQuery.of(context).viewInsets.bottom),
               itemCount: widget.results.length,
@@ -583,7 +587,7 @@ class _SearchResultsState extends State<SearchResults> {
                             ),
                           ],
                         ),
-                        padding: EdgeInsets.symmetric(
+                        padding: const EdgeInsets.symmetric(
                           horizontal: 30.0,
                         ),
                       ),
@@ -601,11 +605,11 @@ class _SearchResultsState extends State<SearchResults> {
                                 fontWeight: FontWeight.bold,
                                 fontSize: 12),
                           ),
-                          padding: EdgeInsets.symmetric(
+                          padding: const EdgeInsets.symmetric(
                             horizontal: 30.0,
                           ),
                         ),
-                      Divider(),
+                      const Divider(),
                     ],
                   ),
                 );

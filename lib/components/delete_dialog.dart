@@ -13,7 +13,7 @@ class DeleteConfirmationDialog extends StatelessWidget {
 
   Future<bool?> show() async {
     return await showGeneralDialog(
-      transitionDuration: Duration(milliseconds: 600),
+      transitionDuration: const Duration(milliseconds: 600),
       barrierColor: Colors.black.withOpacity(0.75),
       barrierLabel: '',
       context: context,
@@ -25,7 +25,7 @@ class DeleteConfirmationDialog extends StatelessWidget {
           child: DeleteConfirmationDialog(context),
         );
       },
-      pageBuilder: (_, __, ___) => SizedBox(),
+      pageBuilder: (_, __, ___) => const SizedBox(),
     );
   }
 
@@ -67,11 +67,11 @@ class DeleteConfirmationDialog extends StatelessWidget {
     return Dialog(
       elevation: 6.0,
       child: Container(
-        constraints: BoxConstraints(maxHeight: 130),
+        constraints: const BoxConstraints(maxHeight: 130),
         child: Stack(
           children: <Widget>[
             Container(
-              padding: EdgeInsets.all(10),
+              padding: const EdgeInsets.all(10),
               alignment: Alignment.center,
               child: Column(
                 children: <Widget>[
@@ -83,24 +83,24 @@ class DeleteConfirmationDialog extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  Text('هل أنت مُتأكد من رغبتك في الحذف؟')
+                  const Text('هل أنت مُتأكد من رغبتك في الحذف؟')
                 ],
               ),
             ),
             Align(
               alignment: Alignment.bottomCenter,
               child: Container(
-                constraints: BoxConstraints.expand(height: 40),
+                constraints: const BoxConstraints.expand(height: 40),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     button(
                         text: 'حذف',
-                        border: Border(
+                        border: const Border(
                           left: BorderSide(width: 0.5, color: Colors.white),
                         ),
-                        radius: BorderRadius.only(
+                        radius: const BorderRadius.only(
                           bottomRight: Radius.circular(15),
                         ),
                         textColor: Colors.lightBlue[100],
@@ -109,10 +109,10 @@ class DeleteConfirmationDialog extends StatelessWidget {
                         }),
                     button(
                         text: 'إلغاء',
-                        border: Border(
+                        border: const Border(
                           right: BorderSide(width: 0.5, color: Colors.white),
                         ),
-                        radius: BorderRadius.only(
+                        radius: const BorderRadius.only(
                           bottomLeft: Radius.circular(15),
                         ),
                         textColor: Colors.white,

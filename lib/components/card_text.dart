@@ -91,7 +91,7 @@ class CardText extends StatelessWidget {
 
       List<String> match = <String>[];
 
-      if (s.length > 0) {
+      if (s.isNotEmpty) {
         for (String m in tmpMatch) {
           if (letters.hasMatch(m) && !highlight.contains(m)) {
             match.addAll(m.splitWithDelim(letters));
@@ -145,7 +145,7 @@ class CardText extends StatelessWidget {
       }
 
       children.add(
-        TextSpan(
+        const TextSpan(
           text: ' ',
         ),
       );
@@ -175,7 +175,7 @@ class CardText extends StatelessWidget {
         child: Builder(
           builder: (BuildContext context) {
             return AnimatedSwitcher(
-              duration: Duration(milliseconds: 200),
+              duration: const Duration(milliseconds: 200),
               child: item is AllahName
                   ? RichText(
                       textScaleFactor: settings.fontSize,

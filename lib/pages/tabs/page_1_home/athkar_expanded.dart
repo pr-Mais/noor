@@ -11,6 +11,7 @@ import 'package:noor/exports/components.dart'
 class AthkarList extends StatefulWidget {
   const AthkarList({Key? key, required this.index}) : super(key: key);
   final int index;
+  @override
   _AthkarListState createState() => _AthkarListState();
 }
 
@@ -30,14 +31,14 @@ class _AthkarListState extends State<AthkarList>
   void initState() {
     super.initState();
     pagePosition = widget.index;
-    animationController = new AnimationController(vsync: this);
+    animationController = AnimationController(vsync: this);
     animation = Tween<double>(begin: 0.0, end: 0.1).animate(
       CurvedAnimation(
         parent: animationController,
         curve: Curves.elasticIn,
       ),
     );
-    controller = new ItemScrollController();
+    controller = ItemScrollController();
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       listener.itemPositions.addListener(changeAppBar);
     });
@@ -90,10 +91,10 @@ class _AthkarListState extends State<AthkarList>
         settings.autoJump &&
         counter.position == 0 &&
         !context.read<DataModel>().athkar[index + 1].isTitle) {
-      Future<void>.delayed(Duration(milliseconds: 500)).then(
+      Future<void>.delayed(const Duration(milliseconds: 500)).then(
         (_) {
           controller.scrollTo(
-              duration: Duration(milliseconds: 800),
+              duration: const Duration(milliseconds: 800),
               curve: Curves.easeInOutCubic,
               index: index + 1);
         },
@@ -112,7 +113,7 @@ class _AthkarListState extends State<AthkarList>
             bottom: false,
             child: Container(
               width: double.infinity,
-              margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
@@ -155,15 +156,15 @@ class _AthkarListState extends State<AthkarList>
                     builder: (_, List<AthkarCounter> countersList, __) {
                       return Scrollbar(
                         child: ScrollablePositionedList.builder(
-                          key: ValueKey<String>('list'),
-                          physics: AlwaysScrollableScrollPhysics(),
+                          key: const ValueKey<String>('list'),
+                          physics: const AlwaysScrollableScrollPhysics(),
                           itemScrollController: controller,
                           itemPositionsListener: listener,
                           itemCount: athkar.length,
                           addAutomaticKeepAlives: true,
                           initialScrollIndex: widget.index,
                           minCacheExtent: 900,
-                          padding: EdgeInsets.only(bottom: 20),
+                          padding: const EdgeInsets.only(bottom: 20),
                           itemBuilder: (_, int index) {
                             final Thekr thekr = athkar[index];
                             if (thekr.isTitle) {

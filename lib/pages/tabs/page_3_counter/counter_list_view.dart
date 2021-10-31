@@ -3,12 +3,12 @@ import 'package:noor/components/add_dialog.dart';
 import 'package:noor/exports/constants.dart';
 import 'package:noor/exports/controllers.dart';
 import 'package:noor/exports/pages.dart';
-import 'package:noor/pages/tabs/3_counter/counter_view_model.dart';
+import 'package:noor/pages/tabs/page_3_counter/counter_view_model.dart';
 import 'package:provider/provider.dart';
 import 'package:noor/utils/to_arabic.dart';
 
 class CounterListView extends StatefulWidget {
-  CounterListView({Key? key}) : super(key: key);
+  const CounterListView({Key? key}) : super(key: key);
 
   @override
   _CounterListViewState createState() => _CounterListViewState();
@@ -48,7 +48,7 @@ class _CounterListViewState extends State<CounterListView> {
             appBar(),
             Expanded(
               child: ListView.separated(
-                separatorBuilder: (_, __) => SizedBox(height: 10),
+                separatorBuilder: (_, __) => const SizedBox(height: 10),
                 padding: const EdgeInsets.symmetric(
                   horizontal: 20.0,
                   vertical: 10.0,
@@ -57,7 +57,7 @@ class _CounterListViewState extends State<CounterListView> {
                 itemBuilder: (_, int index) {
                   SubhaItem item = counterModel.subhaList[index];
                   return Container(
-                    constraints: BoxConstraints(minHeight: 80),
+                    constraints: const BoxConstraints(minHeight: 80),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(8.0),
@@ -70,8 +70,8 @@ class _CounterListViewState extends State<CounterListView> {
                         )
                       ],
                     ),
-                    margin: EdgeInsets.all(5.0),
-                    padding: EdgeInsets.all(20.0),
+                    margin: const EdgeInsets.all(5.0),
+                    padding: const EdgeInsets.all(20.0),
                     alignment: Alignment.centerRight,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -87,11 +87,11 @@ class _CounterListViewState extends State<CounterListView> {
                           height: 30,
                           child: AnimatedContainer(
                             width: isEditMode ? 30 : 70,
-                            duration: Duration(milliseconds: 200),
+                            duration: const Duration(milliseconds: 200),
                             curve: Curves.easeInOut,
                             decoration: BoxDecoration(
                               gradient: isEditMode
-                                  ? LinearGradient(
+                                  ? const LinearGradient(
                                       colors: [
                                         Colors.red,
                                         Colors.red,
@@ -107,19 +107,17 @@ class _CounterListViewState extends State<CounterListView> {
                             ),
                             child: Align(
                               alignment: AlignmentDirectional.centerEnd,
-                              child: Container(
-                                child: Center(
-                                  child: isEditMode
-                                      ? Image.asset(
-                                          Images.eraseIcon,
-                                        )
-                                      : Text(
-                                          '${item.counter}'.arabicDigit(),
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .headline2,
-                                        ),
-                                ),
+                              child: Center(
+                                child: isEditMode
+                                    ? Image.asset(
+                                        Images.eraseIcon,
+                                      )
+                                    : Text(
+                                        '${item.counter}'.arabicDigit(),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headline2,
+                                      ),
                               ),
                             ),
                           ),
@@ -148,7 +146,7 @@ class _CounterListViewState extends State<CounterListView> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             AnimatedSwitcher(
-              duration: Duration(milliseconds: 200),
+              duration: const Duration(milliseconds: 200),
               child: isEditMode
                   ? NoorIconButton(
                       key: ValueKey<bool>(isEditMode),

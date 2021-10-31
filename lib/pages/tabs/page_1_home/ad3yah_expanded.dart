@@ -15,6 +15,7 @@ class Ad3yahList extends StatefulWidget {
   }) : super(key: key);
   final int index;
   final NoorCategory category;
+  @override
   _Ad3yahListState createState() => _Ad3yahListState();
 }
 
@@ -45,7 +46,7 @@ class _Ad3yahListState extends State<Ad3yahList> {
             bottom: false,
             child: Container(
               width: double.infinity,
-              margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
@@ -55,7 +56,8 @@ class _Ad3yahListState extends State<Ad3yahList> {
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.headline1,
                   ),
-                  NoorCloseButton(color: Theme.of(context).accentColor),
+                  NoorCloseButton(
+                      color: Theme.of(context).colorScheme.secondary),
                 ],
               ),
             ),
@@ -63,7 +65,7 @@ class _Ad3yahListState extends State<Ad3yahList> {
           Expanded(
             child: Scrollbar(
               child: ScrollablePositionedList.builder(
-                physics: AlwaysScrollableScrollPhysics(),
+                physics: const AlwaysScrollableScrollPhysics(),
                 itemCount: data[widget.category.index - 1].length,
                 initialScrollIndex: widget.index,
                 itemScrollController: controller,

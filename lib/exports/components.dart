@@ -3,7 +3,7 @@ export 'package:noor/components/allah_names_title.dart';
 export 'package:noor/components/athkar_card.dart';
 export 'package:noor/components/athkar_title.dart';
 export 'package:noor/components/bottom_nav.dart';
-export 'package:noor/components/home-card.dart';
+export 'package:noor/components/home_card.dart';
 export 'package:noor/components/close_button.dart';
 export 'package:noor/components/delete_dialog.dart';
 export 'package:noor/components/custom_scroll_bhaviour.dart';

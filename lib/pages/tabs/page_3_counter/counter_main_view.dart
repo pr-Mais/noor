@@ -4,13 +4,13 @@ import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 
 import 'package:noor/exports/constants.dart';
-import 'package:noor/pages/tabs/3_counter/counter_view_model.dart';
-import 'package:noor/pages/tabs/3_counter/counter_list_view.dart';
+import 'package:noor/pages/tabs/page_3_counter/counter_view_model.dart';
+import 'package:noor/pages/tabs/page_3_counter/counter_list_view.dart';
 
 import 'package:noor/exports/utils.dart' show ToArabicNumbers;
 import 'package:noor/exports/controllers.dart' show SettingsModel;
 
-LinearGradient lightModeBG = LinearGradient(
+LinearGradient lightModeBG = const LinearGradient(
   colors: <Color>[
     Color(0xff5554B0),
     Color(0xff6F86D6),
@@ -20,7 +20,7 @@ LinearGradient lightModeBG = LinearGradient(
   end: Alignment.topLeft,
 );
 
-LinearGradient darkModeBG = LinearGradient(
+LinearGradient darkModeBG = const LinearGradient(
   colors: <Color>[
     Color(0xff161A3A),
     Color(0xff161A3A),
@@ -89,7 +89,7 @@ class _CounterViewState extends State<CounterView> {
   void navigateToCounterList() {
     Navigator.of(context).push(
       MaterialPageRoute<CounterListView>(
-        builder: (_) => CounterListView(),
+        builder: (_) => const CounterListView(),
       ),
     );
   }
@@ -138,27 +138,27 @@ class _CounterViewState extends State<CounterView> {
                         counterModel.selectedItem.key,
                         key: ValueKey<int>(counterModel.selectedItem.counter),
                         textAlign: TextAlign.center,
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: Colors.white,
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
                     ),
-                    SizedBox(height: 50),
+                    const SizedBox(height: 50),
                     AnimatedSwitcher(
-                      duration: Duration(milliseconds: 250),
+                      duration: const Duration(milliseconds: 250),
                       child: Text(
                         '${counterModel.selectedItem.counter}'.arabicDigit(),
                         key: ValueKey<int>(counterModel.selectedItem.counter),
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: Colors.white,
                           fontSize: 55,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                   ],
                 ),
               ),

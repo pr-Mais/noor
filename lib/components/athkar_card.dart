@@ -44,10 +44,10 @@ class AthkarCard extends StatelessWidget {
                   alignment: Alignment.bottomCenter,
                   child: counter.position < 1
                       ? AnimatedContainer(
-                          duration: Duration(milliseconds: 400),
+                          duration: const Duration(milliseconds: 400),
                           curve: Curves.bounceInOut,
                           alignment: Alignment.center,
-                          child: Icon(
+                          child: const Icon(
                             Icons.done,
                             color: Color(0xff58d1ed),
                           ),
@@ -55,9 +55,9 @@ class AthkarCard extends StatelessWidget {
                               color: Theme.of(context).brightness ==
                                       Brightness.light
                                   ? Colors.white
-                                  : Color(0xff202b54),
+                                  : const Color(0xff202b54),
                               border: Border.all(
-                                  color: Color(0xff6f86d6), width: 2),
+                                  color: const Color(0xff6f86d6), width: 2),
                               borderRadius: BorderRadius.circular(50.0)),
                           width: 45.0,
                           height: 45.0,
@@ -69,21 +69,22 @@ class AthkarCard extends StatelessWidget {
                               '${counter.position}'.arabicDigit(),
                               key: ValueKey<int?>(counter.position),
                               style: TextStyle(
-                                  color: Theme.of(context).accentColor,
-                                  fontSize: 16,
-                                  height: 1.25),
+                                color: Theme.of(context).colorScheme.secondary,
+                                fontSize: 16,
+                                height: 1.25,
+                              ),
                             ),
                           ),
                           decoration: BoxDecoration(
                             color:
                                 Theme.of(context).brightness == Brightness.light
                                     ? Colors.white
-                                    : Color(0xff202b54),
+                                    : const Color(0xff202b54),
                             border: Border.all(
                                 color: Theme.of(context).brightness ==
                                         Brightness.light
                                     ? Colors.grey[400]!
-                                    : Color(0xff33477f),
+                                    : const Color(0xff33477f),
                                 width: 2),
                             borderRadius: BorderRadius.circular(50.0),
                           ),

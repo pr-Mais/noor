@@ -18,7 +18,7 @@ class ListItem extends StatelessWidget {
           child: Material(
             color: Theme.of(context).brightness == Brightness.light
                 ? Colors.grey[100]
-                : Color(0xff33477f).withOpacity(0.2),
+                : const Color(0xff33477f).withOpacity(0.2),
             borderRadius: BorderRadius.circular(8),
             clipBehavior: Clip.hardEdge,
             child: ListTile(
@@ -33,7 +33,7 @@ class ListItem extends StatelessWidget {
                 size: 22,
                 color: Theme.of(context).brightness == Brightness.light
                     ? Colors.grey[300]
-                    : Color(0xff33477f),
+                    : const Color(0xff33477f),
               ),
               leading: Image.asset(
                 icon,
@@ -41,14 +41,14 @@ class ListItem extends StatelessWidget {
               ),
             ),
           ),
-          margin: EdgeInsets.only(
+          margin: const EdgeInsets.only(
             top: 5.0,
             bottom: 5.0,
             left: 10.0,
             right: 10.0,
           ),
         ),
-        Padding(
+        const Padding(
           child: Divider(),
           padding: EdgeInsets.symmetric(horizontal: 30.0),
         )

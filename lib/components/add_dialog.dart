@@ -29,7 +29,7 @@ class AddDialog extends StatefulWidget {
     bool enableSecondaryContent = false,
   }) async {
     return await showGeneralDialog(
-      transitionDuration: Duration(milliseconds: 600),
+      transitionDuration: const Duration(milliseconds: 600),
       barrierColor: Colors.black.withOpacity(0.75),
       barrierLabel: '',
       context: context,
@@ -48,7 +48,7 @@ class AddDialog extends StatefulWidget {
           ),
         );
       },
-      pageBuilder: (_, __, ___) => SizedBox(),
+      pageBuilder: (_, __, ___) => const SizedBox(),
     );
   }
 
@@ -112,7 +112,7 @@ class _AddDialogState extends State<AddDialog> {
           decoration: InputDecoration(
             filled: false,
             contentPadding:
-                EdgeInsets.symmetric(vertical: 12, horizontal: 10.0),
+                const EdgeInsets.symmetric(vertical: 12, horizontal: 10.0),
             border: InputBorder.none,
             hintText: text,
           ),
@@ -132,7 +132,7 @@ class _AddDialogState extends State<AddDialog> {
         decoration: BoxDecoration(
           color: Theme.of(context).brightness == Brightness.light
               ? Colors.white
-              : Color(0xff1B2349),
+              : const Color(0xff1B2349),
           borderRadius: BorderRadius.circular(15.0),
         ),
         //constraints: BoxConstraints(maxHeight: 360, minHeight: 200),
@@ -154,26 +154,26 @@ class _AddDialogState extends State<AddDialog> {
             Align(
               alignment: Alignment.bottomCenter,
               child: Container(
-                constraints: BoxConstraints.expand(height: 40),
+                constraints: const BoxConstraints.expand(height: 40),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     button(
                       text: 'حفظ',
-                      border: Border(
+                      border: const Border(
                           left: BorderSide(width: 0.5, color: Colors.white)),
-                      radius:
-                          BorderRadius.only(bottomRight: Radius.circular(15)),
+                      radius: const BorderRadius.only(
+                          bottomRight: Radius.circular(15)),
                       textColor: Colors.lightBlue[100],
                       onPress: () => widget.onSave,
                     ),
                     button(
                       text: 'إلغاء',
-                      border: Border(
+                      border: const Border(
                           right: BorderSide(width: 0.5, color: Colors.white)),
-                      radius:
-                          BorderRadius.only(bottomLeft: Radius.circular(15)),
+                      radius: const BorderRadius.only(
+                          bottomLeft: Radius.circular(15)),
                       textColor: Colors.white,
                       onPress: widget.onCancel,
                     ),

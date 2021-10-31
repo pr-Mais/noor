@@ -5,7 +5,7 @@ import 'package:noor/exports/pages.dart' show RootHome;
 import 'package:noor/exports/components.dart' show NoorLogo;
 
 class SplashScreen extends StatefulWidget {
-  SplashScreen({Key? key}) : super(key: key);
+  const SplashScreen({Key? key}) : super(key: key);
 
   @override
   _SplashScreenState createState() => _SplashScreenState();
@@ -15,7 +15,7 @@ class _SplashScreenState extends State<SplashScreen> {
   double logoOpacity = 0.0;
   @override
   void initState() {
-    Future<void>.delayed(Duration(milliseconds: 300), () {
+    Future<void>.delayed(const Duration(milliseconds: 300), () {
       setState(() {
         logoOpacity = 1.0;
       });
@@ -26,10 +26,10 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void didChangeDependencies() async {
     await Future<void>.value(GetIt.I.allReady());
-    await Future<void>.delayed(Duration(milliseconds: 500));
+    await Future<void>.delayed(const Duration(milliseconds: 500));
     Navigator.of(context).pushReplacement(
       MaterialPageRoute<RootHome>(
-        builder: (_) => RootHome(),
+        builder: (_) => const RootHome(),
       ),
     );
 
@@ -41,9 +41,9 @@ class _SplashScreenState extends State<SplashScreen> {
     return Material(
       child: Center(
         child: AnimatedOpacity(
-          duration: Duration(milliseconds: 500),
+          duration: const Duration(milliseconds: 500),
           opacity: logoOpacity,
-          child: NoorLogo(80),
+          child: const NoorLogo(size: 80),
         ),
       ),
     );
