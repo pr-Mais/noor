@@ -60,8 +60,10 @@ ThemeData lightTheme() => ThemeData(
         hintStyle: const TextStyle(color: Colors.grey),
       ),
       cardColor: Colors.grey[200],
-      colorScheme:
-          ColorScheme.fromSwatch().copyWith(secondary: const Color(0xff6f85d5)),
+      colorScheme: ColorScheme.fromSwatch().copyWith(
+        secondary: const Color(0xff6f85d5),
+        brightness: Brightness.light,
+      ),
     );
 
 ThemeData darkTheme() => ThemeData(
@@ -123,5 +125,8 @@ ThemeData darkTheme() => ThemeData(
           const Color(0xff3C387B).withOpacity(0.5),
         ),
       ),
-      colorScheme: ColorScheme.fromSwatch().copyWith(secondary: Colors.white),
+      colorScheme: ColorScheme.fromSwatch().copyWith(
+        secondary: Colors.white,
+        brightness: Brightness.dark,
+      ),
     );
