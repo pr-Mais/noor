@@ -372,7 +372,6 @@ class _AnimatedHeaderState extends State<AnimatedHeader>
     return AnimatedSize(
       curve: Curves.easeInOutCirc,
       duration: Duration(milliseconds: 300),
-      vsync: this,
       child: Container(
         decoration: BoxDecoration(
           image: DecorationImage(

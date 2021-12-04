@@ -1053,7 +1053,6 @@ class _SettingsState extends State<Settings>
             ? activeLabelStyle
             : inactiveLabelStyle,
       ),
-      vsync: this,
       duration: Duration(milliseconds: 500),
     );
   }
