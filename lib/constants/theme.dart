@@ -60,6 +60,7 @@ ThemeData lightTheme() => ThemeData(
         filled: true,
         hintStyle: TextStyle(color: Colors.grey),
       ),
+      buttonColor: Color(0xff6f85d5),
       cardColor: Colors.grey[200],
     );
 
@@ -114,6 +115,7 @@ ThemeData darkTheme() => ThemeData(
       colorScheme: ColorScheme.dark().copyWith(
         secondary: Colors.white,
       ),
+      buttonColor: Color(0xff6f85d5),
       splashColor: Colors.black.withOpacity(0.1),
       highlightColor: Color(0xff3C387B).withOpacity(0.5),
       dialogTheme: DialogTheme(backgroundColor: Color(0xff1B2349)),
@@ -125,5 +127,3 @@ ThemeData darkTheme() => ThemeData(
         ),
       ),
     );
-
-const Color textHighlightColor = Color(0xff6f85d5);
