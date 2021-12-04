@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 const double kContentFontSize = 16.0;
 
 ThemeData lightTheme() => ThemeData(
       brightness: Brightness.light,
-      appBarTheme: AppBarTheme(brightness: Brightness.light),
+      appBarTheme: AppBarTheme(
+        systemOverlayStyle: SystemUiOverlayStyle.light,
+      ),
       fontFamily: 'SST Arabic',
       primaryColor: Color(0xff6db7e5),
       pageTransitionsTheme: PageTransitionsTheme(
@@ -70,7 +73,9 @@ ThemeData lightTheme() => ThemeData(
 
 ThemeData darkTheme() => ThemeData(
       brightness: Brightness.dark,
-      appBarTheme: AppBarTheme(brightness: Brightness.dark),
+      appBarTheme: AppBarTheme(
+        systemOverlayStyle: SystemUiOverlayStyle.dark,
+      ),
       fontFamily: 'SST Arabic',
       primaryColor: Color(0xff6db7e5),
       pageTransitionsTheme: PageTransitionsTheme(
