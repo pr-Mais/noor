@@ -845,7 +845,7 @@ class _SettingsState extends State<Settings>
                                                       fontSize: 16,
                                                       color: Theme.of(context)
                                                           .textTheme
-                                                          .body1!
+                                                          .bodyText2!
                                                           .color,
                                                     ),
                                                   ),

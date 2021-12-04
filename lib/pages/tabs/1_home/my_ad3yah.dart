@@ -50,7 +50,7 @@ class _MyAd3yahState extends State<MyAd3yah> with TickerProviderStateMixin {
       child: SingleChildScrollView(
         child: TextField(
           controller: controller,
-          style: Theme.of(context).textTheme.body1,
+          style: Theme.of(context).textTheme.bodyText2,
           decoration: InputDecoration(
             filled: false,
             contentPadding:
