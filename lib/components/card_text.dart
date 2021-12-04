@@ -114,7 +114,9 @@ class CardText extends StatelessWidget {
             children.add(
               TextSpan(
                 text: m,
-                style: TextStyle(color: Theme.of(context).buttonColor),
+                style: TextStyle(
+                  color: Theme.of(context).buttonTheme.colorScheme!.primary,
+                ),
               ),
             );
           } else {
@@ -132,7 +134,9 @@ class CardText extends StatelessWidget {
           children.add(
             TextSpan(
               text: s,
-              style: TextStyle(color: Theme.of(context).buttonColor),
+              style: TextStyle(
+                color: Theme.of(context).buttonTheme.colorScheme!.primary,
+              ),
             ),
           );
         } else {
