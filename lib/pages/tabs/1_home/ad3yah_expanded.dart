@@ -55,7 +55,9 @@ class _Ad3yahListState extends State<Ad3yahList> {
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.headline1,
                   ),
-                  NoorCloseButton(color: Theme.of(context).accentColor),
+                  NoorCloseButton(
+                    color: Theme.of(context).colorScheme.secondary,
+                  ),
                 ],
               ),
             ),

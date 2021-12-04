@@ -566,7 +566,8 @@ class _SettingsState extends State<Settings>
                                                                       .bold,
                                                               color: Theme.of(
                                                                       context)
-                                                                  .accentColor,
+                                                                  .colorScheme
+                                                                  .secondary,
                                                               fontSize: 12),
                                                     ),
                                                     onPressed: () async {
@@ -617,13 +618,14 @@ class _SettingsState extends State<Settings>
                                                           .textTheme
                                                           .bodyText1!
                                                           .copyWith(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                              color: Theme.of(
-                                                                      context)
-                                                                  .accentColor,
-                                                              fontSize: 12),
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            color: Theme.of(
+                                                                    context)
+                                                                .colorScheme
+                                                                .secondary,
+                                                            fontSize: 12,
+                                                          ),
                                                     ),
                                                     onPressed: () {
                                                       Navigator.of(context)
@@ -761,7 +763,8 @@ class _SettingsState extends State<Settings>
                                                                       .bold,
                                                               color: Theme.of(
                                                                       context)
-                                                                  .accentColor,
+                                                                  .colorScheme
+                                                                  .secondary,
                                                               fontSize: 12),
                                                     ),
                                                     onPressed: () async {
@@ -811,13 +814,14 @@ class _SettingsState extends State<Settings>
                                                           .textTheme
                                                           .bodyText1!
                                                           .copyWith(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                              color: Theme.of(
-                                                                      context)
-                                                                  .accentColor,
-                                                              fontSize: 12),
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            color: Theme.of(
+                                                                    context)
+                                                                .colorScheme
+                                                                .secondary,
+                                                            fontSize: 12,
+                                                          ),
                                                     ),
                                                     onPressed: () {
                                                       Navigator.of(context)

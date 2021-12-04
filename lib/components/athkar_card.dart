@@ -69,9 +69,10 @@ class AthkarCard extends StatelessWidget {
                               '${counter.position}'.arabicDigit(),
                               key: ValueKey<int?>(counter.position),
                               style: TextStyle(
-                                  color: Theme.of(context).accentColor,
-                                  fontSize: 16,
-                                  height: 1.25),
+                                color: Theme.of(context).colorScheme.secondary,
+                                fontSize: 16,
+                                height: 1.25,
+                              ),
                             ),
                           ),
                           decoration: BoxDecoration(

@@ -134,7 +134,9 @@ class _AthkarListState extends State<AthkarList>
                       },
                     ),
                   ),
-                  NoorCloseButton(color: Theme.of(context).accentColor),
+                  NoorCloseButton(
+                    color: Theme.of(context).colorScheme.secondary,
+                  ),
                 ],
               ),
             ),

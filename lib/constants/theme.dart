@@ -15,7 +15,9 @@ ThemeData lightTheme() => ThemeData(
       unselectedWidgetColor: Colors.grey[300],
       canvasColor: Colors.white,
       dividerColor: Colors.grey[300],
-      accentColor: Color(0xff6f85d5),
+      colorScheme: ColorScheme.light().copyWith(
+        secondary: Color(0xff6f85d5),
+      ),
       dialogTheme: DialogTheme(backgroundColor: Colors.white),
       highlightColor: Colors.black.withOpacity(0.1),
       splashColor: Colors.black.withOpacity(0.1),
@@ -110,7 +112,9 @@ ThemeData darkTheme() => ThemeData(
           height: 1,
         ),
       ),
-      accentColor: Colors.white,
+      colorScheme: ColorScheme.dark().copyWith(
+        secondary: Colors.white,
+      ),
       buttonColor: Color(0xff6f85d5),
       splashColor: Colors.black.withOpacity(0.1),
       highlightColor: Color(0xff3C387B).withOpacity(0.5),

@@ -118,7 +118,9 @@ class _AllahNamesListState extends State<AllahNamesList>
                       },
                     ),
                   ),
-                  NoorCloseButton(color: Theme.of(context).accentColor),
+                  NoorCloseButton(
+                    color: Theme.of(context).colorScheme.secondary,
+                  ),
                 ],
               ),
             ),
@@ -223,7 +225,9 @@ class ReferenceList extends StatelessWidget {
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.headline1,
                   ),
-                  NoorCloseButton(color: Theme.of(context).accentColor),
+                  NoorCloseButton(
+                    color: Theme.of(context).colorScheme.secondary,
+                  ),
                 ],
               ),
             ),
