@@ -34,7 +34,9 @@ class AthkarCard extends StatelessWidget {
             ribbon: Ribbon.ribbon1,
             child: Padding(
               padding: const EdgeInsets.only(bottom: 30.0),
-              child: CardText(text: thekr.text),
+              child: CardText(
+                text: thekr.text,
+              ),
             ),
           ),
         ),

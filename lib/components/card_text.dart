@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:noor/exports/constants.dart';
+
 import 'package:noor/models/allah_name.dart';
 import 'package:provider/provider.dart';
 
@@ -114,7 +116,9 @@ class CardText extends StatelessWidget {
             children.add(
               TextSpan(
                 text: m,
-                style: TextStyle(color: Theme.of(context).buttonColor),
+                style: TextStyle(
+                  color: textHighlightColor,
+                ),
               ),
             );
           } else {
@@ -132,7 +136,9 @@ class CardText extends StatelessWidget {
           children.add(
             TextSpan(
               text: s,
-              style: TextStyle(color: Theme.of(context).buttonColor),
+              style: TextStyle(
+                color: textHighlightColor,
+              ),
             ),
           );
         } else {
