@@ -95,7 +95,7 @@ class DBService with ChangeNotifier {
 
   Future<void> insert(Doaa doaa) async {
     final Database? db = await database;
-    final map = doaa.toMap();
+    final Map<String, dynamic> map = doaa.toMap();
     await db?.insert(tableName, map);
   }
 

@@ -27,17 +27,17 @@ class SharedPrefsService {
   // put object
   static Future<bool>? putObject(String key, Object value) {
     if (_prefs == null) return null;
-    return _prefs!.setString(key, value == null ? '' : json.encode(value));
+    return _prefs!.setString(key, json.encode(value));
   }
 
   // get obj
-  static T? getObj<T>(String key, T f(Map v), {T? defValue}) {
-    Map? map = getObject(key);
+  static T? getObj<T>(String key, T f(Map<dynamic, dynamic> v), {T? defValue}) {
+    Map<dynamic, dynamic>? map = getObject(key);
     return map == null ? defValue : f(map);
   }
 
   // get object7
-  static Map? getObject(String key) {
+  static Map<dynamic, dynamic>? getObject(String key) {
     if (_prefs == null) return null;
     String? _data = _prefs!.getString(key);
     return (_data == null || _data.isEmpty) ? null : json.decode(_data);
@@ -46,28 +46,33 @@ class SharedPrefsService {
   // put object list
   static Future<bool>? putObjectList(String key, List<Object> list) {
     if (_prefs == null) return null;
-    List<String> _dataList = list.map((value) {
+    List<String> _dataList = list.map((Object value) {
       return json.encode(value);
     }).toList();
     return _prefs!.setStringList(key, _dataList);
   }
 
   // get obj list
-  static List<T> getObjList<T>(String key, T f(Map? v),
-      {List<T> defValue = const []}) {
-    List<Map?>? dataList = getObjectList(key);
-    List<T>? list = dataList?.map((value) {
+  static List<T> getObjList<T>(
+    String key,
+    T f(Map<dynamic, dynamic>? v), {
+    List<T>? defValue,
+  }) {
+    defValue ??= <T>[];
+
+    List<Map<dynamic, dynamic>?>? dataList = getObjectList(key);
+    List<T>? list = dataList?.map((Map<dynamic, dynamic>? value) {
       return f(value);
     }).toList();
     return list ?? defValue;
   }
 
   // get object list
-  static List<Map?>? getObjectList(String key) {
+  static List<Map<dynamic, dynamic>?>? getObjectList(String key) {
     if (_prefs == null) return null;
     List<String>? dataLis = _prefs!.getStringList(key);
-    return dataLis?.map((value) {
-      Map? _dataMap = json.decode(value);
+    return dataLis?.map((String value) {
+      Map<dynamic, dynamic>? _dataMap = json.decode(value);
       return _dataMap;
     }).toList();
   }

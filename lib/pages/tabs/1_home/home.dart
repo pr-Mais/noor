@@ -30,8 +30,8 @@ class _HomeState extends State<Home>
   bool isWriting = false;
   FocusNode _focusNode = new FocusNode();
   TextEditingController _searchController = new TextEditingController();
-  List<dynamic> results = [];
-  List<dynamic> title = [];
+  List<dynamic> results = <dynamic>[];
+  List<dynamic> title = <dynamic>[];
 
   String searchWord = '';
 
@@ -475,8 +475,8 @@ class SearchResults extends StatefulWidget {
   _SearchResultsState createState() => _SearchResultsState();
 }
 
-String mask(string) {
-  var tmp;
+String mask(dynamic string) {
+  dynamic tmp;
   // for each أ، إ، آ in string, replace with ا
   tmp = string.replaceAll(
       RegExp(
@@ -507,17 +507,17 @@ class _SearchResultsState extends State<SearchResults> {
     source = Tashkeel.remove(source);
     query = mask(query);
     if (query.isEmpty || !mask(source).contains(mask(query))) {
-      return [
+      return <TextSpan>[
         TextSpan(text: source),
       ];
     }
-    final matches = query.allMatches(mask(source));
+    final Iterable<Match> matches = query.allMatches(mask(source));
 
     int lastMatchEnd = 0;
 
-    final List<TextSpan> children = [];
-    for (var i = 0; i < matches.length; i++) {
-      final match = matches.elementAt(i);
+    final List<TextSpan> children = <TextSpan>[];
+    for (int i = 0; i < matches.length; i++) {
+      final Match match = matches.elementAt(i);
 
       if (match.start != lastMatchEnd) {
         children.add(TextSpan(
@@ -555,7 +555,7 @@ class _SearchResultsState extends State<SearchResults> {
               padding: EdgeInsets.only(
                   bottom: MediaQuery.of(context).viewInsets.bottom),
               itemCount: widget.results.length,
-              itemBuilder: (context, index) {
+              itemBuilder: (BuildContext context, int index) {
                 return GestureDetector(
                   onTap: () {
                     backToExactLocation(widget.results[index], context);
@@ -567,7 +567,7 @@ class _SearchResultsState extends State<SearchResults> {
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
+                          children: <Widget>[
                             Flexible(
                               fit: FlexFit.loose,
                               child: RichText(

@@ -8,7 +8,6 @@ import 'package:noor/exports/components.dart'
     show
         NoorCloseButton,
         CardTemplate,
-        NoorIcons,
         NameTitleCard,
         FavAction,
         CopyAction,

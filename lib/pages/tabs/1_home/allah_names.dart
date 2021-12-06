@@ -68,7 +68,7 @@ class _AllahNamesState extends State<AllahNames>
                     ),
                     tag: 'allah names',
                   ),
-                  onVerticalDragUpdate: (details) {
+                  onVerticalDragUpdate: (DragUpdateDetails details) {
                     if (details.delta.dy > 0) Navigator.of(context).pop();
                   },
                 ),

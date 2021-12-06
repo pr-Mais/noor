@@ -5,14 +5,8 @@ import 'package:noor/models/data.dart';
 import 'package:provider/provider.dart';
 import 'package:reorderables/reorderables.dart';
 
-import 'package:noor/main.dart';
 import 'package:noor/exports/components.dart'
-    show
-        CardTemplate,
-        DeleteConfirmationDialog,
-        ImageButton,
-        NoorIcons,
-        NoorSettingsIcons;
+    show CardTemplate, DeleteConfirmationDialog, ImageButton;
 import 'package:noor/exports/models.dart' show AllahName;
 import 'package:noor/exports/constants.dart' show Images, NoorCategory;
 import 'package:noor/exports/pages.dart'
