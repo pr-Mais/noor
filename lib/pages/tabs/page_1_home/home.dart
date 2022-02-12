@@ -388,6 +388,7 @@ class _AnimatedHeaderState extends State<AnimatedHeader>
         height: widget.focusNode.hasFocus || widget.isWriting ? 0 : 170,
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Stack(
+          alignment: Alignment.center,
           children: <Widget>[
             if (Theme.of(context).brightness == Brightness.light)
               Positioned(
@@ -415,44 +416,42 @@ class _AnimatedHeaderState extends State<AnimatedHeader>
                 child: GlowingStars(),
               ),
             SafeArea(
-              child: Align(
-                alignment: Alignment.topCenter,
-                child: SizedBox(
-                  width: MediaQuery.of(context).size.width,
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: <Widget>[
-                        const SizedBox(height: 5),
-                        SvgPicture.asset(
-                          'assets/images/${prefix}logo-dark.svg',
-                          width: 60,
-                        ),
-                        const SizedBox(height: 15),
-                        ValueListenableBuilder<String>(
-                          valueListenable: remoteConfigNotifier,
-                          builder: (_, String value, Widget? child) {
-                            return AnimatedSwitcher(
-                              duration: const Duration(milliseconds: 500),
-                              transitionBuilder:
-                                  (Widget child, Animation<double> animation) {
-                                return FadeTransition(
-                                    child: child, opacity: animation);
-                              },
-                              child: Text(
-                                value,
-                                key: ValueKey<String>(value),
-                                textAlign: TextAlign.center,
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 15,
-                                  height: 1.5,
-                                ),
+              child: SizedBox(
+                width: MediaQuery.of(context).size.width,
+                height: 120,
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: <Widget>[
+                      const SizedBox(height: 5),
+                      SvgPicture.asset(
+                        'assets/images/${prefix}logo-dark.svg',
+                        width: 60,
+                      ),
+                      const SizedBox(height: 15),
+                      ValueListenableBuilder<String>(
+                        valueListenable: remoteConfigNotifier,
+                        builder: (_, String value, Widget? child) {
+                          return AnimatedSwitcher(
+                            duration: const Duration(milliseconds: 500),
+                            transitionBuilder:
+                                (Widget child, Animation<double> animation) {
+                              return FadeTransition(
+                                  child: child, opacity: animation);
+                            },
+                            child: Text(
+                              value,
+                              key: ValueKey<String>(value),
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 15,
+                                height: 1.5,
                               ),
-                            );
-                          },
-                        ),
-                      ],
-                    ),
+                            ),
+                          );
+                        },
+                      ),
+                    ],
                   ),
                 ),
               ),
