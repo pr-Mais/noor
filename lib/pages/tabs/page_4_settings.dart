@@ -15,7 +15,7 @@ import 'package:timezone/timezone.dart' as tz;
 import 'package:noor/exports/components.dart' show CardTemplate, CardText;
 import 'package:noor/exports/services.dart' show SharedPrefsService;
 import 'package:noor/exports/controllers.dart' show ThemeModel, SettingsModel;
-import '../../exports/constants.dart' show Images, Links, NoorIcons;
+import '../../exports/constants.dart' show Images, Links, NoorIcons, Strings;
 
 class Settings extends StatefulWidget {
   const Settings({
@@ -221,9 +221,7 @@ class _SettingsState extends State<Settings>
   }
 
   void share() {
-    Share.share(
-        'يضمُّ تطبيق نُور العديد من الأذكار والأدعية الواردة في كتاب حصن المسلم. كما يحتوي التطبيق على أدعية من القرآن الكريم والسنة النبوية. والعديد من المميزات. \n https://play.google.com/store/apps/details?id=com.noor.sa',
-        subject: 'تطبيق نُور');
+    Share.share(Strings.shareText, subject: Strings.shareSubject);
   }
 
   void setDailyNotification(DateTime dateTime, period, id) async {
@@ -233,7 +231,6 @@ class _SettingsState extends State<Settings>
     var androidPlatformChannelSpecifics = AndroidNotificationDetails(
       '$id',
       '$period',
-      'repeatDailyAtTime $dateTime',
       showWhen: true,
     );
     var platformChannelSpecifics =

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:noor/components/dialog_button.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:reorderables/reorderables.dart';
@@ -69,31 +70,13 @@ class _MyAd3yahState extends State<MyAd3yah> with TickerProviderStateMixin {
   }
 
   //button design (used in dialoges)
-  button({required text, border, required radius, textColor, onPress}) {
-    return Expanded(
-      flex: 1,
-      child: Container(
-        decoration: BoxDecoration(border: border),
-        // ignore: deprecated_member_use
-        child: RaisedButton(
-          shape: RoundedRectangleBorder(borderRadius: radius),
-          elevation: 0.0,
-          focusElevation: 0.0,
-          highlightElevation: 0.0,
-          hoverElevation: 0.0,
-          splashColor: Colors.white24,
-          highlightColor: Colors.white24,
-          onPressed: onPress,
-          child: Text(
-            text,
-            style: TextStyle(
-              color: textColor,
-              fontWeight: FontWeight.w300,
-              fontSize: 12,
-            ),
-          ),
-        ),
-      ),
+  button({required text, border, required radius, textColor, onPressed}) {
+    return DialogButton(
+      label: text,
+      border: border,
+      onPressed: onPressed,
+      radius: radius,
+      textColor: textColor,
     );
   }
 
@@ -150,7 +133,7 @@ class _MyAd3yahState extends State<MyAd3yah> with TickerProviderStateMixin {
                               radius: const BorderRadius.only(
                                   bottomRight: Radius.circular(15)),
                               textColor: Colors.lightBlue[100],
-                              onPress: () => onSave(prevDoaa: data),
+                              onPressed: () => onSave(prevDoaa: data),
                             ),
                             button(
                               text: 'إلغاء',
@@ -160,7 +143,7 @@ class _MyAd3yahState extends State<MyAd3yah> with TickerProviderStateMixin {
                               radius: const BorderRadius.only(
                                   bottomLeft: Radius.circular(15)),
                               textColor: Colors.white,
-                              onPress: onCancel,
+                              onPressed: onCancel,
                             ),
                           ],
                         ),

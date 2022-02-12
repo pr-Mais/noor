@@ -8,6 +8,7 @@ import 'package:noor/exports/models.dart' show DataModel;
 import 'package:noor/exports/services.dart'
     show DBService, SharedPrefsService, FCMService;
 import 'package:noor/exports/models.dart' show SettingsModel;
+import 'package:noor/pages/tabs/page_3_counter/counter_view_model.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,6 +21,8 @@ void main() async {
   GetIt.I.registerSingleton<DataModel>(DataModel());
   GetIt.I.registerSingleton<SettingsModel>(SettingsModel());
   GetIt.I.registerSingletonAsync<DataController>(() => DataController.init());
+  GetIt.I
+      .registerSingletonAsync<CounterViewModel>(() => CounterViewModel.init());
 
   runApp(const NoorApp());
 }

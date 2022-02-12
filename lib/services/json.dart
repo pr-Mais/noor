@@ -29,6 +29,7 @@ class JsonService {
     return json
         .decode(await rootBundle
             .loadString('assets/json/default_subha_list.json'))['default']
-        .cast<String>();
+        .cast<String>()
+        .toList();
   }
 }

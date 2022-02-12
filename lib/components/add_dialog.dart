@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:noor/components/dialog_button.dart';
+import 'package:noor/pages/tabs/page_3_counter/counter_list_view.dart';
+
+import 'editable_text_max_length_highlighter.dart';
 
 class AddDialog extends StatefulWidget {
   const AddDialog(
     this.context, {
     Key? key,
     this.mainContent = '',
+    this.mainContentMaxLength,
     this.secondaryContent = '',
     this.onSave,
     this.onCancel,
@@ -13,8 +19,9 @@ class AddDialog extends StatefulWidget {
   final BuildContext context;
   final String mainContent;
   final String secondaryContent;
-  final Function()? onSave;
-  final Function()? onCancel;
+  final int? mainContentMaxLength;
+  final void Function(String)? onSave;
+  final void Function()? onCancel;
   final bool enableSecondaryContent;
 
   static AddDialog of(BuildContext context) {
@@ -24,14 +31,17 @@ class AddDialog extends StatefulWidget {
   Future<bool?> show({
     String mainContent = '',
     String secondaryContent = '',
-    Function()? onSave,
-    Function()? onCancel,
+    void Function(String)? onSave,
+    void Function()? onCancel,
     bool enableSecondaryContent = false,
+    bool barrierDismissible = true,
+    final int? mainContentMaxLength,
   }) async {
     return await showGeneralDialog(
       transitionDuration: const Duration(milliseconds: 600),
       barrierColor: Colors.black.withOpacity(0.75),
       barrierLabel: '',
+      barrierDismissible: barrierDismissible,
       context: context,
       transitionBuilder: (_, Animation<double> a1, Animation<double> a2, __) {
         final double curvedValue =
@@ -41,6 +51,7 @@ class AddDialog extends StatefulWidget {
           child: AddDialog(
             context,
             mainContent: mainContent,
+            mainContentMaxLength: mainContentMaxLength,
             secondaryContent: secondaryContent,
             onSave: onSave,
             onCancel: onCancel,
@@ -57,47 +68,46 @@ class AddDialog extends StatefulWidget {
 }
 
 class _AddDialogState extends State<AddDialog> {
-  late TextEditingController mainContentController;
+  late TextFieldMaxLengthHighlighter mainContentController;
   late TextEditingController secondaryContentController;
+  bool mainContentActive = false;
 
   @override
   void initState() {
     super.initState();
-    mainContentController = TextEditingController(text: widget.mainContent);
+    mainContentController = TextFieldMaxLengthHighlighter(
+      text: widget.mainContent,
+      maxLength: widget.mainContentMaxLength,
+    );
+
     secondaryContentController =
         TextEditingController(text: widget.secondaryContent);
+
+    mainContentController.addListener(() {
+      setState(() {
+        if (mainContentController.text.isEmpty ||
+            mainContentController.text.length > kMaxLength) {
+          mainContentActive = false;
+        } else {
+          mainContentActive = true;
+        }
+      });
+    });
   }
 
-  button(
-      {required String text,
-      BoxBorder? border,
-      required BorderRadiusGeometry radius,
-      Color? textColor,
-      Function? onPress}) {
-    return Expanded(
-      flex: 1,
-      child: Container(
-        decoration: BoxDecoration(border: border),
-        // ignore: deprecated_member_use
-        child: RaisedButton(
-          shape: RoundedRectangleBorder(borderRadius: radius),
-          elevation: 0.0,
-          focusElevation: 0.0,
-          highlightElevation: 0.0,
-          hoverElevation: 0.0,
-          splashColor: Colors.white24,
-          highlightColor: Colors.white24,
-          onPressed: onPress as void Function()?,
-          child: Text(
-            text,
-            style: TextStyle(
-              color: textColor,
-              fontWeight: FontWeight.w300,
-              fontSize: 12,
-            ),
-          ),
-        ),
-      ),
+  button({
+    required String text,
+    required BorderRadiusGeometry radius,
+    void Function()? onPressed,
+    BoxBorder? border,
+    Color? textColor,
+  }) {
+    return DialogButton(
+      label: text,
+      border: border,
+      onPressed: onPressed,
+      radius: radius,
+      textColor: textColor,
     );
   }
 
@@ -116,10 +126,10 @@ class _AddDialogState extends State<AddDialog> {
                 const EdgeInsets.symmetric(vertical: 12, horizontal: 10.0),
             border: InputBorder.none,
             hintText: text,
+            counterText: "",
           ),
-          keyboardType: TextInputType.multiline,
-          maxLines: 20,
-          minLines: 1,
+          maxLines: 3,
+          minLines: 3,
         ),
       ),
     );
@@ -136,7 +146,6 @@ class _AddDialogState extends State<AddDialog> {
               : const Color(0xff1B2349),
           borderRadius: BorderRadius.circular(15.0),
         ),
-        //constraints: BoxConstraints(maxHeight: 360, minHeight: 200),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
@@ -144,10 +153,10 @@ class _AddDialogState extends State<AddDialog> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  input(150.0, 'أضِف ذِكر...', mainContentController),
+                  input(100.0, 'أضِف ذِكر...', mainContentController),
                   if (widget.enableSecondaryContent) const Divider(),
                   if (widget.enableSecondaryContent)
-                    input(100.0, 'نص إضافي...', secondaryContentController),
+                    input(80.0, 'نص إضافي...', secondaryContentController),
                   if (widget.enableSecondaryContent) const SizedBox(height: 40)
                 ],
               ),
@@ -162,21 +171,27 @@ class _AddDialogState extends State<AddDialog> {
                   children: <Widget>[
                     button(
                       text: 'حفظ',
-                      border: const Border(
-                          left: BorderSide(width: 0.5, color: Colors.white)),
+                      border: Border(
+                        left: BorderSide(
+                            width: 0.5, color: Theme.of(context).cardColor),
+                      ),
                       radius: const BorderRadius.only(
                           bottomRight: Radius.circular(15)),
-                      textColor: Colors.lightBlue[100],
-                      onPress: () => widget.onSave,
+                      onPressed: !mainContentActive
+                          ? null
+                          : () =>
+                              widget.onSave?.call(mainContentController.text),
                     ),
                     button(
                       text: 'إلغاء',
-                      border: const Border(
-                          right: BorderSide(width: 0.5, color: Colors.white)),
+                      border: Border(
+                        right: BorderSide(
+                            width: 0.5, color: Theme.of(context).cardColor),
+                      ),
+                      textColor: Colors.white,
                       radius: const BorderRadius.only(
                           bottomLeft: Radius.circular(15)),
-                      textColor: Colors.white,
-                      onPress: widget.onCancel,
+                      onPressed: widget.onCancel,
                     ),
                   ],
                 ),

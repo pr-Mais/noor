@@ -37,21 +37,14 @@ class CounterView extends StatefulWidget {
 }
 
 class _CounterViewState extends State<CounterView> {
-  late CounterModel counterModel;
-  @override
-  void didChangeDependencies() {
-    counterModel = context.watch<CounterModel>();
-    super.didChangeDependencies();
-  }
-
   void incrementCounter() {
-    final SettingsModel settings = context.read<SettingsModel>();
+    final settings = context.read<SettingsModel>();
+    final counterModel = context.read<CounterViewModel>();
 
-    counterModel.selectedItem.setCounter = ++counterModel.selectedItem.counter;
-    counterModel.setSelectedItem = counterModel.selectedItem;
+    counterModel.incrementSelectedItem();
 
     if (settings.vibrateCounter) {
-      if (counterModel.selectedItem.counter % 100 == 0) {
+      if (counterModel.selectedItem!.counter % 100 == 0) {
         switch (settings.vibrationHunderds) {
           case 'strong':
             HapticFeedback.lightImpact();
@@ -81,11 +74,7 @@ class _CounterViewState extends State<CounterView> {
     }
   }
 
-  void resetCounter() {
-    counterModel.selectedItem.setCounter = 0;
-    counterModel.setSelectedItem = counterModel.selectedItem;
-  }
-
+  /// Push the [CounterListView] view.
   void navigateToCounterList() {
     Navigator.of(context).push(
       MaterialPageRoute<CounterListView>(
@@ -96,6 +85,9 @@ class _CounterViewState extends State<CounterView> {
 
   @override
   Widget build(BuildContext context) {
+    final counterModel = context.watch<CounterViewModel>();
+    final settings = context.watch<SettingsModel>();
+
     return Scaffold(
       body: GestureDetector(
         onTap: incrementCounter,
@@ -111,7 +103,7 @@ class _CounterViewState extends State<CounterView> {
             children: <Widget>[
               SafeArea(
                 child: Padding(
-                  padding: const EdgeInsets.all(20.0),
+                  padding: const EdgeInsets.all(viewPadding),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
@@ -121,44 +113,53 @@ class _CounterViewState extends State<CounterView> {
                       ),
                       NoorIconButton(
                         icon: NoorIcons.subhaReset,
-                        onPressed: resetCounter,
+                        onPressed: counterModel.resetSelectedItemCounter,
                       )
                     ],
                   ),
                 ),
               ),
-              Align(
-                alignment: Alignment.center,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
+              Center(
+                child: Stack(
+                  alignment: Alignment.center,
+                  fit: StackFit.expand,
                   children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 30.0),
-                      child: Text(
-                        counterModel.selectedItem.key,
-                        key: ValueKey<int>(counterModel.selectedItem.counter),
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
+                    Positioned.fill(
+                      top: MediaQuery.of(context).size.height * .24,
+                      bottom: MediaQuery.of(context).size.height * .5,
+                      child: Container(
+                        height: 100,
+                        alignment: Alignment.center,
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: viewPadding * 2),
+                        child: Text(
+                          counterModel.selectedItem?.key ?? '',
+                          key: ValueKey<int>(
+                            counterModel.selectedItem?.counter ?? 0,
+                          ),
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            fontFamily: settings.fontType,
+                          ),
                         ),
                       ),
                     ),
-                    const SizedBox(height: 50),
+                    const SizedBox(height: 40),
                     AnimatedSwitcher(
                       duration: const Duration(milliseconds: 250),
                       child: Text(
-                        '${counterModel.selectedItem.counter}'.arabicDigit(),
-                        key: ValueKey<int>(counterModel.selectedItem.counter),
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 55,
-                          fontWeight: FontWeight.bold,
-                        ),
+                        '${counterModel.selectedItem!.counter}'.arabicDigit(),
+                        key: ValueKey<int>(counterModel.selectedItem!.counter),
+                        style: Theme.of(context)
+                            .textTheme
+                            .subtitle2
+                            ?.copyWith(fontSize: 30),
+                        textScaleFactor: settings.fontSize,
                       ),
                     ),
-                    const SizedBox(height: 20),
                   ],
                 ),
               ),

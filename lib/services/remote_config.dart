@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:noor/services/prefs.dart';
 
@@ -30,10 +28,6 @@ class RemoteConfigService {
       SharedPrefsService.putBool('CONFIG_STATE', false);
 
       try {
-        // For some reasons, it doesn't fetch
-        // without pinging internet first on iOS
-        // TODO(Mais): investigate more
-        await InternetAddress.lookup('google.com');
         await _remoteConfig.fetchAndActivate();
       } catch (e) {
         rethrow;

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-const double kContentFontSize = 16.0;
+const kContentFontSize = 16.0;
+const viewPadding = 15.0;
 
 ThemeData lightTheme() => ThemeData(
       brightness: Brightness.light,
@@ -20,33 +21,69 @@ ThemeData lightTheme() => ThemeData(
       dialogTheme: const DialogTheme(backgroundColor: Colors.white),
       highlightColor: Colors.black.withOpacity(0.1),
       splashColor: Colors.black.withOpacity(0.1),
-      textTheme: const TextTheme(
-        bodyText1: TextStyle(
+      selectedRowColor: const Color(0xff6f85d5),
+      textTheme: TextTheme(
+        bodyText1: const TextStyle(
           fontSize: 16,
           height: 1.6,
           color: Colors.black,
           fontWeight: FontWeight.normal,
         ),
-        subtitle1: TextStyle(
+        subtitle1: const TextStyle(
           color: Color(0xff6f85d5),
           fontWeight: FontWeight.bold,
           fontSize: 14,
         ),
-        headline1: TextStyle(
+        subtitle2: TextStyle(
+          fontSize: 16,
+          height: 1.5,
+          color: Colors.lightBlue[100],
+          fontWeight: FontWeight.bold,
+        ),
+        headline1: const TextStyle(
           fontSize: 16,
           height: 1.5,
           color: Color(0xff6f85d5),
           fontWeight: FontWeight.bold,
         ),
-        headline2: TextStyle(
+        headline2: const TextStyle(
           fontSize: 16,
           height: 1.5,
           color: Colors.white,
         ),
-        button: TextStyle(
+        button: const TextStyle(
           fontSize: 14,
           color: Color(0xff6f85d5),
           height: 1,
+        ),
+      ),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ButtonStyle(
+          elevation: MaterialStateProperty.all<double>(0.0),
+          backgroundColor: MaterialStateProperty.resolveWith<Color?>(
+            (Set<MaterialState> states) {
+              if (states.contains(MaterialState.disabled)) {
+                return const Color(0xff6f85d5).withOpacity(0.7);
+              }
+              return const Color(0xff6f85d5);
+            },
+          ),
+          foregroundColor: MaterialStateProperty.resolveWith<Color?>(
+            (Set<MaterialState> states) {
+              return (states.contains(MaterialState.disabled))
+                  ? Colors.white30
+                  : Colors.lightBlue[100];
+            },
+          ),
+          textStyle: MaterialStateProperty.all<TextStyle>(
+            const TextStyle(
+              fontFamily: 'SST Arabic',
+              fontWeight: FontWeight.w600,
+              fontSize: 12,
+              height: 1,
+            ),
+          ),
+          overlayColor: MaterialStateProperty.all<Color>(Colors.white24),
         ),
       ),
       scrollbarTheme: ScrollbarThemeData(
@@ -72,6 +109,7 @@ ThemeData darkTheme() => ThemeData(
           const AppBarTheme(systemOverlayStyle: SystemUiOverlayStyle.dark),
       fontFamily: 'SST Arabic',
       primaryColor: const Color(0xff6db7e5),
+      selectedRowColor: const Color(0xff3C387B),
       pageTransitionsTheme: const PageTransitionsTheme(
         builders: <TargetPlatform, PageTransitionsBuilder>{
           TargetPlatform.android: FadeUpwardsPageTransitionsBuilder(),
@@ -98,6 +136,12 @@ ThemeData darkTheme() => ThemeData(
           fontWeight: FontWeight.bold,
           fontSize: 14,
         ),
+        subtitle2: TextStyle(
+          fontSize: 16,
+          height: 1.5,
+          color: Color(0xff6f85d5),
+          fontWeight: FontWeight.bold,
+        ),
         headline1: TextStyle(
           fontSize: 16,
           height: 1.5,
@@ -113,6 +157,35 @@ ThemeData darkTheme() => ThemeData(
           fontSize: 14,
           color: Color(0xff6f85d5),
           height: 1,
+        ),
+      ),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ButtonStyle(
+          elevation: MaterialStateProperty.all<double>(0.0),
+          backgroundColor: MaterialStateProperty.resolveWith<Color?>(
+            (Set<MaterialState> states) {
+              if (states.contains(MaterialState.disabled)) {
+                return const Color(0xff6f85d5).withOpacity(0.6);
+              }
+              return const Color(0xff6f85d5);
+            },
+          ),
+          foregroundColor: MaterialStateProperty.resolveWith<Color?>(
+            (Set<MaterialState> states) {
+              return (states.contains(MaterialState.disabled))
+                  ? Colors.white30
+                  : Colors.lightBlue[100];
+            },
+          ),
+          textStyle: MaterialStateProperty.all<TextStyle>(
+            const TextStyle(
+              fontFamily: 'SST Arabic',
+              fontWeight: FontWeight.w600,
+              fontSize: 12,
+              height: 1,
+            ),
+          ),
+          overlayColor: MaterialStateProperty.all<Color>(Colors.white10),
         ),
       ),
       splashColor: Colors.black.withOpacity(0.1),

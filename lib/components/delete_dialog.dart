@@ -2,6 +2,8 @@
 
 import 'package:flutter/material.dart';
 
+import 'dialog_button.dart';
+
 class DeleteConfirmationDialog extends StatelessWidget {
   const DeleteConfirmationDialog(
     this.context, {
@@ -31,43 +33,11 @@ class DeleteConfirmationDialog extends StatelessWidget {
     );
   }
 
-  // TODO(Mais): Refactor
-  button(
-      {required String text,
-      BoxBorder? border,
-      required BorderRadiusGeometry radius,
-      Color? textColor,
-      Function? onPress}) {
-    return Expanded(
-      flex: 1,
-      child: Container(
-        decoration: BoxDecoration(border: border),
-        child: RaisedButton(
-          shape: RoundedRectangleBorder(borderRadius: radius),
-          elevation: 0.0,
-          focusElevation: 0.0,
-          highlightElevation: 0.0,
-          hoverElevation: 0.0,
-          splashColor: Colors.white24,
-          highlightColor: Colors.white24,
-          onPressed: onPress as void Function()?,
-          child: Text(
-            text,
-            style: TextStyle(
-              color: textColor,
-              fontWeight: FontWeight.w300,
-              fontSize: 12,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Dialog(
       elevation: 6.0,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
       child: Container(
         constraints: const BoxConstraints(maxHeight: 130),
         child: Stack(
@@ -97,30 +67,33 @@ class DeleteConfirmationDialog extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    button(
-                        text: 'حذف',
-                        border: const Border(
-                          left: BorderSide(width: 0.5, color: Colors.white),
-                        ),
-                        radius: const BorderRadius.only(
-                          bottomRight: Radius.circular(15),
-                        ),
-                        textColor: Colors.lightBlue[100],
-                        onPress: () async {
-                          Navigator.of(context).pop(true);
-                        }),
-                    button(
-                        text: 'إلغاء',
-                        border: const Border(
-                          right: BorderSide(width: 0.5, color: Colors.white),
-                        ),
-                        radius: const BorderRadius.only(
-                          bottomLeft: Radius.circular(15),
-                        ),
-                        textColor: Colors.white,
-                        onPress: () {
-                          Navigator.of(context).pop(false);
-                        }),
+                    DialogButton(
+                      label: 'حذف',
+                      border: Border(
+                        left: BorderSide(
+                            width: 0.5, color: Theme.of(context).cardColor),
+                      ),
+                      onPressed: () async {
+                        Navigator.of(context).pop(true);
+                      },
+                      radius: const BorderRadius.only(
+                        bottomRight: Radius.circular(15),
+                      ),
+                    ),
+                    DialogButton(
+                      label: 'إلغاء',
+                      textColor: Colors.white,
+                      border: Border(
+                        right: BorderSide(
+                            width: 0.5, color: Theme.of(context).cardColor),
+                      ),
+                      onPressed: () async {
+                        Navigator.of(context).pop(false);
+                      },
+                      radius: const BorderRadius.only(
+                        bottomLeft: Radius.circular(15),
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -128,7 +101,6 @@ class DeleteConfirmationDialog extends StatelessWidget {
           ],
         ),
       ),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
     );
   }
 }

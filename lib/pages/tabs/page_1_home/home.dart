@@ -63,7 +63,6 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
         const AndroidNotificationDetails(
       'RC',
       'RC notification',
-      'RC channel',
       importance: Importance.max,
       priority: Priority.high,
     );

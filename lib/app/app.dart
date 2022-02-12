@@ -27,8 +27,8 @@ class NoorApp extends StatelessWidget {
         ChangeNotifierProvider<SettingsModel>(
           create: (_) => GetIt.I<SettingsModel>(),
         ),
-        ChangeNotifierProvider<CounterModel>.value(
-          value: CounterModel.init(),
+        ChangeNotifierProvider<CounterViewModel>(
+          create: (_) => GetIt.I<CounterViewModel>(),
         ),
       ],
       child: const MaterialAppWithTheme(),
