@@ -21,6 +21,7 @@ abstract class Images {
   final String igButton = '';
   final String myAd3yahBg = '';
   final String addMyAd3yah = '';
+  final String subhaBg = '';
 
   // Bellow images aren't tied to theme mode
   // So they can be static and accessed directly
@@ -75,92 +76,96 @@ abstract class Images {
 
 class LightAppImages implements Images {
   @override
-  final String logo = 'assets/images/${prefix}logo-light.svg';
+  String get logo => 'assets/images/${prefix}logo-light.svg';
 
   // Categories icons
   @override
-  final String athkarTitleIcon = 'assets/icons/titles/${prefix}athkar.png';
+  String get athkarTitleIcon => 'assets/icons/titles/${prefix}athkar.png';
   @override
-  final String quraanTitleIcon = 'assets/icons/titles/${prefix}quraan.png';
+  String get quraanTitleIcon => 'assets/icons/titles/${prefix}quraan.png';
   @override
-  final String sunnahTitleIcon = 'assets/icons/titles/${prefix}sunnah.png';
+  String get sunnahTitleIcon => 'assets/icons/titles/${prefix}sunnah.png';
   @override
-  final String ruqyaTitleIcon = 'assets/icons/titles/${prefix}ruqiya.png';
+  String get ruqyaTitleIcon => 'assets/icons/titles/${prefix}ruqiya.png';
   @override
-  final String myAd3yahTitleIcon = 'assets/icons/titles/${prefix}myAd3yah.png';
+  String get myAd3yahTitleIcon => 'assets/icons/titles/${prefix}myAd3yah.png';
   @override
-  final String allahNamesTitleIcon =
+  String get allahNamesTitleIcon =>
       'assets/icons/titles/${prefix}allah-names.png';
   // Home assets
   @override
-  final String homeHeader = 'assets/images/home-header/header-light.png';
+  String get homeHeader => 'assets/images/home-header/header-light.png';
   @override
-  final String athkarCard =
-      'assets/images/home-cards/light/${prefix}Athkar.png';
+  String get athkarCard => 'assets/images/home-cards/light/${prefix}Athkar.png';
   @override
-  final String ad3yahCard =
-      'assets/images/home-cards/light/${prefix}Ad3yah.png';
+  String get ad3yahCard => 'assets/images/home-cards/light/${prefix}Ad3yah.png';
   @override
-  final String allahNamesCard =
+  String get allahNamesCard =>
       'assets/images/home-cards/light/${prefix}AllahNames.png';
   // Backgrounds
   @override
-  final String noAd3yah = 'assets/images/backgrounds/NoAd3yah.png';
+  String get noAd3yah => 'assets/images/backgrounds/NoAd3yah.png';
   @override
-  final String noAd3yahFav = 'assets/images/backgrounds/NoAd3yahFav.png';
+  String get noAd3yahFav => 'assets/images/backgrounds/NoAd3yahFav.png';
   @override
-  final String myAd3yahBg = 'assets/images/backgrounds/${prefix}myAd3yahBg.svg';
+  String get myAd3yahBg => 'assets/images/backgrounds/${prefix}myAd3yahBg.svg';
   // Buttons
   @override
-  final String twitterButton = 'assets/images/social-buttons/twitter-light.png';
+  String get twitterButton => 'assets/images/social-buttons/twitter-light.png';
   @override
-  final String igButton = 'assets/images/social-buttons/ig-light.png';
+  String get igButton => 'assets/images/social-buttons/ig-light.png';
   @override
-  final String addMyAd3yah = 'assets/icons/${prefix}addDo3aa.png';
+  String get addMyAd3yah => 'assets/icons/${prefix}addDo3aa.png';
+
+  @override
+  String get subhaBg => 'assets/images/backgrounds/SubhaLightBg.svg';
 }
 
 class DarkAppImages implements Images {
   @override
-  final String logo = 'assets/images/${prefix}logo-dark.svg';
+  String get logo => 'assets/images/${prefix}logo-dark.svg';
 
   // Categories icons
   @override
-  final String athkarTitleIcon = 'assets/icons/titles/${prefix}athkar-dark.png';
+  String get athkarTitleIcon => 'assets/icons/titles/${prefix}athkar-dark.png';
   @override
-  final String quraanTitleIcon = 'assets/icons/titles/${prefix}quraan-dark.png';
+  String get quraanTitleIcon => 'assets/icons/titles/${prefix}quraan-dark.png';
   @override
-  final String sunnahTitleIcon = 'assets/icons/titles/${prefix}sunnah-dark.png';
+  String get sunnahTitleIcon => 'assets/icons/titles/${prefix}sunnah-dark.png';
   @override
-  final String ruqyaTitleIcon = 'assets/icons/titles/${prefix}ruqiya-dark.png';
+  String get ruqyaTitleIcon => 'assets/icons/titles/${prefix}ruqiya-dark.png';
   @override
-  final String myAd3yahTitleIcon =
+  String get myAd3yahTitleIcon =>
       'assets/icons/titles/${prefix}myAd3yah-dark.png';
   @override
-  final String allahNamesTitleIcon =
+  String get allahNamesTitleIcon =>
       'assets/icons/titles/${prefix}allah-names-dark.png';
   // Home assets
   @override
-  final String homeHeader = 'assets/images/home-header/header-dark.png';
+  String get homeHeader => 'assets/images/home-header/header-dark.png';
   @override
-  final String athkarCard = 'assets/images/home-cards/dark/${prefix}Athkar.png';
+  String get athkarCard => 'assets/images/home-cards/dark/${prefix}Athkar.png';
   @override
-  final String ad3yahCard = 'assets/images/home-cards/dark/${prefix}Ad3yah.png';
+  String get ad3yahCard => 'assets/images/home-cards/dark/${prefix}Ad3yah.png';
   @override
-  final String allahNamesCard =
+  String get allahNamesCard =>
       'assets/images/home-cards/dark/${prefix}AllahNames.png';
   // Backgrounds
   @override
-  final String noAd3yah = 'assets/images/backgrounds/NoAd3yahNight.png';
+  String get noAd3yah => 'assets/images/backgrounds/NoAd3yahNight.png';
   @override
-  final String noAd3yahFav = 'assets/images/backgrounds/NoAd3yahFavNight.png';
+  String get noAd3yahFav => 'assets/images/backgrounds/NoAd3yahFavNight.png';
   @override
-  final String myAd3yahBg =
+  String get myAd3yahBg =>
       'assets/images/backgrounds/${prefix}myAd3yahBgDark.svg';
   // Buttons
   @override
-  final String twitterButton = 'assets/images/social-buttons/twitter-dark.png';
+  String get twitterButton => 'assets/images/social-buttons/twitter-dark.png';
   @override
-  final String igButton = 'assets/images/social-buttons/ig-dark.png';
+  String get igButton => 'assets/images/social-buttons/ig-dark.png';
   @override
-  final String addMyAd3yah = 'assets/icons/${prefix}addDo3aa.png';
+  String get addMyAd3yah => 'assets/icons/${prefix}addDo3aa.png';
+
+  @override
+  String get subhaBg => 'assets/images/backgrounds/SubhaDarkBg.svg';
 }

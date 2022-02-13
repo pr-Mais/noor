@@ -21,7 +21,7 @@ ThemeData lightTheme() => ThemeData(
       dialogTheme: const DialogTheme(backgroundColor: Colors.white),
       highlightColor: Colors.black.withOpacity(0.1),
       splashColor: Colors.black.withOpacity(0.1),
-      selectedRowColor: const Color(0xff6f85d5),
+      selectedRowColor: const Color(0xffB3B3FF),
       textTheme: TextTheme(
         bodyText1: const TextStyle(
           fontSize: 16,
@@ -109,7 +109,7 @@ ThemeData darkTheme() => ThemeData(
           const AppBarTheme(systemOverlayStyle: SystemUiOverlayStyle.dark),
       fontFamily: 'SST Arabic',
       primaryColor: const Color(0xff6db7e5),
-      selectedRowColor: const Color(0xff3C387B),
+      selectedRowColor: const Color(0xff33477F),
       pageTransitionsTheme: const PageTransitionsTheme(
         builders: <TargetPlatform, PageTransitionsBuilder>{
           TargetPlatform.android: FadeUpwardsPageTransitionsBuilder(),

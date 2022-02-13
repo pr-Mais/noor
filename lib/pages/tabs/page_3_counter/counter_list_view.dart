@@ -1,6 +1,5 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:noor/components/add_dialog.dart';
 import 'package:noor/components/delete_dialog.dart';
 import 'package:noor/exports/constants.dart';
@@ -11,6 +10,24 @@ import 'package:provider/provider.dart';
 import 'package:noor/utils/to_arabic.dart';
 
 const kMaxLength = 80;
+
+LinearGradient lightModeCounterBG = const LinearGradient(
+  colors: <Color>[
+    Color(0xff9AE2F6),
+    Color(0xff48C6EF),
+  ],
+  begin: Alignment.bottomRight,
+  end: Alignment.topLeft,
+);
+
+LinearGradient darkModeCounterBG = const LinearGradient(
+  colors: <Color>[
+    Color(0xff9FB6FF),
+    Color(0xff6C6CD3),
+  ],
+  begin: Alignment.bottomRight,
+  end: Alignment.topLeft,
+);
 
 class CounterListView extends StatefulWidget {
   const CounterListView({Key? key}) : super(key: key);
@@ -46,7 +63,7 @@ class _CounterListViewState extends State<CounterListView> {
     );
   }
 
-  onSelect(SubhaItem item) {
+  onTap(SubhaItem item) {
     final counterModel = context.read<CounterViewModel>();
     counterModel.setSelectedItem = item;
 
@@ -68,136 +85,38 @@ class _CounterListViewState extends State<CounterListView> {
   Widget build(BuildContext context) {
     final counterModel = context.watch<CounterViewModel>();
     return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: Theme.of(context).brightness == Brightness.dark
-              ? darkModeBG
-              : lightModeBG,
-        ),
-        child: Column(
-          children: <Widget>[
-            appBar(),
-            Expanded(
-              child: ListView.separated(
-                controller: scrollController,
-                separatorBuilder: (_, __) => const SizedBox(height: 10),
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20.0,
-                  vertical: 10.0,
+      body: Stack(
+        children: [
+          SvgPicture.asset(
+            context.read<ThemeModel>().images.subhaBg,
+            fit: BoxFit.fill,
+          ),
+          Column(
+            children: <Widget>[
+              appBar(),
+              Expanded(
+                child: ListView.separated(
+                  controller: scrollController,
+                  separatorBuilder: (_, __) => const SizedBox(height: 10),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20.0,
+                    vertical: 10.0,
+                  ),
+                  itemCount: counterModel.subhaList.length,
+                  itemBuilder: (_, int index) {
+                    SubhaItem item = counterModel.subhaList[index];
+                    return SubhaListItem(
+                      item: item,
+                      isEditMode: isEditMode,
+                      onDelete: onDelete,
+                      onTap: onTap,
+                    );
+                  },
                 ),
-                itemCount: counterModel.subhaList.length,
-                itemBuilder: (_, int index) {
-                  SubhaItem item = counterModel.subhaList[index];
-                  return Material(
-                    color: Colors.transparent,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8.0),
-                    ),
-                    child: InkWell(
-                      onTap: isEditMode ? null : () => onSelect(item),
-                      borderRadius: BorderRadius.circular(8.0),
-                      splashColor: Colors.transparent,
-                      highlightColor: Theme.of(context).selectedRowColor,
-                      child: Container(
-                        constraints: const BoxConstraints(minHeight: 80),
-                        margin: const EdgeInsets.all(5.0),
-                        padding: const EdgeInsets.all(viewPadding),
-                        alignment: Alignment.centerRight,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(8.0),
-                          boxShadow: [
-                            BoxShadow(
-                              color: item.selected
-                                  ? Theme.of(context).selectedRowColor
-                                  : Colors.transparent,
-                              spreadRadius: 6,
-                            )
-                          ],
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Expanded(
-                              child: Text(
-                                item.key,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyText1
-                                    ?.copyWith(
-                                        color: Colors.black,
-                                        fontFamily: context
-                                            .read<SettingsModel>()
-                                            .fontType,
-                                        height: 1.2),
-                              ),
-                            ),
-                            SizedBox(
-                              width: 80,
-                              child: Align(
-                                alignment: AlignmentDirectional.centerEnd,
-                                child: SizedBox(
-                                  height: 30,
-                                  child: InkWell(
-                                    onTap: () => onDelete(item),
-                                    child: AnimatedContainer(
-                                      width: isEditMode ? 30 : 70,
-                                      duration:
-                                          const Duration(milliseconds: 200),
-                                      curve: Curves.easeInOut,
-                                      decoration: BoxDecoration(
-                                        gradient: isEditMode
-                                            ? LinearGradient(
-                                                colors: item.locked
-                                                    ? [
-                                                        Colors.grey[400]!,
-                                                        Colors.grey[400]!
-                                                      ]
-                                                    : [Colors.red, Colors.red],
-                                              )
-                                            : LinearGradient(
-                                                colors: [
-                                                  Theme.of(context)
-                                                      .primaryColor,
-                                                  Colors.blue
-                                                ],
-                                              ),
-                                        borderRadius: BorderRadius.circular(50),
-                                      ),
-                                      child: Align(
-                                        alignment:
-                                            AlignmentDirectional.centerEnd,
-                                        child: Center(
-                                          child: isEditMode
-                                              ? item.locked
-                                                  ? Image.asset(
-                                                      Images.eraseIcon)
-                                                  : Image.asset(
-                                                      Images.eraseIcon)
-                                              : Text(
-                                                  '${item.counter}'
-                                                      .arabicDigit(),
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .headline2,
-                                                ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                  );
-                },
-              ),
-            )
-          ],
-        ),
+              )
+            ],
+          ),
+        ],
       ),
     );
   }
@@ -251,6 +170,127 @@ class _CounterListViewState extends State<CounterListView> {
               },
             )
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class SubhaListItem extends StatelessWidget {
+  const SubhaListItem({
+    Key? key,
+    required this.item,
+    required this.onTap,
+    required this.onDelete,
+    this.isEditMode = false,
+  }) : super(key: key);
+
+  final SubhaItem item;
+  final bool isEditMode;
+  final Function(SubhaItem) onTap;
+  final Function(SubhaItem) onDelete;
+
+  @override
+  Widget build(BuildContext context) {
+    final borderRadius = BorderRadius.circular(50);
+    final settings = context.watch<SettingsModel>();
+
+    return Material(
+      color: Colors.transparent,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8.0),
+      ),
+      child: InkWell(
+        onTap: isEditMode ? null : () => onTap(item),
+        borderRadius: BorderRadius.circular(8.0),
+        splashColor: Colors.transparent,
+        highlightColor: Theme.of(context).selectedRowColor,
+        child: Container(
+          constraints: const BoxConstraints(minHeight: 80),
+          margin: const EdgeInsets.all(5.0),
+          padding: const EdgeInsets.all(viewPadding),
+          alignment: Alignment.centerRight,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(8.0),
+            boxShadow: [
+              BoxShadow(
+                color: item.selected
+                    ? Theme.of(context).selectedRowColor
+                    : Colors.transparent,
+                spreadRadius: 6,
+              )
+            ],
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Expanded(
+                child: Text(
+                  item.key,
+                  textScaleFactor: settings.fontSize,
+                  style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                      color: Colors.black,
+                      fontFamily: context.read<SettingsModel>().fontType,
+                      height: 1.2),
+                ),
+              ),
+              SizedBox(
+                width: 80,
+                child: Align(
+                  alignment: AlignmentDirectional.centerEnd,
+                  child: SizedBox(
+                    height: 30,
+                    child: AnimatedContainer(
+                      width: isEditMode ? 30 : 70,
+                      duration: const Duration(milliseconds: 200),
+                      curve: Curves.easeInOut,
+                      decoration: BoxDecoration(
+                        gradient: isEditMode
+                            ? LinearGradient(
+                                colors: item.locked
+                                    ? [Colors.grey[400]!, Colors.grey[400]!]
+                                    : [Colors.red, Colors.red],
+                              )
+                            : Theme.of(context).brightness == Brightness.dark
+                                ? darkModeCounterBG
+                                : lightModeCounterBG,
+                        borderRadius: borderRadius,
+                      ),
+                      child: Material(
+                        color: Colors.transparent,
+                        child: InkWell(
+                          splashColor: Colors.transparent,
+                          borderRadius: borderRadius,
+                          onTap: !isEditMode ? null : () => onDelete(item),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: borderRadius,
+                            ),
+                            child: Align(
+                              alignment: AlignmentDirectional.centerEnd,
+                              child: Center(
+                                child: isEditMode
+                                    ? item.locked
+                                        ? SvgPicture.asset(NoorIcons.subhaLock)
+                                        : Image.asset(Images.eraseIcon)
+                                    : Text(
+                                        '${item.counter}'.arabicDigit(),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headline2,
+                                      ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

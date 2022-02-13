@@ -9,6 +9,7 @@ class NoorIcons {
   // Subha
   static String subhaList = 'assets/icons/${prefix}subha_list.svg';
   static String subhaReset = 'assets/icons/${prefix}subha_reset.svg';
+  static String subhaLock = 'assets/icons/${prefix}subha_lock.svg';
 
   // Settings
   static String fontType = 'assets/icons/settings/${prefix}font-type.svg';
