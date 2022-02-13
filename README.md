@@ -1,5 +1,7 @@
 # [Noor App | تطبيق نُور](https://noorathkar.com)
 
+[![Codemagic build status](https://api.codemagic.io/apps/6208f023546bd24402e57b64/6208f023546bd24402e57b63/status_badge.svg)](https://codemagic.io/apps/6208f023546bd24402e57b64/6208f023546bd24402e57b63/latest_build)
+
 <p>
   <a href="https://apps.apple.com/sa/app/نور-noor/id1463334485">
     <img src="https://user-images.githubusercontent.com/41123719/117558302-db848980-b084-11eb-8ef8-1dac2eb5ea56.png" atl="app-store-badge" width="125"/>     
