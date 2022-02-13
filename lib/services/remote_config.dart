@@ -2,7 +2,7 @@ import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:noor/services/prefs.dart';
 
 class RemoteConfigService {
-  final RemoteConfig _remoteConfig = RemoteConfig.instance;
+  final FirebaseRemoteConfig _remoteConfig = FirebaseRemoteConfig.instance;
   Duration minimumFetchInterval = const Duration(hours: 1);
   Duration timeout = const Duration(seconds: 20);
 
