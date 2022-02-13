@@ -100,6 +100,7 @@ ThemeData lightTheme() => ThemeData(
       colorScheme: ColorScheme.fromSwatch().copyWith(
         secondary: const Color(0xff6f85d5),
         brightness: Brightness.light,
+        outline: const Color(0xff6f85d5),
       ),
     );
 
@@ -201,5 +202,6 @@ ThemeData darkTheme() => ThemeData(
       colorScheme: ColorScheme.fromSwatch().copyWith(
         secondary: Colors.white,
         brightness: Brightness.dark,
+        outline: const Color(0xff6f85d5),
       ),
     );
