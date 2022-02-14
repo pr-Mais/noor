@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:noor/components/add_dialog.dart';
+import 'package:noor/components/alert_dialog.dart';
 import 'package:noor/components/delete_dialog.dart';
 import 'package:noor/exports/constants.dart';
 import 'package:noor/exports/controllers.dart';
@@ -78,6 +79,9 @@ class _CounterListViewState extends State<CounterListView> {
       if (confirm ?? false) {
         counterModel.deleteSubhaItem(item);
       }
+    } else if (item.locked) {
+      NoorAlertDialog.of(context)
+          .show(title: 'عُــذراً', content: 'لا يمكن حذف الأذكار المُقترحة');
     }
   }
 
@@ -194,6 +198,7 @@ class SubhaListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final borderRadius = BorderRadius.circular(50);
     final settings = context.watch<SettingsModel>();
+    final theme = context.watch<ThemeModel>();
 
     return Material(
       color: Colors.transparent,
@@ -211,9 +216,7 @@ class SubhaListItem extends StatelessWidget {
           padding: const EdgeInsets.all(viewPadding),
           alignment: Alignment.centerRight,
           decoration: BoxDecoration(
-            color: Theme.of(context).brightness == Brightness.light
-                ? Colors.white
-                : const Color(0xff1D274C),
+            color: Color(theme.colors.subhaListItemBg),
             borderRadius: BorderRadius.circular(8.0),
             boxShadow: [
               BoxShadow(
@@ -248,7 +251,10 @@ class SubhaListItem extends StatelessWidget {
                       gradient: isEditMode
                           ? LinearGradient(
                               colors: item.locked
-                                  ? [Colors.grey[400]!, Colors.grey[400]!]
+                                  ? [
+                                      Color(theme.colors.subhaLockBg),
+                                      Color(theme.colors.subhaLockBg)
+                                    ]
                                   : [Colors.red, Colors.red],
                             )
                           : Theme.of(context).brightness == Brightness.dark
