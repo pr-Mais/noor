@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:noor/constants/colors.dart';
 
 const kContentFontSize = 16.0;
 const viewPadding = 15.0;
@@ -9,7 +10,7 @@ ThemeData lightTheme() => ThemeData(
       appBarTheme:
           const AppBarTheme(systemOverlayStyle: SystemUiOverlayStyle.light),
       fontFamily: 'SST Arabic',
-      primaryColor: const Color(0xff6db7e5),
+      primaryColor: Color(NoorColors.light.primary),
       pageTransitionsTheme: const PageTransitionsTheme(
         builders: <TargetPlatform, PageTransitionsBuilder>{
           TargetPlatform.android: FadeUpwardsPageTransitionsBuilder(),
@@ -109,7 +110,7 @@ ThemeData darkTheme() => ThemeData(
       appBarTheme:
           const AppBarTheme(systemOverlayStyle: SystemUiOverlayStyle.dark),
       fontFamily: 'SST Arabic',
-      primaryColor: const Color(0xff6db7e5),
+      primaryColor: Color(NoorColors.dark.primary),
       selectedRowColor: const Color(0xff33477F),
       pageTransitionsTheme: const PageTransitionsTheme(
         builders: <TargetPlatform, PageTransitionsBuilder>{

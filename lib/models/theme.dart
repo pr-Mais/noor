@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:noor/exports/constants.dart' show Images;
 import 'package:noor/exports/services.dart' show SharedPrefsService;
 
+import '../constants/colors.dart';
+
 class ThemeModel with ChangeNotifier {
   String _userTheme = SharedPrefsService.getString('theme');
 
@@ -38,6 +40,24 @@ class ThemeModel with ChangeNotifier {
               return Images.dark;
             default:
               return Images.light;
+          }
+        }
+    }
+  }
+
+  NoorColors get colors {
+    switch (userTheme) {
+      case 'dark_theme':
+        return NoorColors.dark;
+      case 'light_theme':
+        return NoorColors.light;
+      default:
+        {
+          switch (brightness) {
+            case Brightness.dark:
+              return NoorColors.dark;
+            default:
+              return NoorColors.light;
           }
         }
     }

@@ -9,7 +9,7 @@ import 'package:noor/pages/tabs/page_3_counter/counter_view_model.dart';
 import 'package:provider/provider.dart';
 import 'package:noor/utils/to_arabic.dart';
 
-const kMaxLength = 80;
+const kMaxLength = 75;
 
 LinearGradient lightModeCounterBG = const LinearGradient(
   colors: <Color>[
@@ -211,7 +211,9 @@ class SubhaListItem extends StatelessWidget {
           padding: const EdgeInsets.all(viewPadding),
           alignment: Alignment.centerRight,
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: Theme.of(context).brightness == Brightness.light
+                ? Colors.white
+                : const Color(0xff1D274C),
             borderRadius: BorderRadius.circular(8.0),
             boxShadow: [
               BoxShadow(
@@ -230,57 +232,67 @@ class SubhaListItem extends StatelessWidget {
                   item.key,
                   textScaleFactor: settings.fontSize,
                   style: Theme.of(context).textTheme.bodyText1?.copyWith(
-                      color: Colors.black,
                       fontFamily: context.read<SettingsModel>().fontType,
                       height: 1.2),
                 ),
               ),
-              SizedBox(
-                width: 80,
-                child: Align(
-                  alignment: AlignmentDirectional.centerEnd,
-                  child: SizedBox(
-                    height: 30,
-                    child: AnimatedContainer(
-                      width: isEditMode ? 30 : 70,
-                      duration: const Duration(milliseconds: 200),
-                      curve: Curves.easeInOut,
-                      decoration: BoxDecoration(
-                        gradient: isEditMode
-                            ? LinearGradient(
-                                colors: item.locked
-                                    ? [Colors.grey[400]!, Colors.grey[400]!]
-                                    : [Colors.red, Colors.red],
-                              )
-                            : Theme.of(context).brightness == Brightness.dark
-                                ? darkModeCounterBG
-                                : lightModeCounterBG,
+              Align(
+                alignment: AlignmentDirectional.centerEnd,
+                child: SizedBox(
+                  height: 40,
+                  child: AnimatedContainer(
+                    width: isEditMode ? 40 : 90,
+                    duration: const Duration(milliseconds: 200),
+                    curve: Curves.easeInOut,
+                    decoration: BoxDecoration(
+                      gradient: isEditMode
+                          ? LinearGradient(
+                              colors: item.locked
+                                  ? [Colors.grey[400]!, Colors.grey[400]!]
+                                  : [Colors.red, Colors.red],
+                            )
+                          : Theme.of(context).brightness == Brightness.dark
+                              ? darkModeCounterBG
+                              : lightModeCounterBG,
+                      borderRadius: borderRadius,
+                    ),
+                    child: Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                        splashColor: Colors.transparent,
                         borderRadius: borderRadius,
-                      ),
-                      child: Material(
-                        color: Colors.transparent,
-                        child: InkWell(
-                          splashColor: Colors.transparent,
-                          borderRadius: borderRadius,
-                          onTap: !isEditMode ? null : () => onDelete(item),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: borderRadius,
-                            ),
-                            child: Align(
-                              alignment: AlignmentDirectional.centerEnd,
-                              child: Center(
-                                child: isEditMode
-                                    ? item.locked
-                                        ? SvgPicture.asset(NoorIcons.subhaLock)
-                                        : Image.asset(Images.eraseIcon)
-                                    : Text(
+                        onTap: !isEditMode ? null : () => onDelete(item),
+                        child: Container(
+                          alignment: AlignmentDirectional.center,
+                          decoration: BoxDecoration(
+                            borderRadius: borderRadius,
+                          ),
+                          child: Align(
+                            alignment: AlignmentDirectional.centerEnd,
+                            child: Center(
+                              child: isEditMode
+                                  ? item.locked
+                                      ? SvgPicture.asset(
+                                          NoorIcons.subhaLock,
+                                          width: 40,
+                                        )
+                                      : Image.asset(
+                                          Images.eraseIcon,
+                                          height: 40,
+                                        )
+                                  : Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 8.0),
+                                      child: Text(
                                         '${item.counter}'.arabicDigit(),
+                                        overflow: TextOverflow.ellipsis,
                                         style: Theme.of(context)
                                             .textTheme
-                                            .headline2,
+                                            .headline2
+                                            ?.copyWith(
+                                                fontWeight: FontWeight.bold),
                                       ),
-                              ),
+                                    ),
                             ),
                           ),
                         ),

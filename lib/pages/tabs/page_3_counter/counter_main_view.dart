@@ -132,7 +132,7 @@ class _CounterViewState extends State<CounterView> {
                       style: Theme.of(context)
                           .textTheme
                           .subtitle2
-                          ?.copyWith(fontSize: 30),
+                          ?.copyWith(fontSize: 30, fontWeight: FontWeight.bold),
                       textScaleFactor: settings.fontSize,
                     ),
                   ),
