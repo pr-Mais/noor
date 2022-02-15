@@ -3,7 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:noor/exports/constants.dart' show NoorIcons;
 
 class BottomNav extends StatefulWidget {
-  BottomNav({
+  const BottomNav({
     Key? key,
     this.onTap,
   }) : super(key: key);
@@ -112,17 +112,17 @@ class _BottomItemState extends State<BottomItem>
       reverseDuration: Duration(milliseconds: duration),
     );
 
-    textOffset1 =
-        Tween<Offset>(begin: Offset(0.0, textOffset), end: Offset(0.0, 1.0))
-            .animate(
+    textOffset1 = Tween<Offset>(
+            begin: Offset(0.0, textOffset), end: const Offset(0.0, 1.0))
+        .animate(
       CurvedAnimation(
           parent: controller,
           curve: Curves.elasticOut,
           reverseCurve: Curves.elasticIn),
     );
-    iconOffset1 =
-        Tween<Offset>(begin: Offset(0.0, -1.0), end: Offset(0.0, iconOffset))
-            .animate(
+    iconOffset1 = Tween<Offset>(
+            begin: const Offset(0.0, -1.0), end: Offset(0.0, iconOffset))
+        .animate(
       CurvedAnimation(
           parent: controller,
           curve: Curves.elasticOut,

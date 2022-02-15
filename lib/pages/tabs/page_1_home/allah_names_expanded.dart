@@ -8,7 +8,6 @@ import 'package:noor/exports/components.dart'
     show
         NoorCloseButton,
         CardTemplate,
-        NoorIcons,
         NameTitleCard,
         FavAction,
         CopyAction,
@@ -20,6 +19,7 @@ class AllahNamesList extends StatefulWidget {
     this.index = 0,
   }) : super(key: key);
   final int index;
+  @override
   _AllahNamesListState createState() => _AllahNamesListState();
 }
 
@@ -41,11 +41,11 @@ class _AllahNamesListState extends State<AllahNamesList>
       listener.itemPositions.addListener(changeAppBar);
     });
 
-    animationController = new AnimationController(vsync: this);
+    animationController = AnimationController(vsync: this);
     animation = Tween<double>(begin: 0.0, end: 0.1).animate(
       CurvedAnimation(parent: animationController, curve: Curves.elasticIn),
     );
-    controller = new ItemScrollController();
+    controller = ItemScrollController();
   }
 
   @override
@@ -94,11 +94,11 @@ class _AllahNamesListState extends State<AllahNamesList>
             bottom: false,
             child: Container(
               width: double.infinity,
-              margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  SizedBox(width: 45),
+                  const SizedBox(width: 45),
                   ChangeNotifierProvider<ValueNotifier<int>>.value(
                     value: pagePosition,
                     child: Consumer<ValueNotifier<int>>(
@@ -118,7 +118,8 @@ class _AllahNamesListState extends State<AllahNamesList>
                       },
                     ),
                   ),
-                  NoorCloseButton(color: Theme.of(context).accentColor),
+                  NoorCloseButton(
+                      color: Theme.of(context).colorScheme.secondary),
                 ],
               ),
             ),
@@ -126,13 +127,13 @@ class _AllahNamesListState extends State<AllahNamesList>
           Expanded(
             child: Scrollbar(
               child: ScrollablePositionedList.builder(
-                physics: AlwaysScrollableScrollPhysics(),
+                physics: const AlwaysScrollableScrollPhysics(),
                 itemScrollController: controller,
                 itemPositionsListener: listener,
                 itemCount: allahNames.length,
                 addAutomaticKeepAlives: true,
                 initialScrollIndex: widget.index,
-                padding: EdgeInsets.only(bottom: 20),
+                padding: const EdgeInsets.only(bottom: 20),
                 itemBuilder: (_, int index) {
                   final AllahName name = allahNames[index];
 
@@ -150,7 +151,7 @@ class _AllahNamesListState extends State<AllahNamesList>
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             CardText(text: textList[0] + '.'),
-                            SizedBox(height: 10),
+                            const SizedBox(height: 10),
                             CardText(text: textList[1] + '.'),
                           ],
                         ),
@@ -213,17 +214,18 @@ class ReferenceList extends StatelessWidget {
             bottom: false,
             child: Container(
               width: double.infinity,
-              margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  SizedBox(width: 45),
+                  const SizedBox(width: 45),
                   Text(
                     name.name,
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.headline1,
                   ),
-                  NoorCloseButton(color: Theme.of(context).accentColor),
+                  NoorCloseButton(
+                      color: Theme.of(context).colorScheme.secondary),
                 ],
               ),
             ),

@@ -3,7 +3,10 @@ import 'dart:convert';
 import 'package:flutter/services.dart';
 
 class JsonService {
-  static Future<List<dynamic>> init() async {
+  JsonService._();
+  static JsonService instance = JsonService._();
+
+  Future<List<dynamic>> init() async {
     List<String> _files = <String>[
       'assets/json/1_athkar.json',
       'assets/json/2_quraan_ad3yah.json',
@@ -20,5 +23,13 @@ class JsonService {
     }
 
     return _content;
+  }
+
+  Future<List<String>> loadDefaultSubhaList() async {
+    return json
+        .decode(await rootBundle
+            .loadString('assets/json/default_subha_list.json'))['default']
+        .cast<String>()
+        .toList();
   }
 }

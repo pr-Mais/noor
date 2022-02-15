@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:noor/models/allah_name.dart';
 import 'package:provider/provider.dart';
@@ -75,7 +77,7 @@ class CardText extends StatelessWidget {
         highlight.map((String e) => Tashkeel.remove(e)).toList().cast<String>();
 
     final RegExp marks = RegExp(
-      r'[\u{060C}|\u{FD3F}|\u{060C}|\u{FD3E}|\u{002E}|\u{0029}|\u{0028}|\u{0021}|\u{005B}|\u{005D}|\u{003A}]',
+      r'^[\u{060C}|\u{FD3F}|\u{060C}|\u{FD3E}|\u{002E}|\u{0029}|\u{0028}|\u{0021}|\u{005B}|\u{005D}|\u{003A}]',
       unicode: true,
     );
 
@@ -83,6 +85,7 @@ class CardText extends StatelessWidget {
       r'^[\u{0648}|\u{0644}|\u{0628}]',
       unicode: true,
     );
+
     int i = 0;
 
     for (String s in sourceList) {
@@ -91,7 +94,7 @@ class CardText extends StatelessWidget {
 
       List<String> match = <String>[];
 
-      if (s.length > 0) {
+      if (s.isNotEmpty) {
         for (String m in tmpMatch) {
           if (letters.hasMatch(m) && !highlight.contains(m)) {
             match.addAll(m.splitWithDelim(letters));
@@ -114,14 +117,12 @@ class CardText extends StatelessWidget {
             children.add(
               TextSpan(
                 text: m,
-                style: TextStyle(color: Theme.of(context).buttonColor),
+                style: TextStyle(color: Theme.of(context).colorScheme.outline),
               ),
             );
           } else {
             children.add(
-              TextSpan(
-                text: m,
-              ),
+              TextSpan(text: m),
             );
           }
         }
@@ -132,7 +133,7 @@ class CardText extends StatelessWidget {
           children.add(
             TextSpan(
               text: s,
-              style: TextStyle(color: Theme.of(context).buttonColor),
+              style: TextStyle(color: Theme.of(context).colorScheme.outline),
             ),
           );
         } else {
@@ -145,7 +146,7 @@ class CardText extends StatelessWidget {
       }
 
       children.add(
-        TextSpan(
+        const TextSpan(
           text: ' ',
         ),
       );
@@ -175,7 +176,7 @@ class CardText extends StatelessWidget {
         child: Builder(
           builder: (BuildContext context) {
             return AnimatedSwitcher(
-              duration: Duration(milliseconds: 200),
+              duration: const Duration(milliseconds: 200),
               child: item is AllahName
                   ? RichText(
                       textScaleFactor: settings.fontSize,

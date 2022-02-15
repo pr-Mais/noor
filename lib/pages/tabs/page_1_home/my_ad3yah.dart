@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:noor/components/dialog_button.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:reorderables/reorderables.dart';
@@ -18,18 +19,20 @@ import 'package:noor/exports/components.dart'
         FavAction;
 
 class MyAd3yah extends StatefulWidget {
-  MyAd3yah({Key? key, this.index = 0}) : super(key: key);
+  const MyAd3yah({Key? key, this.index = 0}) : super(key: key);
   final int index;
+  @override
   _MyAd3yahState createState() => _MyAd3yahState();
 }
 
 class _MyAd3yahState extends State<MyAd3yah> with TickerProviderStateMixin {
-  TextEditingController _firstController = new TextEditingController();
-  TextEditingController _secondController = new TextEditingController();
+  final _firstController = TextEditingController();
+  final _secondController = TextEditingController();
   ScrollController? controller;
   Widget? animatedWidget;
   final GlobalKey<AnimatedListState> listKey = GlobalKey<AnimatedListState>();
 
+  @override
   void initState() {
     super.initState();
     controller = ScrollController(initialScrollOffset: widget.index * 380.0);
@@ -50,11 +53,11 @@ class _MyAd3yahState extends State<MyAd3yah> with TickerProviderStateMixin {
       child: SingleChildScrollView(
         child: TextField(
           controller: controller,
-          style: Theme.of(context).textTheme.body1,
+          style: Theme.of(context).textTheme.bodyText1,
           decoration: InputDecoration(
             filled: false,
             contentPadding:
-                EdgeInsets.symmetric(vertical: 12, horizontal: 10.0),
+                const EdgeInsets.symmetric(vertical: 12, horizontal: 10.0),
             border: InputBorder.none,
             hintText: text,
           ),
@@ -67,30 +70,13 @@ class _MyAd3yahState extends State<MyAd3yah> with TickerProviderStateMixin {
   }
 
   //button design (used in dialoges)
-  button({required text, border, required radius, textColor, onPress}) {
-    return Expanded(
-      flex: 1,
-      child: Container(
-        decoration: BoxDecoration(border: border),
-        child: RaisedButton(
-          shape: RoundedRectangleBorder(borderRadius: radius),
-          elevation: 0.0,
-          focusElevation: 0.0,
-          highlightElevation: 0.0,
-          hoverElevation: 0.0,
-          splashColor: Colors.white24,
-          highlightColor: Colors.white24,
-          onPressed: onPress,
-          child: Text(
-            text,
-            style: TextStyle(
-              color: textColor,
-              fontWeight: FontWeight.w300,
-              fontSize: 12,
-            ),
-          ),
-        ),
-      ),
+  button({required text, border, required radius, textColor, onPressed}) {
+    return DialogButton(
+      label: text,
+      border: border,
+      onPressed: onPressed,
+      radius: radius,
+      textColor: textColor,
     );
   }
 
@@ -101,7 +87,7 @@ class _MyAd3yahState extends State<MyAd3yah> with TickerProviderStateMixin {
       _secondController.text = data.info;
     }
     showGeneralDialog(
-      transitionDuration: Duration(milliseconds: 600),
+      transitionDuration: const Duration(milliseconds: 600),
       barrierDismissible: false,
       barrierColor: Colors.black.withOpacity(0.75),
       barrierLabel: '',
@@ -116,9 +102,9 @@ class _MyAd3yahState extends State<MyAd3yah> with TickerProviderStateMixin {
               decoration: BoxDecoration(
                   color: Theme.of(context).brightness == Brightness.light
                       ? Colors.white
-                      : Color(0xff1B2349),
+                      : const Color(0xff1B2349),
                   borderRadius: BorderRadius.circular(15.0)),
-              constraints: BoxConstraints(maxHeight: 360),
+              constraints: const BoxConstraints(maxHeight: 360),
               child: Stack(
                 children: <Widget>[
                   SingleChildScrollView(
@@ -134,30 +120,30 @@ class _MyAd3yahState extends State<MyAd3yah> with TickerProviderStateMixin {
                   Align(
                       alignment: Alignment.bottomCenter,
                       child: Container(
-                        constraints: BoxConstraints.expand(height: 40),
+                        constraints: const BoxConstraints.expand(height: 40),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             button(
                               text: 'حفظ',
-                              border: Border(
+                              border: const Border(
                                   left: BorderSide(
                                       width: 0.5, color: Colors.white)),
-                              radius: BorderRadius.only(
+                              radius: const BorderRadius.only(
                                   bottomRight: Radius.circular(15)),
                               textColor: Colors.lightBlue[100],
-                              onPress: () => onSave(prevDoaa: data),
+                              onPressed: () => onSave(prevDoaa: data),
                             ),
                             button(
                               text: 'إلغاء',
-                              border: Border(
+                              border: const Border(
                                   right: BorderSide(
                                       width: 0.5, color: Colors.white)),
-                              radius: BorderRadius.only(
+                              radius: const BorderRadius.only(
                                   bottomLeft: Radius.circular(15)),
                               textColor: Colors.white,
-                              onPress: onCancel,
+                              onPressed: onCancel,
                             ),
                           ],
                         ),
@@ -170,7 +156,7 @@ class _MyAd3yahState extends State<MyAd3yah> with TickerProviderStateMixin {
           ),
         );
       },
-      pageBuilder: (_, __, ___) => SizedBox(),
+      pageBuilder: (_, __, ___) => const SizedBox(),
     );
   }
 
@@ -218,7 +204,7 @@ class _MyAd3yahState extends State<MyAd3yah> with TickerProviderStateMixin {
                         width: 45,
                         height: 45,
                       ),
-                      Text(
+                      const Text(
                         'أدعيتي',
                         style: TextStyle(
                           color: Colors.white,
@@ -226,14 +212,14 @@ class _MyAd3yahState extends State<MyAd3yah> with TickerProviderStateMixin {
                           fontSize: 20,
                         ),
                       ),
-                      NoorCloseButton(size: 35)
+                      const NoorCloseButton(size: 35)
                     ],
                   ),
                 ),
                 const SizedBox(height: 35),
                 Expanded(
                   child: AnimatedSwitcher(
-                    duration: Duration(milliseconds: 400),
+                    duration: const Duration(milliseconds: 400),
                     child: myAd3yah.isNotEmpty
                         ? Scrollbar(
                             controller: controller,
@@ -241,7 +227,7 @@ class _MyAd3yahState extends State<MyAd3yah> with TickerProviderStateMixin {
                               controller: controller,
                               slivers: <Widget>[
                                 ReorderableSliverList(
-                                  key: ValueKey<String>('list'),
+                                  key: const ValueKey<String>('list'),
                                   controller: controller,
                                   buildDraggableFeedback: (_,
                                       BoxConstraints constraints,

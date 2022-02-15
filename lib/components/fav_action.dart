@@ -31,7 +31,7 @@ class _FavActionState extends State<FavAction> {
         crossFadeState: widget.item.isFav
             ? CrossFadeState.showSecond
             : CrossFadeState.showFirst,
-        duration: Duration(milliseconds: 500),
+        duration: const Duration(milliseconds: 500),
       ),
     );
   }

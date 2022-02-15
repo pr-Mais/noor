@@ -9,18 +9,21 @@ import 'package:noor/exports/pages.dart' show AthkarList;
 import 'package:noor/exports/components.dart' show ListItem, NoorCloseButton;
 
 class AthkarPage extends StatefulWidget {
-  const AthkarPage();
+  const AthkarPage({Key? key}) : super(key: key);
+
+  @override
   _AthkarPageState createState() => _AthkarPageState();
 }
 
 class _AthkarPageState extends State<AthkarPage>
     with SingleTickerProviderStateMixin {
-  ScrollController scrollController = new ScrollController();
+  ScrollController scrollController = ScrollController();
   double currentScroll = 0;
   double maxHeight = 180;
   late Animation<double> animation;
   late AnimationController controller;
 
+  @override
   initState() {
     super.initState();
     DBService.db.initDB();
@@ -70,7 +73,8 @@ class _AthkarPageState extends State<AthkarPage>
                 },
               ),
             ),
-            Positioned(left: 10.0, top: 40.0, child: NoorCloseButton(size: 35)),
+            const Positioned(
+                left: 10.0, top: 40.0, child: NoorCloseButton(size: 35)),
           ],
         ),
         Expanded(
@@ -83,17 +87,17 @@ class _AthkarPageState extends State<AthkarPage>
                 return Scrollbar(
                   controller: scrollController,
                   child: ListView.builder(
-                    physics: AlwaysScrollableScrollPhysics(),
+                    physics: const AlwaysScrollableScrollPhysics(),
                     itemCount: athkarTitles.length,
                     controller: scrollController,
-                    padding: EdgeInsets.only(top: 10),
+                    padding: const EdgeInsets.only(top: 10),
                     itemBuilder: (BuildContext context, int index) {
                       final Thekr title = athkarTitles[index];
                       final int position = model.athkar.indexOf(title);
 
                       return title.isTitle
                           ? ListItem(
-                              title: '${title.text}',
+                              title: title.text,
                               icon: images.athkarTitleIcon,
                               onTap: () {
                                 Navigator.push(

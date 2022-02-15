@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
 
 import 'package:noor/exports/pages.dart' show Ad3yahList, MyAd3yah;
@@ -8,18 +7,20 @@ import 'package:noor/exports/components.dart' show NoorCloseButton, ListItem;
 import 'package:noor/exports/controllers.dart' show ThemeModel;
 
 class Ad3yah extends StatefulWidget {
-  const Ad3yah();
+  const Ad3yah({Key? key}) : super(key: key);
+  @override
   _Ad3yahState createState() => _Ad3yahState();
 }
 
 class _Ad3yahState extends State<Ad3yah> with SingleTickerProviderStateMixin {
-  ScrollController scrollController = new ScrollController();
+  ScrollController scrollController = ScrollController();
   int index = 0;
   double currentScroll = 0;
   double maxHeight = 180;
   late Animation<double> animation;
   late AnimationController controller;
 
+  @override
   initState() {
     super.initState();
 
@@ -67,7 +68,7 @@ class _Ad3yahState extends State<Ad3yah> with SingleTickerProviderStateMixin {
                   },
                 ),
               ),
-              Positioned(
+              const Positioned(
                   left: 10.0, top: 40.0, child: NoorCloseButton(size: 35)),
             ],
           ),
@@ -75,29 +76,29 @@ class _Ad3yahState extends State<Ad3yah> with SingleTickerProviderStateMixin {
             builder: (_, ThemeModel theme, __) {
               return Expanded(
                 child: ListView(
-                  padding: EdgeInsets.only(top: 15.0),
-                  physics: AlwaysScrollableScrollPhysics(),
+                  padding: const EdgeInsets.only(top: 15.0),
+                  physics: const AlwaysScrollableScrollPhysics(),
                   controller: scrollController,
                   children: <Ad3yahTitleCard>[
                     Ad3yahTitleCard(
                       title: Titles.quraan,
                       icon: theme.images.quraanTitleIcon,
-                      category: NoorCategory.QURAAN,
+                      category: NoorCategory.quraan,
                     ),
                     Ad3yahTitleCard(
                       title: Titles.sunnah,
                       icon: theme.images.sunnahTitleIcon,
-                      category: NoorCategory.SUNNAH,
+                      category: NoorCategory.sunnah,
                     ),
                     Ad3yahTitleCard(
                       title: Titles.ruqya,
                       icon: theme.images.ruqyaTitleIcon,
-                      category: NoorCategory.RUQIYA,
+                      category: NoorCategory.ruqiya,
                     ),
                     Ad3yahTitleCard(
                       title: Titles.myAd3yah,
                       icon: theme.images.myAd3yahTitleIcon,
-                      category: NoorCategory.MYAD3YAH,
+                      category: NoorCategory.myad3yah,
                     ),
                   ],
                 ),
@@ -128,10 +129,10 @@ class Ad3yahTitleCard extends StatelessWidget {
       icon: icon,
       title: title,
       onTap: () {
-        if (category == NoorCategory.MYAD3YAH) {
+        if (category == NoorCategory.myad3yah) {
           Navigator.of(context).push(
             MaterialPageRoute<MyAd3yah>(
-              builder: (_) => MyAd3yah(),
+              builder: (_) => const MyAd3yah(),
               fullscreenDialog: true,
             ),
           );

@@ -80,7 +80,7 @@ class DBService with ChangeNotifier {
                 'text': e['text'],
                 'info': e['info'],
                 'ribbon': Ribbon.ribbon5,
-                'category': NoorCategory.MYAD3YAH,
+                'category': NoorCategory.myad3yah,
                 'sectionName': 'أدعيتي',
                 'isFav': e['isFav'] == 1 ? true : false,
               };

@@ -1,3 +1,5 @@
+// ignore_for_file: use_function_type_syntax_for_parameters
+
 import 'dart:async';
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -27,7 +29,7 @@ class SharedPrefsService {
   // put object
   static Future<bool>? putObject(String key, Object value) {
     if (_prefs == null) return null;
-    return _prefs!.setString(key, value == null ? '' : json.encode(value));
+    return _prefs!.setString(key, json.encode(value));
   }
 
   // get obj

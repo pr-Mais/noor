@@ -15,22 +15,23 @@ import 'package:timezone/timezone.dart' as tz;
 import 'package:noor/exports/components.dart' show CardTemplate, CardText;
 import 'package:noor/exports/services.dart' show SharedPrefsService;
 import 'package:noor/exports/controllers.dart' show ThemeModel, SettingsModel;
-import 'package:noor/exports/constants.dart' show Images, Links, NoorIcons;
+import '../../exports/constants.dart' show Images, Links, NoorIcons, Strings;
 
 class Settings extends StatefulWidget {
-  Settings({
+  const Settings({
     Key? key,
   }) : super(key: key);
 
+  @override
   _SettingsState createState() => _SettingsState();
 }
 
 class _SettingsState extends State<Settings>
     with TickerProviderStateMixin, AutomaticKeepAliveClientMixin {
-  var morningNotiEnabled;
-  var nightNotiEnabled;
-  var morningNotiTime;
-  var nightNotiTime;
+  late bool morningNotiEnabled;
+  late bool nightNotiEnabled;
+  DateTime? morningNotiTime;
+  DateTime? nightNotiTime;
 
   @override
   get wantKeepAlive => true;
@@ -52,8 +53,8 @@ class _SettingsState extends State<Settings>
     super.initState();
   }
 
-  var morningTemp;
-  var nightTemp;
+  DateTime? morningTemp;
+  DateTime? nightTemp;
   List<String> fonts = <String>['١٦', '١٨', '٢٠', '٢٢'];
   TextStyle activeLabelStyle = const TextStyle(
     color: Color(0xff6db7e5),
@@ -129,7 +130,7 @@ class _SettingsState extends State<Settings>
       children: <Widget>[
         subtitleWithIcon(title, icon),
         Container(
-          margin: EdgeInsets.only(left: 20.0),
+          margin: const EdgeInsets.only(left: 20.0),
           child: Directionality(
             textDirection: TextDirection.ltr,
             child: Switch(
@@ -157,9 +158,9 @@ class _SettingsState extends State<Settings>
           fit: FlexFit.loose,
           child: Container(
             width: 130,
-            margin: EdgeInsets.symmetric(horizontal: 30.0),
+            margin: const EdgeInsets.symmetric(horizontal: 30.0),
             child: CupertinoSlidingSegmentedControl<String>(
-              padding: EdgeInsets.all(3),
+              padding: const EdgeInsets.all(3),
               thumbColor: Theme.of(context).primaryColor,
               children: <String, Widget>{
                 'strong': Text(
@@ -206,7 +207,7 @@ class _SettingsState extends State<Settings>
 
   Widget radioBtn(icon, title, value) {
     return ListTileTheme(
-      contentPadding: EdgeInsets.only(right: 0, left: 20),
+      contentPadding: const EdgeInsets.only(right: 0, left: 20),
       dense: false,
       child: RadioListTile(
         controlAffinity: ListTileControlAffinity.trailing,
@@ -220,19 +221,16 @@ class _SettingsState extends State<Settings>
   }
 
   void share() {
-    Share.share(
-        'يضمُّ تطبيق نُور العديد من الأذكار والأدعية الواردة في كتاب حصن المسلم. كما يحتوي التطبيق على أدعية من القرآن الكريم والسنة النبوية. والعديد من المميزات. \n https://play.google.com/store/apps/details?id=com.noor.sa',
-        subject: 'تطبيق نُور');
+    Share.share(Strings.shareText, subject: Strings.shareSubject);
   }
 
   void setDailyNotification(DateTime dateTime, period, id) async {
     FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-        new FlutterLocalNotificationsPlugin();
+        FlutterLocalNotificationsPlugin();
 
-    var androidPlatformChannelSpecifics = new AndroidNotificationDetails(
+    var androidPlatformChannelSpecifics = AndroidNotificationDetails(
       '$id',
       '$period',
-      'repeatDailyAtTime $dateTime',
       showWhen: true,
     );
     var platformChannelSpecifics =
@@ -241,7 +239,7 @@ class _SettingsState extends State<Settings>
       id,
       'أذكار $period',
       '',
-      tz.TZDateTime.from(dateTime, tz.local).add(Duration(days: 10000)),
+      tz.TZDateTime.from(dateTime, tz.local).add(const Duration(days: 10000)),
       platformChannelSpecifics,
       payload: period,
       matchDateTimeComponents: DateTimeComponents.time,
@@ -253,7 +251,7 @@ class _SettingsState extends State<Settings>
 
   void cancelNotification(id) async {
     FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-        new FlutterLocalNotificationsPlugin();
+        FlutterLocalNotificationsPlugin();
     await flutterLocalNotificationsPlugin.cancel(id);
   }
 
@@ -261,7 +259,7 @@ class _SettingsState extends State<Settings>
     await launch(url);
   }
 
-  ScrollController _scrollController = ScrollController();
+  final ScrollController _scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
@@ -282,7 +280,7 @@ class _SettingsState extends State<Settings>
                 children: <Widget>[
                   title('الخط'),
                   const Divider(),
-                  Card(),
+                  const Card(),
                   const Divider(),
                   subtitleWithIcon(
                     'حجم الخط',
@@ -363,7 +361,7 @@ class _SettingsState extends State<Settings>
                     onChanged: (bool value) => settings.tashkeel = value,
                   ),
                   const Divider(),
-                  VerticalSpace(),
+                  const VerticalSpace(),
                   title('العداد'),
                   const Divider(),
                   switcherOption(
@@ -373,14 +371,14 @@ class _SettingsState extends State<Settings>
                     onChanged: (value) => settings.autoJump = value,
                   ),
                   const Divider(),
-                  VerticalSpace(),
+                  const VerticalSpace(),
                   title('إظهار العداد'),
                   const Divider(),
                   Container(
-                    margin: EdgeInsets.symmetric(horizontal: 30.0),
+                    margin: const EdgeInsets.symmetric(horizontal: 30.0),
                     alignment: Alignment.center,
                     child: CupertinoSlidingSegmentedControl<int>(
-                      padding: EdgeInsets.all(3),
+                      padding: const EdgeInsets.all(3),
                       thumbColor: Theme.of(context).primaryColor,
                       children: <int, Widget>{
                         0: Text(
@@ -408,7 +406,7 @@ class _SettingsState extends State<Settings>
                     ),
                   ),
                   const Divider(),
-                  VerticalSpace(),
+                  const VerticalSpace(),
                   title('الهزاز'),
                   const Divider(),
                   switcherOption(
@@ -428,7 +426,7 @@ class _SettingsState extends State<Settings>
                             'نوع الهزاز لصفحة الأذكار',
                           ),
                         ),
-                        VerticalSpace(),
+                        const VerticalSpace(),
                         segmentedControlOption(
                           icon: NoorIcons.click,
                           title: 'لكل ضغطة',
@@ -443,7 +441,7 @@ class _SettingsState extends State<Settings>
                             }
                           },
                         ),
-                        VerticalSpace(),
+                        const VerticalSpace(),
                         segmentedControlOption(
                           icon: NoorIcons.done,
                           title: 'عند اكتمال العد',
@@ -458,15 +456,15 @@ class _SettingsState extends State<Settings>
                             }
                           },
                         ),
-                        VerticalSpace(),
-                        Divider(),
+                        const VerticalSpace(),
+                        const Divider(),
                       ],
                     ),
                     secondChild: Container(),
                     crossFadeState: settings.vibrate
                         ? CrossFadeState.showFirst
                         : CrossFadeState.showSecond,
-                    duration: Duration(milliseconds: 300),
+                    duration: const Duration(milliseconds: 300),
                   ),
                   switcherOption(
                     icon: NoorIcons.vibrate,
@@ -474,7 +472,7 @@ class _SettingsState extends State<Settings>
                     value: settings.vibrateCounter,
                     onChanged: (bool value) => settings.vibrateCounter = value,
                   ),
-                  Divider(),
+                  const Divider(),
                   AnimatedCrossFade(
                     firstChild: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -485,7 +483,7 @@ class _SettingsState extends State<Settings>
                             'نوع الهزاز لصفحة السبحة',
                           ),
                         ),
-                        VerticalSpace(),
+                        const VerticalSpace(),
                         segmentedControlOption(
                             icon: NoorIcons.click,
                             title: 'لكل ضغطة',
@@ -499,7 +497,7 @@ class _SettingsState extends State<Settings>
                                 HapticFeedback.heavyImpact();
                               }
                             }),
-                        VerticalSpace(),
+                        const VerticalSpace(),
                         segmentedControlOption(
                           icon: NoorIcons.done,
                           title: 'عند مضاعفات المئة',
@@ -514,19 +512,19 @@ class _SettingsState extends State<Settings>
                             }
                           },
                         ),
-                        VerticalSpace(),
-                        Divider(),
+                        const VerticalSpace(),
+                        const Divider(),
                       ],
                     ),
                     secondChild: Container(),
                     crossFadeState: settings.vibrateCounter
                         ? CrossFadeState.showFirst
                         : CrossFadeState.showSecond,
-                    duration: Duration(milliseconds: 300),
+                    duration: const Duration(milliseconds: 300),
                   ),
-                  VerticalSpace(),
+                  const VerticalSpace(),
                   title('التنبيهات'),
-                  Divider(),
+                  const Divider(),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
@@ -566,7 +564,8 @@ class _SettingsState extends State<Settings>
                                                                       .bold,
                                                               color: Theme.of(
                                                                       context)
-                                                                  .accentColor,
+                                                                  .colorScheme
+                                                                  .secondary,
                                                               fontSize: 12),
                                                     ),
                                                     onPressed: () async {
@@ -585,7 +584,7 @@ class _SettingsState extends State<Settings>
                                                                     .toString());
 
                                                         setDailyNotification(
-                                                            morningNotiTime,
+                                                            morningNotiTime!,
                                                             'الصباح',
                                                             0);
                                                       }
@@ -601,7 +600,7 @@ class _SettingsState extends State<Settings>
                                                                 morningNotiTime
                                                                     .toString());
                                                         setDailyNotification(
-                                                            morningNotiTime,
+                                                            morningNotiTime!,
                                                             'الصباح',
                                                             0);
                                                       }
@@ -622,7 +621,8 @@ class _SettingsState extends State<Settings>
                                                                       .bold,
                                                               color: Theme.of(
                                                                       context)
-                                                                  .accentColor,
+                                                                  .colorScheme
+                                                                  .secondary,
                                                               fontSize: 12),
                                                     ),
                                                     onPressed: () {
@@ -696,7 +696,7 @@ class _SettingsState extends State<Settings>
                             )
                           : Container(),
                       Container(
-                        margin: EdgeInsets.only(left: 20.0),
+                        margin: const EdgeInsets.only(left: 20.0),
                         child: Directionality(
                           textDirection: TextDirection.ltr,
                           child: Switch(
@@ -712,7 +712,7 @@ class _SettingsState extends State<Settings>
                               if (morningNotiEnabled == true &&
                                   morningNotiTime != null) {
                                 setDailyNotification(
-                                    morningNotiTime, 'الصباح', 0);
+                                    morningNotiTime!, 'الصباح', 0);
                               }
                               setState(() {});
                             },
@@ -721,7 +721,7 @@ class _SettingsState extends State<Settings>
                       ),
                     ],
                   ),
-                  Divider(),
+                  const Divider(),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
@@ -761,7 +761,8 @@ class _SettingsState extends State<Settings>
                                                                       .bold,
                                                               color: Theme.of(
                                                                       context)
-                                                                  .accentColor,
+                                                                  .colorScheme
+                                                                  .secondary,
                                                               fontSize: 12),
                                                     ),
                                                     onPressed: () async {
@@ -779,7 +780,7 @@ class _SettingsState extends State<Settings>
                                                                     .toString());
 
                                                         setDailyNotification(
-                                                            nightNotiTime,
+                                                            nightNotiTime!,
                                                             'المساء',
                                                             1);
                                                       }
@@ -795,7 +796,7 @@ class _SettingsState extends State<Settings>
                                                                 nightNotiTime
                                                                     .toString());
                                                         setDailyNotification(
-                                                            nightNotiTime,
+                                                            nightNotiTime!,
                                                             'المساء',
                                                             1);
                                                       }
@@ -816,7 +817,8 @@ class _SettingsState extends State<Settings>
                                                                       .bold,
                                                               color: Theme.of(
                                                                       context)
-                                                                  .accentColor,
+                                                                  .colorScheme
+                                                                  .secondary,
                                                               fontSize: 12),
                                                     ),
                                                     onPressed: () {
@@ -840,12 +842,13 @@ class _SettingsState extends State<Settings>
                                                       CupertinoTextThemeData(
                                                     dateTimePickerTextStyle:
                                                         TextStyle(
-                                                      locale: Locale('ar'),
+                                                      locale:
+                                                          const Locale('ar'),
                                                       fontFamily: 'SST Arabic',
                                                       fontSize: 16,
                                                       color: Theme.of(context)
                                                           .textTheme
-                                                          .body1!
+                                                          .bodyText1!
                                                           .color,
                                                     ),
                                                   ),
@@ -895,7 +898,7 @@ class _SettingsState extends State<Settings>
                             )
                           : Container(),
                       Container(
-                        margin: EdgeInsets.only(left: 20.0),
+                        margin: const EdgeInsets.only(left: 20.0),
                         child: Directionality(
                           textDirection: TextDirection.ltr,
                           child: Switch(
@@ -912,7 +915,7 @@ class _SettingsState extends State<Settings>
                               if (nightNotiEnabled == true &&
                                   nightNotiTime != null) {
                                 setDailyNotification(
-                                    nightNotiTime, 'المساء', 1);
+                                    nightNotiTime!, 'المساء', 1);
                               }
                               setState(() {});
                             },
@@ -921,7 +924,7 @@ class _SettingsState extends State<Settings>
                       ),
                     ],
                   ),
-                  Divider(),
+                  const Divider(),
                   switcherOption(
                     icon: NoorIcons.notifications,
                     title: 'إشعارات عامة',
@@ -934,29 +937,29 @@ class _SettingsState extends State<Settings>
                       }
                     },
                   ),
-                  Divider(),
-                  VerticalSpace(),
+                  const Divider(),
+                  const VerticalSpace(),
                   title('المظهر'),
-                  Divider(),
+                  const Divider(),
                   radioBtn(
                     NoorIcons.lightMode,
                     'الوضع النهاري',
                     'light_theme',
                   ),
-                  Divider(),
+                  const Divider(),
                   radioBtn(
                     NoorIcons.darkMode,
                     'الوضع الليلي',
                     'dark_theme',
                   ),
-                  Divider(),
+                  const Divider(),
                   radioBtn(
                     NoorIcons.systemMode,
                     'وضع النظام',
                     'system_theme',
                   ),
                   const Divider(),
-                  VerticalSpace(),
+                  const VerticalSpace(),
                   title('المصادر'),
                   const Divider(),
                   InkWell(
@@ -1049,12 +1052,12 @@ class _SettingsState extends State<Settings>
             ? activeLabelStyle
             : inactiveLabelStyle,
       ),
-      vsync: this,
-      duration: Duration(milliseconds: 500),
+      duration: const Duration(milliseconds: 500),
     );
   }
 
   Widget fontTypeButton(String font) {
+    // ignore: deprecated_member_use
     return FlatButton(
       onPressed: () => context.read<SettingsModel>().fontType = font,
       child: AnimatedDefaultTextStyle(
@@ -1065,8 +1068,8 @@ class _SettingsState extends State<Settings>
                 : Colors.grey[400],
             height: 1,
             fontSize: context.read<SettingsModel>().fontType == font ? 20 : 16),
-        duration: Duration(milliseconds: 200),
-        child: Text('الحمدلله'),
+        duration: const Duration(milliseconds: 200),
+        child: const Text('الحمدلله'),
       ),
     );
   }
@@ -1084,6 +1087,8 @@ class VerticalSpace extends StatelessWidget {
 }
 
 class Card extends StatelessWidget {
+  const Card({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return CardTemplate(

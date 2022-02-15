@@ -32,16 +32,16 @@ class CardTemplate extends StatelessWidget {
           end: Alignment.bottomCenter,
           colors: Theme.of(context).brightness == Brightness.light
               ? <Color>[
-                  Color(0xfff3f3f3),
-                  Color(0xfff1f1f1),
+                  const Color(0xfff3f3f3),
+                  const Color(0xfff1f1f1),
                 ]
               : <Color>[
-                  Color(0xff1B2349),
-                  Color(0xff161A3A),
+                  const Color(0xff1B2349),
+                  const Color(0xff161A3A),
                 ],
         ),
         boxShadow: <BoxShadow>[
-          new BoxShadow(
+          BoxShadow(
             color: Colors.black.withOpacity(0.2),
             blurRadius: 12.0,
           ),
@@ -58,9 +58,9 @@ class CardTemplate extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 5.0),
+            padding: const EdgeInsets.symmetric(horizontal: 5.0),
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.only(
+              borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(15.0),
                 topRight: Radius.circular(15.0),
               ),
@@ -81,7 +81,7 @@ class CardTemplate extends StatelessWidget {
               alignment: Alignment.topRight,
               margin: const EdgeInsets.all(5.0),
               child: Scrollbar(
-                radius: Radius.circular(4),
+                radius: const Radius.circular(4),
                 child: SingleChildScrollView(
                   child: Container(
                     width: double.infinity,
@@ -98,7 +98,7 @@ class CardTemplate extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.all(5.0),
                 child: Scrollbar(
-                  radius: Radius.circular(4),
+                  radius: const Radius.circular(4),
                   child: SingleChildScrollView(
                     child: DefaultTextStyle.merge(
                       textAlign: TextAlign.justify,
