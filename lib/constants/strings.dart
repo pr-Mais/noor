@@ -6,4 +6,6 @@ class Strings {
   static const shareSubject = 'تطبيق نُور';
   static const noorThekrDefault =
       'قال تعالى: ﴿فَاذكُروني أَذكُركُم ﴾ [البقرة: ١٥٢]';
+  static const confirmDeleteContent = 'هل أنت مُتأكد من رغبتك في الحذف؟';
+  static const confirmDeleteTitle = 'تأكيد الحذف';
 }

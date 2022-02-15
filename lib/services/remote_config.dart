@@ -1,4 +1,5 @@
 import 'package:firebase_remote_config/firebase_remote_config.dart';
+import 'package:noor/constants/strings.dart';
 import 'package:noor/services/prefs.dart';
 
 class RemoteConfigService {
@@ -19,7 +20,7 @@ class RemoteConfigService {
     );
 
     _remoteConfig.setDefaults(<String, dynamic>{
-      'noorThker': 'قال تعالى: ﴿فَاذكُروني أَذكُركُم ﴾ [البقرة: ١٥٢]',
+      'noorThker': Strings.noorThekrDefault,
     });
   }
 

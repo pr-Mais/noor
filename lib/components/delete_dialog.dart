@@ -1,6 +1,7 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:flutter/material.dart';
+import 'package:noor/constants/strings.dart';
 
 import 'dialog_button.dart';
 
@@ -48,14 +49,14 @@ class DeleteConfirmationDialog extends StatelessWidget {
               child: Column(
                 children: <Widget>[
                   Text(
-                    'تأكيد الحذف',
+                    Strings.confirmDeleteTitle,
                     style: TextStyle(
                       color: Theme.of(context).primaryColor,
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  const Text('هل أنت مُتأكد من رغبتك في الحذف؟')
+                  const Text(Strings.confirmDeleteContent)
                 ],
               ),
             ),
