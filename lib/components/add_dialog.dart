@@ -1,6 +1,7 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:noor/components/dialog_button.dart';
-import 'package:noor/pages/tabs/page_3_counter/counter_list_view.dart';
 
 import 'editable_text_max_length_highlighter.dart';
 
@@ -66,14 +67,29 @@ class AddDialog extends StatefulWidget {
   _AddDialogState createState() => _AddDialogState();
 }
 
-class _AddDialogState extends State<AddDialog> {
+class _AddDialogState extends State<AddDialog>
+    with SingleTickerProviderStateMixin {
   late TextFieldMaxLengthHighlighter mainContentController;
   late TextEditingController secondaryContentController;
   bool mainContentActive = false;
 
+  late final _controller = AnimationController(
+    vsync: this,
+    duration: const Duration(milliseconds: 250),
+  );
+
+  late Animation<double> curve;
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
   @override
   void initState() {
     super.initState();
+
     mainContentController = TextFieldMaxLengthHighlighter(
       text: widget.mainContent,
       maxLength: widget.mainContentMaxLength,
@@ -81,33 +97,34 @@ class _AddDialogState extends State<AddDialog> {
 
     secondaryContentController =
         TextEditingController(text: widget.secondaryContent);
+    if (widget.mainContentMaxLength != null) {
+      curve = Tween(
+        begin: 0.0,
+        end: 1.0,
+      ).animate(
+        CurvedAnimation(
+          parent: _controller,
+          curve: Curves.easeInOut,
+        ),
+      );
 
-    mainContentController.addListener(() {
-      setState(() {
-        if (mainContentController.text.isEmpty ||
-            mainContentController.text.length > kMaxLength) {
-          mainContentActive = false;
-        } else {
-          mainContentActive = true;
+      mainContentController.addListener(() async {
+        if (mainContentController.text.length > widget.mainContentMaxLength! &&
+            mainContentActive) {
+          _controller.forward(from: 0.0);
         }
-      });
-    });
-  }
 
-  button({
-    required String text,
-    required BorderRadiusGeometry radius,
-    void Function()? onPressed,
-    BoxBorder? border,
-    Color? textColor,
-  }) {
-    return DialogButton(
-      label: text,
-      border: border,
-      onPressed: onPressed,
-      radius: radius,
-      textColor: textColor,
-    );
+        setState(() {
+          if (mainContentController.text.isEmpty ||
+              mainContentController.text.length >
+                  widget.mainContentMaxLength!) {
+            mainContentActive = false;
+          } else {
+            mainContentActive = true;
+          }
+        });
+      });
+    }
   }
 
   // Text input design (used in dialoges)
@@ -136,70 +153,82 @@ class _AddDialogState extends State<AddDialog> {
 
   @override
   Widget build(BuildContext context) {
-    return Dialog(
-      elevation: 6.0,
-      child: Container(
-        decoration: BoxDecoration(
-          color: Theme.of(context).brightness == Brightness.light
-              ? Colors.white
-              : const Color(0xff1B2349),
-          borderRadius: BorderRadius.circular(15.0),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            SingleChildScrollView(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  input(100.0, 'أضِف ذِكر...', mainContentController),
-                  if (widget.enableSecondaryContent) const Divider(),
-                  if (widget.enableSecondaryContent)
-                    input(80.0, 'نص إضافي...', secondaryContentController),
-                  if (widget.enableSecondaryContent) const SizedBox(height: 40)
-                ],
-              ),
-            ),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Container(
-                constraints: const BoxConstraints.expand(height: 40),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  mainAxisAlignment: MainAxisAlignment.center,
+    return AnimatedBuilder(
+      animation: curve,
+      builder: (BuildContext context, Widget? child) {
+        final dx = sin(_controller.value * 2 * pi) * 10.0;
+        return Transform.translate(
+          offset: Offset(dx, 0),
+          child: child,
+        );
+      },
+      child: Dialog(
+        elevation: 6.0,
+        child: Container(
+          decoration: BoxDecoration(
+            color: Theme.of(context).brightness == Brightness.light
+                ? Colors.white
+                : const Color(0xff1B2349),
+            borderRadius: BorderRadius.circular(15.0),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
-                    button(
-                      text: 'حفظ',
-                      border: Border(
-                        left: BorderSide(
-                            width: 0.5, color: Theme.of(context).cardColor),
-                      ),
-                      radius: const BorderRadius.only(
-                          bottomRight: Radius.circular(15)),
-                      onPressed: !mainContentActive
-                          ? null
-                          : () =>
-                              widget.onSave?.call(mainContentController.text),
-                    ),
-                    button(
-                      text: 'إلغاء',
-                      border: Border(
-                        right: BorderSide(
-                            width: 0.5, color: Theme.of(context).cardColor),
-                      ),
-                      textColor: Colors.white,
-                      radius: const BorderRadius.only(
-                          bottomLeft: Radius.circular(15)),
-                      onPressed: widget.onCancel,
-                    ),
+                    input(100.0, 'أضِف ذِكر...', mainContentController),
+                    if (widget.enableSecondaryContent) const Divider(),
+                    if (widget.enableSecondaryContent)
+                      input(80.0, 'نص إضافي...', secondaryContentController),
+                    if (widget.enableSecondaryContent)
+                      const SizedBox(height: 40)
                   ],
                 ),
               ),
-            )
-          ],
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: Container(
+                  constraints: const BoxConstraints.expand(height: 40),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      DialogButton(
+                        label: 'حفظ',
+                        border: Border(
+                          left: BorderSide(
+                              width: 0.5, color: Theme.of(context).cardColor),
+                        ),
+                        radius: const BorderRadius.only(
+                            bottomRight: Radius.circular(15)),
+                        onPressed: !mainContentActive
+                            ? null
+                            : () =>
+                                widget.onSave?.call(mainContentController.text),
+                      ),
+                      DialogButton(
+                        label: 'إلغاء',
+                        border: Border(
+                          right: BorderSide(
+                              width: 0.5, color: Theme.of(context).cardColor),
+                        ),
+                        onPressed: widget.onCancel,
+                        radius: const BorderRadius.only(
+                            bottomLeft: Radius.circular(15)),
+                        textColor: Colors.white,
+                      )
+                    ],
+                  ),
+                ),
+              )
+            ],
+          ),
         ),
+        shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
       ),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
     );
   }
 }
