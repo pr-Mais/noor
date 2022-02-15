@@ -28,6 +28,8 @@ class RemoteConfigService {
       SharedPrefsService.putBool('CONFIG_STATE', false);
 
       try {
+        // Issue open in remote_config plugin: https://github.com/FirebaseExtended/flutterfire/issues/6196
+        await Future.delayed(const Duration(seconds: 1));
         await _remoteConfig.fetchAndActivate();
       } catch (e) {
         rethrow;
