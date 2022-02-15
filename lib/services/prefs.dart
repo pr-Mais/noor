@@ -1,5 +1,3 @@
-// ignore_for_file: use_function_type_syntax_for_parameters
-
 import 'dart:async';
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -33,7 +31,7 @@ class SharedPrefsService {
   }
 
   // get obj
-  static T? getObj<T>(String key, T f(Map v), {T? defValue}) {
+  static T? getObj<T>(String key, T Function(Map v) f, {T? defValue}) {
     Map? map = getObject(key);
     return map == null ? defValue : f(map);
   }
@@ -55,7 +53,7 @@ class SharedPrefsService {
   }
 
   // get obj list
-  static List<T> getObjList<T>(String key, T f(Map? v),
+  static List<T> getObjList<T>(String key, T Function(Map? v) f,
       {List<T> defValue = const []}) {
     List<Map?>? dataList = getObjectList(key);
     List<T>? list = dataList?.map((value) {
