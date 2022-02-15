@@ -104,10 +104,6 @@ class NoorAlertDialog extends StatelessWidget {
                     DialogButton(
                       label: 'إلغاء',
                       textColor: Colors.white,
-                      border: Border(
-                        right: BorderSide(
-                            width: 0.5, color: Theme.of(context).cardColor),
-                      ),
                       onPressed: () async {
                         Navigator.of(context).pop(false);
                       },
