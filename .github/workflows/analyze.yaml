@@ -6,10 +6,12 @@ env:
 on:
   pull_request:
     paths-ignore:
-      - "**.md"
+      - '**.md'
   push:
+    branches:
+      - main
     paths-ignore:
-      - "**.md"
+      - '**.md'
 jobs:
   format:
     runs-on: macos-latest
