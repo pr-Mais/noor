@@ -148,86 +148,83 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
       },
       child: Scaffold(
         resizeToAvoidBottomInset: false,
-        body: SafeArea(
-          top: false,
-          child: Column(
-            children: <Widget>[
-              AnimatedHeader(
-                focusNode: _focusNode,
-                isWriting: isWriting,
-              ),
-              Expanded(
-                flex: isWriting ? 0 : 1,
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: <Widget>[
-                      if (_focusNode.hasFocus) const SizedBox(height: 10),
-                      searchBar(),
-                      const SizedBox(height: 10),
-                      if (!isWriting)
-                        Stack(
-                          children: <Widget>[
-                            if (!isWriting)
-                              Column(
-                                children: <Widget>[
-                                  HomeCard(
-                                    page: const AthkarPage(),
-                                    image: images.athkarCard,
-                                    tag: 'athkar',
-                                  ),
-                                  HomeCard(
-                                    page: const Ad3yah(),
-                                    image: images.ad3yahCard,
-                                    tag: 'ad3yah',
-                                  ),
-                                  HomeCard(
-                                    page: const AllahNames(),
-                                    image: images.allahNamesCard,
-                                    tag: 'allah names',
-                                  ),
-                                ],
-                              ),
-                            Visibility(
-                              visible: !isWriting && _focusNode.hasFocus,
-                              child: AnimatedOpacity(
-                                duration: const Duration(milliseconds: 400),
-                                opacity: _focusNode.hasFocus ? 1.0 : 0.0,
-                                child: GestureDetector(
-                                  onTap: () {
-                                    if (_focusNode.hasFocus) {
-                                      _searchController.clear();
-                                      FocusScope.of(context)
-                                          .requestFocus(FocusNode());
-                                      setState(() {
-                                        isWriting = false;
-                                      });
-                                    }
-                                  },
-                                  child: Container(
-                                    color: Colors.transparent,
-                                    height: _focusNode.hasFocus && !isWriting
-                                        ? MediaQuery.of(context).size.height
-                                        : 0,
-                                  ),
+        body: Column(
+          children: <Widget>[
+            AnimatedHeader(
+              focusNode: _focusNode,
+              isWriting: isWriting,
+            ),
+            Expanded(
+              flex: isWriting ? 0 : 1,
+              child: SingleChildScrollView(
+                child: Column(
+                  children: <Widget>[
+                    if (_focusNode.hasFocus) const SizedBox(height: 10),
+                    searchBar(),
+                    const SizedBox(height: 10),
+                    if (!isWriting)
+                      Stack(
+                        children: <Widget>[
+                          if (!isWriting)
+                            Column(
+                              children: <Widget>[
+                                HomeCard(
+                                  page: const AthkarPage(),
+                                  image: images.athkarCard,
+                                  tag: 'athkar',
+                                ),
+                                HomeCard(
+                                  page: const Ad3yah(),
+                                  image: images.ad3yahCard,
+                                  tag: 'ad3yah',
+                                ),
+                                HomeCard(
+                                  page: const AllahNames(),
+                                  image: images.allahNamesCard,
+                                  tag: 'allah names',
+                                ),
+                              ],
+                            ),
+                          Visibility(
+                            visible: !isWriting && _focusNode.hasFocus,
+                            child: AnimatedOpacity(
+                              duration: const Duration(milliseconds: 400),
+                              opacity: _focusNode.hasFocus ? 1.0 : 0.0,
+                              child: GestureDetector(
+                                onTap: () {
+                                  if (_focusNode.hasFocus) {
+                                    _searchController.clear();
+                                    FocusScope.of(context)
+                                        .requestFocus(FocusNode());
+                                    setState(() {
+                                      isWriting = false;
+                                    });
+                                  }
+                                },
+                                child: Container(
+                                  color: Colors.transparent,
+                                  height: _focusNode.hasFocus && !isWriting
+                                      ? MediaQuery.of(context).size.height
+                                      : 0,
                                 ),
                               ),
                             ),
-                          ],
-                        ),
-                    ],
-                  ),
+                          ),
+                        ],
+                      ),
+                  ],
                 ),
               ),
-              if (isWriting)
-                Expanded(
-                  child: SearchResults(
-                    query: searchWord,
-                    results: results,
-                    title: title,
-                  ),
+            ),
+            if (isWriting)
+              Expanded(
+                child: SearchResults(
+                  query: searchWord,
+                  results: results,
+                  title: title,
                 ),
-            ],
-          ),
+              ),
+          ],
         ),
       ),
     );
@@ -235,67 +232,64 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
 
   /// Build the search bar widget
   Widget searchBar() {
-    return SafeArea(
-      child: Container(
-        padding: const EdgeInsets.only(right: 25.0, left: 25.0),
-        child: TextField(
-          controller: _searchController,
-          focusNode: _focusNode,
-          onTap: () {
-            if (!_focusNode.hasFocus) {
-              setState(() {});
-            }
-          },
-          style: TextStyle(
-            fontSize: 14,
-            color: Theme.of(context).textTheme.bodyText1!.color,
+    return Container(
+      padding: const EdgeInsets.only(right: 25.0, left: 25.0),
+      child: TextField(
+        controller: _searchController,
+        focusNode: _focusNode,
+        onTap: () {
+          if (!_focusNode.hasFocus) {
+            setState(() {});
+          }
+        },
+        style: TextStyle(
+          fontSize: 14,
+          color: Theme.of(context).textTheme.bodyText1!.color,
+          fontWeight: FontWeight.normal,
+        ),
+        decoration: InputDecoration(
+          contentPadding:
+              const EdgeInsets.symmetric(vertical: 0, horizontal: 15),
+          hintText: 'ابحث عن ذكر أو دعاء',
+          hintStyle: const TextStyle(
+            color: Colors.grey,
             fontWeight: FontWeight.normal,
           ),
-          decoration: InputDecoration(
-            contentPadding:
-                const EdgeInsets.symmetric(vertical: 0, horizontal: 15),
-            hintText: 'ابحث عن ذكر أو دعاء',
-            hintStyle: const TextStyle(
-              color: Colors.grey,
-              fontWeight: FontWeight.normal,
-            ),
-            prefixIcon: Icon(
-              Icons.search,
-              color: Theme.of(context).brightness == Brightness.light
-                  ? Colors.grey
-                  : Colors.white,
-            ),
-            suffixIcon: isWriting
-                ? IconButton(
-                    icon: Icon(
-                      Icons.close,
-                      color: Theme.of(context).brightness == Brightness.light
-                          ? Colors.grey
-                          : Colors.white,
-                    ),
-                    onPressed: () {
-                      _searchController.clear();
-                      //FocusScope.of(context).requestFocus(new FocusNode());
-                      // setState(() {
-                      //   isWriting = false;
-                      // });
-                    },
-                  )
-                : null,
-            focusedBorder: OutlineInputBorder(
-              borderSide:
-                  const BorderSide(color: Colors.transparent, width: 2.0),
-              borderRadius: BorderRadius.circular(16.0),
-            ),
-            filled: true,
-            fillColor: Theme.of(context).brightness == Brightness.light
-                ? Colors.grey[100]
-                : Colors.white12,
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(16.0),
-              borderSide: const BorderSide(
-                color: Colors.transparent,
-              ),
+          prefixIcon: Icon(
+            Icons.search,
+            color: Theme.of(context).brightness == Brightness.light
+                ? Colors.grey
+                : Colors.white,
+          ),
+          suffixIcon: isWriting
+              ? IconButton(
+                  icon: Icon(
+                    Icons.close,
+                    color: Theme.of(context).brightness == Brightness.light
+                        ? Colors.grey
+                        : Colors.white,
+                  ),
+                  onPressed: () {
+                    _searchController.clear();
+                    //FocusScope.of(context).requestFocus(new FocusNode());
+                    // setState(() {
+                    //   isWriting = false;
+                    // });
+                  },
+                )
+              : null,
+          focusedBorder: OutlineInputBorder(
+            borderSide: const BorderSide(color: Colors.transparent, width: 2.0),
+            borderRadius: BorderRadius.circular(16.0),
+          ),
+          filled: true,
+          fillColor: Theme.of(context).brightness == Brightness.light
+              ? Colors.grey[100]
+              : Colors.white12,
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(16.0),
+            borderSide: const BorderSide(
+              color: Colors.transparent,
             ),
           ),
         ),
@@ -387,6 +381,10 @@ class _AnimatedHeaderState extends State<AnimatedHeader>
         width: MediaQuery.of(context).size.width,
         height: widget.focusNode.hasFocus || widget.isWriting ? 0 : 170,
         padding: const EdgeInsets.symmetric(horizontal: 20),
+        margin: EdgeInsets.only(
+            bottom: widget.focusNode.hasFocus
+                ? MediaQuery.of(context).viewPadding.top
+                : 15.0),
         child: Stack(
           alignment: Alignment.center,
           children: <Widget>[
