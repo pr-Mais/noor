@@ -16,7 +16,7 @@ class AllahNames extends StatefulWidget {
 
 class _AllahNamesState extends State<AllahNames>
     with SingleTickerProviderStateMixin {
-  ScrollController scrollController = new ScrollController();
+  final scrollController = ScrollController();
 
   double currentScroll = 0;
   double maxHeight = 180;
@@ -25,6 +25,7 @@ class _AllahNamesState extends State<AllahNames>
 
   int index = 0;
 
+  @override
   initState() {
     super.initState();
 
@@ -73,7 +74,7 @@ class _AllahNamesState extends State<AllahNames>
                   },
                 ),
               ),
-              Positioned(
+              const Positioned(
                   left: 10.0, top: 40.0, child: NoorCloseButton(size: 35)),
             ],
           ),
@@ -83,14 +84,14 @@ class _AllahNamesState extends State<AllahNames>
               return Expanded(
                 child: Scrollbar(
                   child: ListView.builder(
-                    padding: EdgeInsets.symmetric(vertical: 10),
-                    physics: AlwaysScrollableScrollPhysics(),
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    physics: const AlwaysScrollableScrollPhysics(),
                     itemCount: allahNames.length,
                     controller: scrollController,
                     itemBuilder: (BuildContext context, int index) {
                       final AllahName title = allahNames[index];
                       return ListItem(
-                        title: '${title.name}',
+                        title: title.name,
                         icon: images.allahNamesTitleIcon,
                         onTap: () {
                           Navigator.of(context).push(

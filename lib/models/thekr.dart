@@ -11,7 +11,7 @@ class Thekr {
 
   late final int counter;
 
-  final NoorCategory category = NoorCategory.ATHKAR;
+  final NoorCategory category = NoorCategory.athkar;
   final String ribbon = Ribbon.ribbon1;
 
   Thekr._(

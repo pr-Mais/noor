@@ -10,7 +10,7 @@ import 'package:noor/exports/services.dart'
 
 class DataController {
   static Future<DataController> init() async {
-    final List<dynamic> data = await JsonService.init();
+    final List<dynamic> data = await JsonService.instance.init();
     final DataModel dataModel = GetIt.I<DataModel>();
     if (dataModel.athkar.isEmpty) {
       int section = 0;
@@ -44,9 +44,9 @@ class DataController {
     if (dataModel.quraan.isEmpty) {
       dataModel.quraan = data[1]
           .map((dynamic e) {
-            e['category'] = NoorCategory.QURAAN;
+            e['category'] = NoorCategory.quraan;
             e['ribbon'] = Ribbon.ribbon2;
-            e['sectionName'] = categoryTitle[NoorCategory.QURAAN];
+            e['sectionName'] = categoryTitle[NoorCategory.quraan];
 
             return Doaa.fromMap(e);
           })
@@ -56,9 +56,9 @@ class DataController {
     if (dataModel.sunnah.isEmpty) {
       dataModel.sunnah = data[2]
           .map((dynamic e) {
-            e['category'] = NoorCategory.SUNNAH;
+            e['category'] = NoorCategory.sunnah;
             e['ribbon'] = Ribbon.ribbon3;
-            e['sectionName'] = categoryTitle[NoorCategory.SUNNAH];
+            e['sectionName'] = categoryTitle[NoorCategory.sunnah];
 
             return Doaa.fromMap(e);
           })
@@ -69,8 +69,8 @@ class DataController {
       dataModel.ruqiya = data[3]
           .map((dynamic e) {
             e['ribbon'] = Ribbon.ribbon4;
-            e['category'] = NoorCategory.RUQIYA;
-            e['sectionName'] = categoryTitle[NoorCategory.RUQIYA];
+            e['category'] = NoorCategory.ruqiya;
+            e['sectionName'] = categoryTitle[NoorCategory.ruqiya];
 
             return Doaa.fromMap(e);
           })
@@ -101,7 +101,7 @@ class DataController {
       updateFavList();
     }
 
-    await Future<void>.delayed(Duration(seconds: 1));
+    await Future<void>.delayed(const Duration(seconds: 1));
 
     return DataController();
   }
@@ -178,7 +178,7 @@ class DataController {
     // Update underlying fav prefs list for persistency
     SharedPrefsService.putStringList('fav', favPrefs);
 
-    if (element.category == NoorCategory.MYAD3YAH) {
+    if (element.category == NoorCategory.myad3yah) {
       await DBService.db.update(element);
     }
 
@@ -195,7 +195,7 @@ class DataController {
     // Update underlying fav prefs list for persistency
     SharedPrefsService.putStringList('fav', favPrefs);
 
-    if (element.category == NoorCategory.MYAD3YAH) {
+    if (element.category == NoorCategory.myad3yah) {
       await DBService.db.update(element);
     }
 

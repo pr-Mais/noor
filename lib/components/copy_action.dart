@@ -20,7 +20,7 @@ class CopyAction extends StatelessWidget {
       barrierLabel: 'Label',
       barrierDismissible: false,
       barrierColor: Colors.black.withOpacity(0.2),
-      transitionDuration: Duration(milliseconds: 500),
+      transitionDuration: const Duration(milliseconds: 500),
       context: context,
       pageBuilder: (BuildContext context, _, __) {
         return Align(
@@ -40,7 +40,7 @@ class CopyAction extends StatelessWidget {
             decoration: BoxDecoration(
               color: const Color(0xff6f85d5),
               borderRadius: BorderRadius.circular(15.0),
-              boxShadow: <BoxShadow>[
+              boxShadow: const <BoxShadow>[
                 BoxShadow(blurRadius: 5, color: Colors.black26),
               ],
             ),
@@ -49,17 +49,20 @@ class CopyAction extends StatelessWidget {
       },
       transitionBuilder: (_, Animation<double> anim1, __, Widget child) {
         return SlideTransition(
-          position: Tween<Offset>(begin: Offset(0, 0.6), end: Offset(0, 0))
-              .animate(CurvedAnimation(
-            parent: anim1,
-            curve: Curves.easeOutCirc,
-            reverseCurve: Curves.easeIn,
-          )),
+          position: Tween<Offset>(
+                  begin: const Offset(0, 0.6), end: const Offset(0, 0))
+              .animate(
+            CurvedAnimation(
+              parent: anim1,
+              curve: Curves.easeOutCirc,
+              reverseCurve: Curves.easeIn,
+            ),
+          ),
           child: child,
         );
       },
     );
-    Future<void>.delayed(Duration(milliseconds: 1000)).then((_) {
+    Future<void>.delayed(const Duration(milliseconds: 1000)).then((_) {
       Navigator.of(context, rootNavigator: true).pop('dialog');
     });
   }

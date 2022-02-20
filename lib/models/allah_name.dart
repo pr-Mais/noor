@@ -6,7 +6,7 @@ class AllahName {
   late final String text;
   final String sectionName = 'أسماء الله الحسنى';
   final String ribbon = Ribbon.ribbon6;
-  final NoorCategory category = NoorCategory.ALLAHNAME;
+  final NoorCategory category = NoorCategory.allahname;
   late bool isFav;
   late final int section;
   late final bool inApp;

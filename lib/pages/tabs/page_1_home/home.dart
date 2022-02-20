@@ -17,21 +17,26 @@ import 'package:noor/exports/controllers.dart' show ThemeModel;
 import 'package:noor/exports/services.dart' show SharedPrefsService;
 import 'package:noor/exports/models.dart' show AllahName, DataModel;
 
+export 'package:noor/pages/tabs/page_1_home/ad3yah_expanded.dart';
+export 'package:noor/pages/tabs/page_1_home/allah_names_expanded.dart';
+export 'package:noor/pages/tabs/page_1_home/athkar_expanded.dart';
+export 'package:noor/pages/tabs/page_1_home/my_ad3yah.dart';
+
 class Home extends StatefulWidget {
-  Home({
+  const Home({
     Key? key,
   }) : super(key: key);
 
+  @override
   _HomeState createState() => _HomeState();
 }
 
-class _HomeState extends State<Home>
-    with TickerProviderStateMixin, AutomaticKeepAliveClientMixin {
+class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
   bool isWriting = false;
-  FocusNode _focusNode = new FocusNode();
-  TextEditingController _searchController = new TextEditingController();
-  List<dynamic> results = <dynamic>[];
-  List<dynamic> title = <dynamic>[];
+  final _focusNode = FocusNode();
+  final _searchController = TextEditingController();
+  List<dynamic> results = [];
+  List<dynamic> title = [];
 
   String searchWord = '';
 
@@ -53,12 +58,11 @@ class _HomeState extends State<Home>
   Future<void> displayNotification(
       String title, String body, String payload) async {
     FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-        new FlutterLocalNotificationsPlugin();
+        FlutterLocalNotificationsPlugin();
     AndroidNotificationDetails androidPlatformChannelSpecifics =
-        AndroidNotificationDetails(
+        const AndroidNotificationDetails(
       'RC',
       'RC notification',
-      'RC channel',
       importance: Importance.max,
       priority: Priority.high,
     );
@@ -144,86 +148,83 @@ class _HomeState extends State<Home>
       },
       child: Scaffold(
         resizeToAvoidBottomInset: false,
-        body: SafeArea(
-          top: false,
-          child: Column(
-            children: <Widget>[
-              AnimatedHeader(
-                focusNode: _focusNode,
-                isWriting: isWriting,
-              ),
-              Expanded(
-                flex: isWriting ? 0 : 1,
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: <Widget>[
-                      if (_focusNode.hasFocus) const SizedBox(height: 10),
-                      searchBar(),
-                      const SizedBox(height: 10),
-                      if (!isWriting)
-                        Stack(
-                          children: <Widget>[
-                            if (!isWriting)
-                              Column(
-                                children: <Widget>[
-                                  HomeCard(
-                                    page: const AthkarPage(),
-                                    image: images.athkarCard,
-                                    tag: 'athkar',
-                                  ),
-                                  HomeCard(
-                                    page: const Ad3yah(),
-                                    image: images.ad3yahCard,
-                                    tag: 'ad3yah',
-                                  ),
-                                  HomeCard(
-                                    page: const AllahNames(),
-                                    image: images.allahNamesCard,
-                                    tag: 'allah names',
-                                  ),
-                                ],
-                              ),
-                            Visibility(
-                              visible: !isWriting && _focusNode.hasFocus,
-                              child: AnimatedOpacity(
-                                duration: Duration(milliseconds: 400),
-                                opacity: _focusNode.hasFocus ? 1.0 : 0.0,
-                                child: GestureDetector(
-                                  onTap: () {
-                                    if (_focusNode.hasFocus) {
-                                      _searchController.clear();
-                                      FocusScope.of(context)
-                                          .requestFocus(new FocusNode());
-                                      setState(() {
-                                        isWriting = false;
-                                      });
-                                    }
-                                  },
-                                  child: Container(
-                                    color: Colors.transparent,
-                                    height: _focusNode.hasFocus && !isWriting
-                                        ? MediaQuery.of(context).size.height
-                                        : 0,
-                                  ),
+        body: Column(
+          children: <Widget>[
+            AnimatedHeader(
+              focusNode: _focusNode,
+              isWriting: isWriting,
+            ),
+            Expanded(
+              flex: isWriting ? 0 : 1,
+              child: SingleChildScrollView(
+                child: Column(
+                  children: <Widget>[
+                    if (_focusNode.hasFocus) const SizedBox(height: 10),
+                    searchBar(),
+                    const SizedBox(height: 10),
+                    if (!isWriting)
+                      Stack(
+                        children: <Widget>[
+                          if (!isWriting)
+                            Column(
+                              children: <Widget>[
+                                HomeCard(
+                                  page: const AthkarPage(),
+                                  image: images.athkarCard,
+                                  tag: 'athkar',
+                                ),
+                                HomeCard(
+                                  page: const Ad3yah(),
+                                  image: images.ad3yahCard,
+                                  tag: 'ad3yah',
+                                ),
+                                HomeCard(
+                                  page: const AllahNames(),
+                                  image: images.allahNamesCard,
+                                  tag: 'allah names',
+                                ),
+                              ],
+                            ),
+                          Visibility(
+                            visible: !isWriting && _focusNode.hasFocus,
+                            child: AnimatedOpacity(
+                              duration: const Duration(milliseconds: 400),
+                              opacity: _focusNode.hasFocus ? 1.0 : 0.0,
+                              child: GestureDetector(
+                                onTap: () {
+                                  if (_focusNode.hasFocus) {
+                                    _searchController.clear();
+                                    FocusScope.of(context)
+                                        .requestFocus(FocusNode());
+                                    setState(() {
+                                      isWriting = false;
+                                    });
+                                  }
+                                },
+                                child: Container(
+                                  color: Colors.transparent,
+                                  height: _focusNode.hasFocus && !isWriting
+                                      ? MediaQuery.of(context).size.height
+                                      : 0,
                                 ),
                               ),
                             ),
-                          ],
-                        ),
-                    ],
-                  ),
+                          ),
+                        ],
+                      ),
+                  ],
                 ),
               ),
-              if (isWriting)
-                Expanded(
-                  child: SearchResults(
-                    query: searchWord,
-                    results: results,
-                    title: title,
-                  ),
+            ),
+            if (isWriting)
+              Expanded(
+                child: SearchResults(
+                  query: searchWord,
+                  results: results,
+                  title: title,
                 ),
-            ],
-          ),
+              ),
+          ],
         ),
       ),
     );
@@ -231,65 +232,64 @@ class _HomeState extends State<Home>
 
   /// Build the search bar widget
   Widget searchBar() {
-    return SafeArea(
-      child: Container(
-        padding: EdgeInsets.only(right: 25.0, left: 25.0),
-        child: TextField(
-          controller: _searchController,
-          focusNode: _focusNode,
-          onTap: () {
-            if (!_focusNode.hasFocus) {
-              setState(() {});
-            }
-          },
-          style: TextStyle(
-            fontSize: 14,
-            color: Theme.of(context).textTheme.bodyText1!.color,
+    return Container(
+      padding: const EdgeInsets.only(right: 25.0, left: 25.0),
+      child: TextField(
+        controller: _searchController,
+        focusNode: _focusNode,
+        onTap: () {
+          if (!_focusNode.hasFocus) {
+            setState(() {});
+          }
+        },
+        style: TextStyle(
+          fontSize: 14,
+          color: Theme.of(context).textTheme.bodyText1!.color,
+          fontWeight: FontWeight.normal,
+        ),
+        decoration: InputDecoration(
+          contentPadding:
+              const EdgeInsets.symmetric(vertical: 0, horizontal: 15),
+          hintText: 'ابحث عن ذكر أو دعاء',
+          hintStyle: const TextStyle(
+            color: Colors.grey,
             fontWeight: FontWeight.normal,
           ),
-          decoration: InputDecoration(
-            contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 15),
-            hintText: 'ابحث عن ذكر أو دعاء',
-            hintStyle: TextStyle(
-              color: Colors.grey,
-              fontWeight: FontWeight.normal,
-            ),
-            prefixIcon: Icon(
-              Icons.search,
-              color: Theme.of(context).brightness == Brightness.light
-                  ? Colors.grey
-                  : Colors.white,
-            ),
-            suffixIcon: isWriting
-                ? IconButton(
-                    icon: Icon(
-                      Icons.close,
-                      color: Theme.of(context).brightness == Brightness.light
-                          ? Colors.grey
-                          : Colors.white,
-                    ),
-                    onPressed: () {
-                      _searchController.clear();
-                      //FocusScope.of(context).requestFocus(new FocusNode());
-                      // setState(() {
-                      //   isWriting = false;
-                      // });
-                    },
-                  )
-                : null,
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.transparent, width: 2.0),
-              borderRadius: BorderRadius.circular(16.0),
-            ),
-            filled: true,
-            fillColor: Theme.of(context).brightness == Brightness.light
-                ? Colors.grey[100]
-                : Colors.white12,
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(16.0),
-              borderSide: BorderSide(
-                color: Colors.transparent,
-              ),
+          prefixIcon: Icon(
+            Icons.search,
+            color: Theme.of(context).brightness == Brightness.light
+                ? Colors.grey
+                : Colors.white,
+          ),
+          suffixIcon: isWriting
+              ? IconButton(
+                  icon: Icon(
+                    Icons.close,
+                    color: Theme.of(context).brightness == Brightness.light
+                        ? Colors.grey
+                        : Colors.white,
+                  ),
+                  onPressed: () {
+                    _searchController.clear();
+                    //FocusScope.of(context).requestFocus(new FocusNode());
+                    // setState(() {
+                    //   isWriting = false;
+                    // });
+                  },
+                )
+              : null,
+          focusedBorder: OutlineInputBorder(
+            borderSide: const BorderSide(color: Colors.transparent, width: 2.0),
+            borderRadius: BorderRadius.circular(16.0),
+          ),
+          filled: true,
+          fillColor: Theme.of(context).brightness == Brightness.light
+              ? Colors.grey[100]
+              : Colors.white12,
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(16.0),
+            borderSide: const BorderSide(
+              color: Colors.transparent,
             ),
           ),
         ),
@@ -301,13 +301,11 @@ class _HomeState extends State<Home>
 class AnimatedHeader extends StatefulWidget {
   const AnimatedHeader({
     Key? key,
-    required FocusNode focusNode,
     required this.isWriting,
-  })  : focusNode = focusNode,
-        super(key: key);
+    required this.focusNode,
+  }) : super(key: key);
 
   final FocusNode focusNode;
-
   final bool isWriting;
 
   @override
@@ -340,17 +338,17 @@ class _AnimatedHeaderState extends State<AnimatedHeader>
 
   _setupCloudAnimation() {
     cloudController =
-        AnimationController(duration: Duration(seconds: 15), vsync: this)
+        AnimationController(duration: const Duration(seconds: 15), vsync: this)
           ..forward()
           ..reverse()
           ..repeat();
 
-    _topCloudAnim =
-        Tween<Offset>(begin: Offset(3.0, 0.0), end: Offset(-5.5, 0.0))
-            .animate(cloudController);
-    _bottomCloudAnim =
-        Tween<Offset>(begin: Offset(-5.5, 0.0), end: Offset(3.0, 0.0))
-            .animate(cloudController);
+    _topCloudAnim = Tween<Offset>(
+            begin: const Offset(3.0, 0.0), end: const Offset(-5.5, 0.0))
+        .animate(cloudController);
+    _bottomCloudAnim = Tween<Offset>(
+            begin: const Offset(-5.5, 0.0), end: const Offset(3.0, 0.0))
+        .animate(cloudController);
   }
 
   Future<void> _loadRemoteConfig() async {
@@ -371,8 +369,7 @@ class _AnimatedHeaderState extends State<AnimatedHeader>
         Provider.of<ThemeModel>(context, listen: false).images;
     return AnimatedSize(
       curve: Curves.easeInOutCirc,
-      duration: Duration(milliseconds: 300),
-      vsync: this,
+      duration: const Duration(milliseconds: 300),
       child: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
@@ -384,7 +381,12 @@ class _AnimatedHeaderState extends State<AnimatedHeader>
         width: MediaQuery.of(context).size.width,
         height: widget.focusNode.hasFocus || widget.isWriting ? 0 : 170,
         padding: const EdgeInsets.symmetric(horizontal: 20),
+        margin: EdgeInsets.only(
+            bottom: widget.focusNode.hasFocus
+                ? MediaQuery.of(context).viewPadding.top
+                : 15.0),
         child: Stack(
+          alignment: Alignment.center,
           children: <Widget>[
             if (Theme.of(context).brightness == Brightness.light)
               Positioned(
@@ -407,49 +409,47 @@ class _AnimatedHeaderState extends State<AnimatedHeader>
                 ),
               ),
             if (Theme.of(context).brightness == Brightness.dark)
-              Align(
+              const Align(
                 alignment: Alignment.center,
                 child: GlowingStars(),
               ),
             SafeArea(
-              child: Align(
-                alignment: Alignment.topCenter,
-                child: SizedBox(
-                  width: MediaQuery.of(context).size.width,
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: <Widget>[
-                        const SizedBox(height: 5),
-                        SvgPicture.asset(
-                          'assets/images/${prefix}logo-dark.svg',
-                          width: 60,
-                        ),
-                        const SizedBox(height: 15),
-                        ValueListenableBuilder<String>(
-                          valueListenable: remoteConfigNotifier,
-                          builder: (_, String value, Widget? child) {
-                            return AnimatedSwitcher(
-                              duration: Duration(milliseconds: 500),
-                              transitionBuilder:
-                                  (Widget child, Animation<double> animation) {
-                                return FadeTransition(
-                                    child: child, opacity: animation);
-                              },
-                              child: Text(
-                                value,
-                                key: ValueKey<String>(value),
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 15,
-                                  height: 1.5,
-                                ),
+              child: SizedBox(
+                width: MediaQuery.of(context).size.width,
+                height: 120,
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: <Widget>[
+                      const SizedBox(height: 5),
+                      SvgPicture.asset(
+                        'assets/images/${prefix}logo-dark.svg',
+                        width: 60,
+                      ),
+                      const SizedBox(height: 15),
+                      ValueListenableBuilder<String>(
+                        valueListenable: remoteConfigNotifier,
+                        builder: (_, String value, Widget? child) {
+                          return AnimatedSwitcher(
+                            duration: const Duration(milliseconds: 500),
+                            transitionBuilder:
+                                (Widget child, Animation<double> animation) {
+                              return FadeTransition(
+                                  child: child, opacity: animation);
+                            },
+                            child: Text(
+                              value,
+                              key: ValueKey<String>(value),
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 15,
+                                height: 1.5,
                               ),
-                            );
-                          },
-                        ),
-                      ],
-                    ),
+                            ),
+                          );
+                        },
+                      ),
+                    ],
                   ),
                 ),
               ),
@@ -475,8 +475,8 @@ class SearchResults extends StatefulWidget {
   _SearchResultsState createState() => _SearchResultsState();
 }
 
-String mask(dynamic string) {
-  dynamic tmp;
+String mask(string) {
+  String tmp;
   // for each أ، إ، آ in string, replace with ا
   tmp = string.replaceAll(
       RegExp(
@@ -548,10 +548,10 @@ class _SearchResultsState extends State<SearchResults> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      child: widget.results.length == 0
-          ? Text('لا توجد نتائج')
+      child: widget.results.isEmpty
+          ? const Text('لا توجد نتائج')
           : ListView.builder(
-              physics: AlwaysScrollableScrollPhysics(),
+              physics: const AlwaysScrollableScrollPhysics(),
               padding: EdgeInsets.only(
                   bottom: MediaQuery.of(context).viewInsets.bottom),
               itemCount: widget.results.length,
@@ -583,7 +583,7 @@ class _SearchResultsState extends State<SearchResults> {
                             ),
                           ],
                         ),
-                        padding: EdgeInsets.symmetric(
+                        padding: const EdgeInsets.symmetric(
                           horizontal: 30.0,
                         ),
                       ),
@@ -601,11 +601,11 @@ class _SearchResultsState extends State<SearchResults> {
                                 fontWeight: FontWeight.bold,
                                 fontSize: 12),
                           ),
-                          padding: EdgeInsets.symmetric(
+                          padding: const EdgeInsets.symmetric(
                             horizontal: 30.0,
                           ),
                         ),
-                      Divider(),
+                      const Divider(),
                     ],
                   ),
                 );

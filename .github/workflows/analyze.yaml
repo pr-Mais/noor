@@ -1,0 +1,40 @@
+name: analyze
+
+env:
+  FLUTTER_VERSION: stable
+
+on:
+  pull_request:
+    paths-ignore:
+      - '**.md'
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - '**.md'
+jobs:
+  format:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2.3.4
+      - uses: subosito/flutter-action@v1
+        with:
+          channel: 'stable'
+
+      - run: flutter pub get
+
+      - run: flutter analyze .
+
+      - run: flutter format lib/** --set-exit-if-changed
+
+  test:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2.3.4
+      - uses: subosito/flutter-action@v1
+        with:
+          channel: 'stable'
+
+      - run: flutter pub get
+
+      - run: flutter test

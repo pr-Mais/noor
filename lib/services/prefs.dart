@@ -31,8 +31,8 @@ class SharedPrefsService {
   }
 
   // get obj
-  static T? getObj<T>(String key, T f(Map<dynamic, dynamic> v), {T? defValue}) {
-    Map<dynamic, dynamic>? map = getObject(key);
+  static T? getObj<T>(String key, T Function(Map v) f, {T? defValue}) {
+    Map? map = getObject(key);
     return map == null ? defValue : f(map);
   }
 
@@ -53,15 +53,10 @@ class SharedPrefsService {
   }
 
   // get obj list
-  static List<T> getObjList<T>(
-    String key,
-    T f(Map<dynamic, dynamic>? v), {
-    List<T>? defValue,
-  }) {
-    defValue ??= <T>[];
-
-    List<Map<dynamic, dynamic>?>? dataList = getObjectList(key);
-    List<T>? list = dataList?.map((Map<dynamic, dynamic>? value) {
+  static List<T> getObjList<T>(String key, T Function(Map? v) f,
+      {List<T> defValue = const []}) {
+    List<Map?>? dataList = getObjectList(key);
+    List<T>? list = dataList?.map((value) {
       return f(value);
     }).toList();
     return list ?? defValue;

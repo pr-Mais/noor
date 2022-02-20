@@ -13,6 +13,7 @@
 ///
 ///
 ///
+
 import 'package:flutter/widgets.dart';
 
 class NoorSettingsIcons {
@@ -25,7 +26,7 @@ class NoorSettingsIcons {
       IconData(0xe800, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData tashkeel =
       IconData(0xe801, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData system_mode =
+  static const IconData systemMode =
       IconData(0xe802, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData star =
       IconData(0xe803, fontFamily: _kFontFam, fontPackage: _kFontPkg);
@@ -39,9 +40,9 @@ class NoorSettingsIcons {
       IconData(0xe809, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData jump =
       IconData(0xe80a, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData font_face =
+  static const IconData fontFace =
       IconData(0xe80b, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData font_size =
+  static const IconData fontSize =
       IconData(0xe80c, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData follow =
       IconData(0xe80d, fontFamily: _kFontFam, fontPackage: _kFontPkg);
@@ -53,8 +54,8 @@ class NoorSettingsIcons {
       IconData(0xe810, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData ruqya =
       IconData(0xe811, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData bulb_off =
+  static const IconData bulbOff =
       IconData(0xe812, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData bulb_on =
+  static const IconData bulbOn =
       IconData(0xe813, fontFamily: _kFontFam, fontPackage: _kFontPkg);
 }

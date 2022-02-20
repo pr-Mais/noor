@@ -4,5 +4,3 @@ class Titles {
   static const String ruqya = 'الرقية الشرعية';
   static const String myAd3yah = 'أدعيتي';
 }
-
-

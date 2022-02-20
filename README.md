@@ -1,5 +1,7 @@
 # [Noor App | تطبيق نُور](https://noorathkar.com)
 
+[![Codemagic build status](https://api.codemagic.io/apps/6208f023546bd24402e57b64/6208f023546bd24402e57b63/status_badge.svg)](https://codemagic.io/apps/6208f023546bd24402e57b64/6208f023546bd24402e57b63/latest_build)
+
 <p>
   <a href="https://apps.apple.com/sa/app/نور-noor/id1463334485">
     <img src="https://user-images.githubusercontent.com/41123719/117558302-db848980-b084-11eb-8ef8-1dac2eb5ea56.png" atl="app-store-badge" width="125"/>     
@@ -33,7 +35,8 @@ It's important to put your own Firebase service file in order to run the app, as
 3. Go to Remote Config page.
 4. Add a new parameter with name `noorThker`, with any value of your choice.
 5. Go to Cloud Messaging page, and enable it for your project.
-6. **(Soon)** ~~follow the steps in this repo, which contains the backend function that will be triggered whenevr you update the Remote Config value from the console.~~
+6. To setup the cloud function that trigger a notification each time the Remote Config variable changes on the console, find the code in [this repo](https://github.com/Maryom/Noor_RemoteConfig).
+
 ### 2. Run
 
 1. Clone the project:

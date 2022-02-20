@@ -4,6 +4,8 @@ import 'package:noor/constants/images.dart';
 enum StarType { circle, normal }
 
 class GlowingStars extends StatelessWidget {
+  const GlowingStars({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -12,7 +14,7 @@ class GlowingStars extends StatelessWidget {
       height: 140,
       width: width,
       child: Stack(
-        children: <Widget>[
+        children: const <Widget>[
           //star 0
           Positioned(
             top: 10,
@@ -188,7 +190,7 @@ class GlowingStars extends StatelessWidget {
 }
 
 class Star extends StatefulWidget {
-  Star({
+  const Star({
     Key? key,
     required this.size,
     required this.radius,
@@ -215,8 +217,8 @@ class _StarState extends State<Star> with SingleTickerProviderStateMixin {
   void initState() {
     controller = AnimationController(
         vsync: this,
-        duration: Duration(seconds: 2),
-        reverseDuration: Duration(seconds: 2))
+        duration: const Duration(seconds: 2),
+        reverseDuration: const Duration(seconds: 2))
       ..forward()
       ..repeat(reverse: true);
     animationStar =

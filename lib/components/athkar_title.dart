@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:noor/exports/constants.dart' show Images;
 
 class ThekrTitleCard extends StatelessWidget {
-  ThekrTitleCard({this.title});
+  const ThekrTitleCard({Key? key, this.title}) : super(key: key);
   final String? title;
 
   @override
@@ -13,7 +13,7 @@ class ThekrTitleCard extends StatelessWidget {
           children: <Widget>[
             Positioned(
               child: Container(
-                margin: EdgeInsets.only(
+                margin: const EdgeInsets.only(
                   left: 30,
                   right: 30,
                   top: 10.0,
@@ -29,7 +29,7 @@ class ThekrTitleCard extends StatelessWidget {
                     style: Theme.of(context).textTheme.headline2,
                   ),
                   alignment: Alignment.center,
-                  padding: EdgeInsets.only(
+                  padding: const EdgeInsets.only(
                     right: 70,
                     left: 70,
                     top: 10.0,
@@ -37,8 +37,8 @@ class ThekrTitleCard extends StatelessWidget {
                   ),
                 ),
                 decoration: BoxDecoration(
-                    boxShadow: <BoxShadow>[
-                      new BoxShadow(
+                    boxShadow: const <BoxShadow>[
+                      BoxShadow(
                         color: Colors.black26,
                         blurRadius: 8.0,
                       ),

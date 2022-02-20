@@ -6,6 +6,12 @@ class NoorIcons {
   static String subha = 'assets/icons/bottom-nav/${prefix}subha.svg';
   static String settings = 'assets/icons/bottom-nav/${prefix}settings.svg';
 
+  // Subha
+  static String subhaList = 'assets/icons/${prefix}subha_list.svg';
+  static String subhaReset = 'assets/icons/${prefix}subha_reset.svg';
+  static String subhaLock = 'assets/icons/${prefix}subha_lock.svg';
+
+  // Settings
   static String fontType = 'assets/icons/settings/${prefix}font-type.svg';
   static String fontSize = 'assets/icons/settings/${prefix}font-size.svg';
   static String tashkeel = 'assets/icons/settings/${prefix}tashkeel.svg';

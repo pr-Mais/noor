@@ -4,27 +4,28 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 import 'package:noor/exports/components.dart' show BottomNav;
 import 'package:noor/exports/pages.dart'
-    show Home, Favorite, CounterPage, Settings, AthkarList;
+    show Home, Favorite, CounterView, Settings, AthkarList;
 
 class RootHome extends StatefulWidget {
-  RootHome({Key? key}) : super(key: key);
+  const RootHome({Key? key}) : super(key: key);
 
+  @override
   _RootHomeState createState() => _RootHomeState();
 }
 
 class _RootHomeState extends State<RootHome>
     with TickerProviderStateMixin, WidgetsBindingObserver {
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-      new FlutterLocalNotificationsPlugin();
+      FlutterLocalNotificationsPlugin();
   String? payload;
   @override
   void initState() {
     super.initState();
 
     AndroidInitializationSettings initializationSettingsAndroid =
-        new AndroidInitializationSettings('ic_notification');
+        const AndroidInitializationSettings('ic_notification');
     IOSInitializationSettings initializationSettingsIOS =
-        IOSInitializationSettings();
+        const IOSInitializationSettings();
     InitializationSettings initializationSettings = InitializationSettings(
         android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
     flutterLocalNotificationsPlugin.initialize(initializationSettings,
@@ -35,11 +36,11 @@ class _RootHomeState extends State<RootHome>
     setState(() {
       this.payload = payload;
     });
-    print(payload);
+
     Navigator.push(
       context,
-      new MaterialPageRoute<AthkarList>(
-        builder: (BuildContext context) => new AthkarList(
+      MaterialPageRoute<AthkarList>(
+        builder: (BuildContext context) => AthkarList(
           index: payload == 'الصباح' ? 0 : 26,
         ),
       ),
@@ -57,12 +58,12 @@ class _RootHomeState extends State<RootHome>
         },
       ),
       body: PageView(
-        physics: NeverScrollableScrollPhysics(),
+        physics: const NeverScrollableScrollPhysics(),
         controller: controller,
-        children: <Widget>[
+        children: const <Widget>[
           Home(),
           Favorite(),
-          CounterPage(),
+          CounterView(),
           Settings(),
         ],
       ),

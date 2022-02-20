@@ -6,3 +6,4 @@ export 'package:noor/constants/theme.dart';
 export 'package:noor/constants/titles.dart';
 export 'package:noor/constants/categories.dart';
 export 'package:noor/constants/icons.dart';
+export 'package:noor/constants/strings.dart';

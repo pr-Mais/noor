@@ -3,13 +3,15 @@ import 'package:flutter/material.dart';
 
 class HomeCard extends StatelessWidget {
   const HomeCard({
+    Key? key,
     required this.image,
     required this.page,
     required this.tag,
-  });
+  }) : super(key: key);
   final String image;
   final Widget page;
   final String tag;
+
   @override
   Widget build(BuildContext context) {
     return OpenContainer<bool>(
@@ -18,25 +20,25 @@ class HomeCard extends StatelessWidget {
         return page;
       },
       openShape: const RoundedRectangleBorder(
-        borderRadius: const BorderRadius.all(
+        borderRadius: BorderRadius.all(
           Radius.circular(20),
         ),
       ),
       tappable: false,
       closedColor: Colors.transparent,
       closedShape: const RoundedRectangleBorder(
-        borderRadius: const BorderRadius.all(
+        borderRadius: BorderRadius.all(
           Radius.circular(20),
         ),
       ),
       closedElevation: 0.0,
       openElevation: 0.0,
-      transitionDuration: Duration(milliseconds: 400),
+      transitionDuration: const Duration(milliseconds: 400),
       closedBuilder: (BuildContext _, VoidCallback openContainer) {
         return Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
-            boxShadow: <BoxShadow>[
+            boxShadow: const <BoxShadow>[
               BoxShadow(
                 blurRadius: 8,
                 color: Colors.black12,
@@ -44,7 +46,7 @@ class HomeCard extends StatelessWidget {
             ],
           ),
           width: double.infinity,
-          margin: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+          margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
           child: GestureDetector(
             child: SizedBox(
               height: MediaQuery.of(context).size.height * 0.25,

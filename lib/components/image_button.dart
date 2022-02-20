@@ -23,8 +23,7 @@ class ImageButton extends StatelessWidget {
       height: height,
       child: Material(
         type: MaterialType.transparency,
-        shape:
-            RoundedRectangleBorder(borderRadius: new BorderRadius.circular(25)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
         child: SizedBox(
           child: InkWell(
             highlightColor: Colors.black.withOpacity(0.1),

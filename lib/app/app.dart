@@ -9,8 +9,11 @@ import 'package:noor/exports/models.dart' show DataModel, SettingsModel;
 import 'package:noor/exports/components.dart' show CustomScrollBehavior;
 import 'package:noor/exports/controllers.dart' show ThemeModel;
 import 'package:noor/exports/constants.dart' show lightTheme, darkTheme;
+import 'package:noor/pages/tabs/page_3_counter/counter_view_model.dart';
 
 class NoorApp extends StatelessWidget {
+  const NoorApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -24,28 +27,33 @@ class NoorApp extends StatelessWidget {
         ChangeNotifierProvider<SettingsModel>(
           create: (_) => GetIt.I<SettingsModel>(),
         ),
+        ChangeNotifierProvider<CounterViewModel>(
+          create: (_) => GetIt.I<CounterViewModel>(),
+        ),
       ],
-      child: MaterialAppWithTheme(),
+      child: const MaterialAppWithTheme(),
     );
   }
 }
 
 class MaterialAppWithTheme extends StatelessWidget {
+  const MaterialAppWithTheme({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final ThemeModel themeProvider = context.watch<ThemeModel>();
 
     return MaterialApp(
-      localizationsDelegates: <LocalizationsDelegate<dynamic>>[
+      localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
         // ... app-specific localization delegate[s] here
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      supportedLocales: <Locale>[
-        const Locale('ar'), // Arabic
+      supportedLocales: const <Locale>[
+        Locale('ar'), // Arabic
       ],
-      locale: Locale('ar'),
+      locale: const Locale('ar'),
       debugShowCheckedModeBanner: false,
       title: 'نُور',
       themeMode: themeProvider.theme,
@@ -61,7 +69,7 @@ class MaterialAppWithTheme extends StatelessWidget {
           ),
         );
       },
-      home: SplashScreen(),
+      home: const SplashScreen(),
     );
   }
 }
