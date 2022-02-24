@@ -228,7 +228,7 @@ class _SettingsState extends State<Settings>
 
     var androidPlatformChannelSpecifics = AndroidNotificationDetails(
       '$id',
-      '$period',
+      period,
       showWhen: true,
     );
 
