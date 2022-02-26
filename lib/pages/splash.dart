@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
 
 import 'package:noor/exports/pages.dart' show RootHome;
 import 'package:noor/exports/components.dart' show NoorLogo;
+import 'package:noor/models/theme.dart';
+import 'package:provider/provider.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -15,7 +16,7 @@ class _SplashScreenState extends State<SplashScreen> {
   double logoOpacity = 0.0;
   @override
   void initState() {
-    Future<void>.delayed(const Duration(milliseconds: 300), () {
+    Future<void>.delayed(const Duration(milliseconds: 50), () {
       setState(() {
         logoOpacity = 1.0;
       });
@@ -25,8 +26,13 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   void didChangeDependencies() async {
-    await Future<void>.value(GetIt.I.allReady());
-    await Future<void>.delayed(const Duration(milliseconds: 500));
+    final images = Provider.of<ThemeModel>(context, listen: false).images;
+    precacheImage(AssetImage(images.homeHeader), context);
+    precacheImage(AssetImage(images.athkarCard), context);
+    precacheImage(AssetImage(images.ad3yahCard), context);
+    precacheImage(AssetImage(images.allahNamesCard), context);
+
+    await Future<void>.delayed(const Duration(milliseconds: 800));
     Navigator.of(context).pushReplacement(
       MaterialPageRoute<RootHome>(
         builder: (_) => const RootHome(),
@@ -41,7 +47,7 @@ class _SplashScreenState extends State<SplashScreen> {
     return Material(
       child: Center(
         child: AnimatedOpacity(
-          duration: const Duration(milliseconds: 500),
+          duration: const Duration(milliseconds: 200),
           opacity: logoOpacity,
           child: const NoorLogo(size: 80),
         ),

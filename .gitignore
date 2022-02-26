@@ -79,6 +79,7 @@ assets/icons/*
 !/assets/images/social-buttons/
 
 /assets/images/backgrounds/*.svg
+/assets/images/backgrounds/*.png
 !/assets/images/backgrounds/p_*
 /assets/images/fav-buttons/*
 !/assets/images/fav-buttons/p_*

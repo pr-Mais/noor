@@ -91,9 +91,10 @@ class _CounterListViewState extends State<CounterListView> {
     return Scaffold(
       body: Stack(
         children: [
-          SvgPicture.asset(
+          Image.asset(
             context.read<ThemeModel>().images.subhaBg,
             fit: BoxFit.fill,
+            height: double.infinity,
           ),
           Column(
             children: <Widget>[

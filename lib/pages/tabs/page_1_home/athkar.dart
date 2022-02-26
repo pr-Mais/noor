@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:noor/components/card_sliver_app_bar.dart';
 import 'package:provider/provider.dart';
 
 import 'package:noor/exports/services.dart' show DBService;
@@ -6,7 +7,7 @@ import 'package:noor/exports/controllers.dart' show ThemeModel;
 import 'package:noor/exports/constants.dart' show Images;
 import 'package:noor/exports/models.dart' show DataModel, Thekr;
 import 'package:noor/exports/pages.dart' show AthkarList;
-import 'package:noor/exports/components.dart' show ListItem, NoorCloseButton;
+import 'package:noor/exports/components.dart' show ListItem;
 
 class AthkarPage extends StatefulWidget {
   const AthkarPage({Key? key}) : super(key: key);
@@ -18,116 +19,50 @@ class AthkarPage extends StatefulWidget {
 class _AthkarPageState extends State<AthkarPage>
     with SingleTickerProviderStateMixin {
   ScrollController scrollController = ScrollController();
-  double currentScroll = 0;
   double maxHeight = 180;
-  late Animation<double> animation;
-  late AnimationController controller;
 
   @override
   initState() {
     super.initState();
     DBService.db.initDB();
-    controller = AnimationController(
-      duration: const Duration(milliseconds: 300),
-      vsync: this,
-    );
-    animation = Tween<double>(begin: maxHeight, end: 0).animate(CurvedAnimation(
-      parent: controller,
-      curve: Curves.easeInCubic,
-    ))
-      ..addListener(() {
-        setState(() {
-          maxHeight = animation.value;
-        });
-      });
-    scrollController.addListener(() {
-      currentScroll = scrollController.position.pixels;
-    });
   }
 
   @override
   Widget build(BuildContext context) {
     final Images images = context.read<ThemeModel>().images;
-
+    final DataModel model = Provider.of<DataModel>(context);
+    final List<Thekr> athkarTitles = Provider.of<DataModel>(context)
+        .athkar
+        .where((Thekr thekr) => thekr.isTitle)
+        .toList();
     return Scaffold(
-        body: Column(
-      children: <Widget>[
-        Stack(
-          children: <Widget>[
-            Positioned(
-              child: GestureDetector(
-                child: SizedBox(
-                  width: MediaQuery.of(context).size.width,
-                  height: maxHeight,
-                  child: Hero(
-                    tag: 'athkar',
-                    child: Image.asset(
-                      images.athkarCard,
-                      fit: BoxFit.cover,
-                      gaplessPlayback: true,
-                    ),
-                  ),
-                ),
-                onVerticalDragUpdate: (DragUpdateDetails details) {
-                  if (details.delta.dy > 0) Navigator.of(context).pop();
-                },
-              ),
-            ),
-            const Positioned(
-                left: 10.0, top: 40.0, child: NoorCloseButton(size: 35)),
-          ],
-        ),
-        Expanded(
-          child: NotificationListener<Notification>(
-            child: Consumer<DataModel>(
-              builder: (_, DataModel model, __) {
-                final List<Thekr> athkarTitles =
-                    model.athkar.where((Thekr thekr) => thekr.isTitle).toList();
+        body: CustomScrollView(
+      slivers: [
+        CardSliverAppBar(cardImagePath: images.athkarCard),
+        SliverList(
+          delegate: SliverChildBuilderDelegate(
+            (context, index) {
+              final Thekr title = athkarTitles[index];
+              final int position = model.athkar.indexOf(title);
 
-                return Scrollbar(
-                  controller: scrollController,
-                  child: ListView.builder(
-                    physics: const AlwaysScrollableScrollPhysics(),
-                    itemCount: athkarTitles.length,
-                    controller: scrollController,
-                    padding: const EdgeInsets.only(top: 10),
-                    itemBuilder: (BuildContext context, int index) {
-                      final Thekr title = athkarTitles[index];
-                      final int position = model.athkar.indexOf(title);
-
-                      return title.isTitle
-                          ? ListItem(
-                              title: title.text,
-                              icon: images.athkarTitleIcon,
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute<AthkarList>(
-                                    builder: (_) => AthkarList(index: position),
-                                  ),
-                                );
-                              },
-                            )
-                          : Container();
-                    },
-                  ),
-                );
-              },
-            ),
-            onNotification: (_) {
-              WidgetsBinding.instance!.addPostFrameCallback((_) {
-                if (currentScroll < 100) {
-                  controller.forward();
-                }
-                if (currentScroll == 0) {
-                  controller.reverse();
-                }
-              });
-
-              return true;
+              return title.isTitle
+                  ? ListItem(
+                      title: title.text,
+                      icon: images.athkarTitleIcon,
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute<AthkarList>(
+                            builder: (_) => AthkarList(index: position),
+                          ),
+                        );
+                      },
+                    )
+                  : Container();
             },
+            childCount: athkarTitles.length,
           ),
-        ),
+        )
       ],
     ));
   }

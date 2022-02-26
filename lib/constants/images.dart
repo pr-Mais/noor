@@ -108,7 +108,7 @@ class LightAppImages implements Images {
   @override
   String get noAd3yahFav => 'assets/images/backgrounds/NoAd3yahFav.png';
   @override
-  String get myAd3yahBg => 'assets/images/backgrounds/${prefix}myAd3yahBg.svg';
+  String get myAd3yahBg => 'assets/images/backgrounds/${prefix}myAd3yahBg.png';
   // Buttons
   @override
   String get twitterButton => 'assets/images/social-buttons/twitter-light.png';
@@ -118,7 +118,7 @@ class LightAppImages implements Images {
   String get addMyAd3yah => 'assets/icons/${prefix}addDo3aa.png';
 
   @override
-  String get subhaBg => 'assets/images/backgrounds/SubhaLightBg.svg';
+  String get subhaBg => 'assets/images/backgrounds/SubhaLightBg.png';
 }
 
 class DarkAppImages implements Images {
@@ -157,7 +157,7 @@ class DarkAppImages implements Images {
   String get noAd3yahFav => 'assets/images/backgrounds/NoAd3yahFavNight.png';
   @override
   String get myAd3yahBg =>
-      'assets/images/backgrounds/${prefix}myAd3yahBgDark.svg';
+      'assets/images/backgrounds/${prefix}myAd3yahBgDark.png';
   // Buttons
   @override
   String get twitterButton => 'assets/images/social-buttons/twitter-dark.png';
@@ -167,5 +167,5 @@ class DarkAppImages implements Images {
   String get addMyAd3yah => 'assets/icons/${prefix}addDo3aa.png';
 
   @override
-  String get subhaBg => 'assets/images/backgrounds/SubhaDarkBg.svg';
+  String get subhaBg => 'assets/images/backgrounds/SubhaDarkBg.png';
 }

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:noor/components/dialog_button.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:reorderables/reorderables.dart';
 
 import 'package:noor/exports/controllers.dart' show ThemeModel, DataController;
@@ -187,7 +186,7 @@ class _MyAd3yahState extends State<MyAd3yah> with TickerProviderStateMixin {
       body: Stack(
         fit: StackFit.expand,
         children: <Widget>[
-          SvgPicture.asset(images.myAd3yahBg, fit: BoxFit.fill),
+          Image.asset(images.myAd3yahBg, fit: BoxFit.fill),
           SafeArea(
             bottom: false,
             child: Column(

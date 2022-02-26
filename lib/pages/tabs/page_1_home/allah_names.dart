@@ -5,7 +5,7 @@ import 'package:noor/exports/pages.dart' show AllahNamesList;
 import 'package:noor/exports/models.dart' show DataModel, AllahName;
 import 'package:noor/exports/constants.dart' show Images;
 import 'package:noor/exports/controllers.dart' show ThemeModel;
-import 'package:noor/exports/components.dart' show NoorCloseButton, ListItem;
+import 'package:noor/exports/components.dart' show CardSliverAppBar, ListItem;
 
 class AllahNames extends StatefulWidget {
   const AllahNames({Key? key}) : super(key: key);
@@ -18,95 +18,38 @@ class _AllahNamesState extends State<AllahNames>
     with SingleTickerProviderStateMixin {
   final scrollController = ScrollController();
 
-  double currentScroll = 0;
   double maxHeight = 180;
-  late Animation<double> animation;
-  late AnimationController controller;
 
   int index = 0;
 
   @override
-  initState() {
-    super.initState();
-
-    controller = AnimationController(
-      duration: const Duration(milliseconds: 300),
-      vsync: this,
-    );
-    animation = Tween<double>(begin: maxHeight, end: 0).animate(CurvedAnimation(
-      parent: controller,
-      curve: Curves.easeInCubic,
-    ))
-      ..addListener(() {
-        setState(() {
-          maxHeight = animation.value;
-        });
-      });
-    scrollController.addListener(() {
-      currentScroll = scrollController.position.pixels;
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
     final Images images = context.read<ThemeModel>().images;
-
+    final DataModel model = Provider.of<DataModel>(context);
+    final List<AllahName> allahNames = model.allahNames;
     return Scaffold(
-      body: Column(
-        children: <Widget>[
-          Stack(
-            children: <Widget>[
-              Positioned(
-                child: GestureDetector(
-                  child: Hero(
-                    child: SizedBox(
-                      width: MediaQuery.of(context).size.width,
-                      height: maxHeight,
-                      child: Image.asset(
-                        images.allahNamesCard,
-                        fit: BoxFit.cover,
+      body: CustomScrollView(
+        slivers: [
+          CardSliverAppBar(cardImagePath: images.allahNamesCard),
+          SliverList(
+            delegate: SliverChildBuilderDelegate(
+              (context, index) {
+                final AllahName title = allahNames[index];
+                return ListItem(
+                  title: title.name,
+                  icon: images.allahNamesTitleIcon,
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute<AllahNamesList>(
+                        builder: (_) => AllahNamesList(index: index),
                       ),
-                    ),
-                    tag: 'allah names',
-                  ),
-                  onVerticalDragUpdate: (details) {
-                    if (details.delta.dy > 0) Navigator.of(context).pop();
+                    );
                   },
-                ),
-              ),
-              const Positioned(
-                  left: 10.0, top: 40.0, child: NoorCloseButton(size: 35)),
-            ],
-          ),
-          Consumer<DataModel>(
-            builder: (_, DataModel model, __) {
-              final List<AllahName> allahNames = model.allahNames;
-              return Expanded(
-                child: Scrollbar(
-                  child: ListView.builder(
-                    padding: const EdgeInsets.symmetric(vertical: 10),
-                    physics: const AlwaysScrollableScrollPhysics(),
-                    itemCount: allahNames.length,
-                    controller: scrollController,
-                    itemBuilder: (BuildContext context, int index) {
-                      final AllahName title = allahNames[index];
-                      return ListItem(
-                        title: title.name,
-                        icon: images.allahNamesTitleIcon,
-                        onTap: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute<AllahNamesList>(
-                              builder: (_) => AllahNamesList(index: index),
-                            ),
-                          );
-                        },
-                      );
-                    },
-                  ),
-                ),
-              );
-            },
-          ),
+                );
+              },
+              childCount: allahNames.length,
+            ),
+          )
         ],
       ),
     );
