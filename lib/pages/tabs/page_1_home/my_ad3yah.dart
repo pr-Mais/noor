@@ -6,7 +6,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:reorderables/reorderables.dart';
 
 import 'package:noor/exports/controllers.dart' show ThemeModel, DataController;
-import 'package:noor/exports/constants.dart' show Images, Ribbon;
+import 'package:noor/exports/constants.dart' show Images, Ribbon, viewPadding;
 import 'package:noor/exports/models.dart' show DataModel, Doaa;
 import 'package:noor/exports/components.dart'
     show
@@ -193,7 +193,7 @@ class _MyAd3yahState extends State<MyAd3yah> with TickerProviderStateMixin {
             child: Column(
               children: <Widget>[
                 Padding(
-                  padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
+                  padding: const EdgeInsets.symmetric(horizontal: viewPadding),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -216,7 +216,7 @@ class _MyAd3yahState extends State<MyAd3yah> with TickerProviderStateMixin {
                     ],
                   ),
                 ),
-                const SizedBox(height: 35),
+                const SizedBox(height: 25),
                 Expanded(
                   child: AnimatedSwitcher(
                     duration: const Duration(milliseconds: 400),
@@ -295,6 +295,7 @@ class _MyAd3yahState extends State<MyAd3yah> with TickerProviderStateMixin {
 
   Widget card(Doaa item) {
     return CardTemplate(
+      height: 300,
       ribbon: Ribbon.ribbon5,
       key: ValueKey<Doaa>(item),
       actions: <Widget>[
@@ -311,10 +312,12 @@ class _MyAd3yahState extends State<MyAd3yah> with TickerProviderStateMixin {
         ),
       ],
       child: CardText(text: item.text),
-      additionalContent: CardText(
-        text: item.info,
-        color: Theme.of(context).primaryColor,
-      ),
+      additionalContent: item.info.isEmpty
+          ? null
+          : CardText(
+              text: item.info,
+              color: Theme.of(context).primaryColor,
+            ),
     );
   }
 }

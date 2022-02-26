@@ -1,30 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:noor/exports/constants.dart' show Ribbon;
+import 'package:noor/exports/constants.dart' show Ribbon, viewPadding;
 import 'package:noor/exports/models.dart' show SettingsModel;
 
 class CardTemplate extends StatelessWidget {
-  const CardTemplate({
+  CardTemplate({
     Key? key,
     required this.child,
     required this.ribbon,
+    this.height,
     this.actions = const <Widget>[],
     this.additionalContent,
     this.actionButton,
   }) : super(key: key);
-  final String? ribbon;
+  final String ribbon;
   final List<Widget> actions;
   final Widget child;
+  final double? height;
+
   final Widget? additionalContent;
   final Widget? actionButton;
+
+  final scrollController = ScrollController();
+
   @override
   Widget build(BuildContext context) {
     final SettingsModel settings = context.watch<SettingsModel>();
 
     return Container(
       width: MediaQuery.of(context).size.width,
-      height: 325,
+      height: height ?? 325,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15.0),
         gradient: LinearGradient(
@@ -47,12 +53,8 @@ class CardTemplate extends StatelessWidget {
           ),
         ],
       ),
-      margin: const EdgeInsets.only(
-        top: 20,
-        right: 30,
-        left: 30,
-        bottom: 20,
-      ),
+      margin:
+          const EdgeInsets.symmetric(horizontal: viewPadding, vertical: 20.0),
       alignment: Alignment.topCenter,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -65,7 +67,7 @@ class CardTemplate extends StatelessWidget {
                 topRight: Radius.circular(15.0),
               ),
               image: DecorationImage(
-                image: AssetImage(ribbon!),
+                image: AssetImage(ribbon),
                 fit: BoxFit.cover,
               ),
             ),
@@ -73,16 +75,17 @@ class CardTemplate extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: actions,
             ),
-            height: 35,
+            height: 32,
           ),
           Expanded(
             flex: 5,
-            child: Container(
-              alignment: Alignment.topRight,
-              margin: const EdgeInsets.all(5.0),
-              child: Scrollbar(
-                radius: const Radius.circular(4),
+            child: Scrollbar(
+              controller: scrollController,
+              child: Container(
+                alignment: Alignment.topRight,
+                margin: const EdgeInsets.all(5.0),
                 child: SingleChildScrollView(
+                  controller: scrollController,
                   child: Container(
                     width: double.infinity,
                     margin: const EdgeInsets.only(left: 15, right: 15, top: 5),

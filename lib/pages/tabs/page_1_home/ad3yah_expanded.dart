@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:noor/constants/categories.dart';
+import 'package:noor/constants/theme.dart';
 import 'package:provider/provider.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
@@ -46,7 +47,8 @@ class _Ad3yahListState extends State<Ad3yahList> {
             bottom: false,
             child: Container(
               width: double.infinity,
-              margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              margin: const EdgeInsets.symmetric(
+                  horizontal: viewPadding, vertical: 10),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[

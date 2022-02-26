@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:noor/exports/constants.dart' show Images;
+import 'package:noor/exports/constants.dart' show Images, viewPadding;
 
 class ThekrTitleCard extends StatelessWidget {
   const ThekrTitleCard({Key? key, this.title}) : super(key: key);
@@ -13,12 +13,8 @@ class ThekrTitleCard extends StatelessWidget {
           children: <Widget>[
             Positioned(
               child: Container(
-                margin: const EdgeInsets.only(
-                  left: 30,
-                  right: 30,
-                  top: 10.0,
-                  bottom: 10.0,
-                ),
+                margin: const EdgeInsets.symmetric(
+                    horizontal: viewPadding, vertical: 10.0),
                 width: MediaQuery.of(context).size.width,
                 child: Container(
                   height: 95,
