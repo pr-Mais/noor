@@ -7,6 +7,7 @@ import 'package:noor/exports/models.dart' show AthkarCounter, DataModel, Thekr;
 import 'package:noor/exports/controllers.dart' show SettingsModel;
 import 'package:noor/exports/components.dart'
     show NoorCloseButton, ThekrTitleCard, AthkarCard;
+import 'package:noor/exports/constants.dart' show viewPadding;
 
 class AthkarList extends StatefulWidget {
   const AthkarList({Key? key, required this.index}) : super(key: key);
@@ -18,10 +19,7 @@ class AthkarList extends StatefulWidget {
 class _AthkarListState extends State<AthkarList>
     with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   late ItemScrollController controller;
-  late Animation<double> animation;
-
   ItemPositionsListener listener = ItemPositionsListener.create();
-  late AnimationController animationController;
   late int pagePosition;
 
   @override
@@ -31,23 +29,11 @@ class _AthkarListState extends State<AthkarList>
   void initState() {
     super.initState();
     pagePosition = widget.index;
-    animationController = AnimationController(vsync: this);
-    animation = Tween<double>(begin: 0.0, end: 0.1).animate(
-      CurvedAnimation(
-        parent: animationController,
-        curve: Curves.elasticIn,
-      ),
-    );
+
     controller = ItemScrollController();
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       listener.itemPositions.addListener(changeAppBar);
     });
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    animationController.dispose();
   }
 
   changeAppBar() {
@@ -89,8 +75,7 @@ class _AthkarListState extends State<AthkarList>
 
     if (index < context.read<DataModel>().athkar.length &&
         settings.autoJump &&
-        counter.position == 0 &&
-        !context.read<DataModel>().athkar[index + 1].isTitle) {
+        counter.position == 0) {
       Future<void>.delayed(const Duration(milliseconds: 500)).then(
         (_) {
           controller.scrollTo(
@@ -113,7 +98,8 @@ class _AthkarListState extends State<AthkarList>
             bottom: false,
             child: Container(
               width: double.infinity,
-              margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              margin: const EdgeInsets.symmetric(
+                  horizontal: viewPadding, vertical: 10),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
@@ -155,37 +141,37 @@ class _AthkarListState extends State<AthkarList>
                   create: (_) => counterList,
                   child: Consumer<List<AthkarCounter>>(
                     builder: (_, List<AthkarCounter> countersList, __) {
-                      return Scrollbar(
-                        child: ScrollablePositionedList.builder(
-                          key: const ValueKey<String>('list'),
-                          physics: const AlwaysScrollableScrollPhysics(),
-                          itemScrollController: controller,
-                          itemPositionsListener: listener,
-                          itemCount: athkar.length,
-                          addAutomaticKeepAlives: true,
-                          initialScrollIndex: widget.index,
-                          minCacheExtent: 900,
-                          padding: const EdgeInsets.only(bottom: 20),
-                          itemBuilder: (_, int index) {
-                            final Thekr thekr = athkar[index];
-                            if (thekr.isTitle) {
-                              return ThekrTitleCard(title: thekr.text);
-                            } else {
-                              return ChangeNotifierProvider<
-                                  AthkarCounter>.value(
-                                value: countersList[index],
-                                child: Consumer<AthkarCounter>(
-                                  builder: (_, AthkarCounter counter, __) =>
-                                      AthkarCard(
-                                    key: ValueKey<int>(index),
-                                    thekr: thekr,
-                                    onTap: () => onCardTap(index, counter),
-                                  ),
+                      return ScrollablePositionedList.builder(
+                        key: const ValueKey<String>('list'),
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        itemScrollController: controller,
+                        itemPositionsListener: listener,
+                        itemCount: athkar.length,
+                        addAutomaticKeepAlives: true,
+                        initialScrollIndex: widget.index,
+                        minCacheExtent: 900,
+                        padding: const EdgeInsets.only(bottom: 20),
+                        itemBuilder: (_, int index) {
+                          final Thekr thekr = athkar[index];
+                          if (thekr.isTitle) {
+                            return Padding(
+                              padding: const EdgeInsets.only(top: 10.0),
+                              child: ThekrTitleCard(title: thekr.text),
+                            );
+                          } else {
+                            return ChangeNotifierProvider<AthkarCounter>.value(
+                              value: countersList[index],
+                              child: Consumer<AthkarCounter>(
+                                builder: (_, AthkarCounter counter, __) =>
+                                    AthkarCard(
+                                  key: ValueKey<int>(index),
+                                  thekr: thekr,
+                                  onTap: () => onCardTap(index, counter),
                                 ),
-                              );
-                            }
-                          },
-                        ),
+                              ),
+                            );
+                          }
+                        },
                       );
                     },
                   ),

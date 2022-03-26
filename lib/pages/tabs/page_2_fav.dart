@@ -139,12 +139,15 @@ class _FavoriteState extends State<Favorite>
     section.value = i;
   }
 
+  void onReorder(a, b) {
+    GetIt.I<DataController>().swapFav(a, b);
+  }
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
 
     final Images images = context.read<ThemeModel>().images;
-    final DataController data = GetIt.I<DataController>();
 
     return Scaffold(
       body: SafeArea(
@@ -225,7 +228,7 @@ class _FavoriteState extends State<Favorite>
                                     },
                                     childCount: favList.length,
                                   ),
-                                  onReorder: data.swapFav,
+                                  onReorder: onReorder,
                                 ),
                               ],
                             ),

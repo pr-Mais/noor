@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:noor/exports/constants.dart' show Images;
+import 'package:noor/exports/constants.dart' show Images, viewPadding;
 
 class NameTitleCard extends StatelessWidget {
   const NameTitleCard({Key? key, this.title}) : super(key: key);
@@ -18,12 +18,8 @@ class NameTitleCard extends StatelessWidget {
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.headline2,
               ),
-              margin: const EdgeInsets.only(
-                left: 30,
-                right: 30,
-                top: 10.0,
-                bottom: 10.0,
-              ),
+              margin: const EdgeInsets.symmetric(
+                  horizontal: viewPadding, vertical: 10.0),
               padding: const EdgeInsets.only(
                 right: 90,
                 left: 90,

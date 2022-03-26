@@ -91,9 +91,10 @@ class _CounterListViewState extends State<CounterListView> {
     return Scaffold(
       body: Stack(
         children: [
-          SvgPicture.asset(
+          Image.asset(
             context.read<ThemeModel>().images.subhaBg,
             fit: BoxFit.fill,
+            height: double.infinity,
           ),
           Column(
             children: <Widget>[
@@ -236,9 +237,12 @@ class SubhaListItem extends StatelessWidget {
                   textScaleFactor: settings.fontSize,
                   style: Theme.of(context).textTheme.bodyText1?.copyWith(
                       fontFamily: context.read<SettingsModel>().fontType,
-                      height: 1.2),
+                      height: 1.4),
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 2,
                 ),
               ),
+              const SizedBox(width: 8.0),
               Align(
                 alignment: AlignmentDirectional.centerEnd,
                 child: SizedBox(

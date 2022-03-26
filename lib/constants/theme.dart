@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:noor/constants/colors.dart';
 
 const kContentFontSize = 16.0;
-const viewPadding = 15.0;
+const viewPadding = 20.0;
 
 ThemeData lightTheme() => ThemeData(
       brightness: Brightness.light,

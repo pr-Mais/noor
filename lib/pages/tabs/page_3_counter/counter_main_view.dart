@@ -71,75 +71,79 @@ class _CounterViewState extends State<CounterView> {
     return Scaffold(
       body: GestureDetector(
         onTap: incrementCounter,
-        child: Stack(
-          children: <Widget>[
-            SvgPicture.asset(
-              context.read<ThemeModel>().images.subhaBg,
+        child: Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
               fit: BoxFit.fill,
-            ),
-            SafeArea(
-              child: Padding(
-                padding: const EdgeInsets.all(viewPadding),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    NoorIconButton(
-                      icon: NoorIcons.subhaList,
-                      onPressed: navigateToCounterList,
-                    ),
-                    NoorIconButton(
-                      icon: NoorIcons.subhaReset,
-                      onPressed: counterModel.resetSelectedItemCounter,
-                    )
-                  ],
-                ),
+              image: AssetImage(
+                context.read<ThemeModel>().images.subhaBg,
               ),
             ),
-            Center(
-              child: Stack(
-                alignment: Alignment.center,
-                fit: StackFit.expand,
-                children: <Widget>[
-                  Positioned.fill(
-                    top: MediaQuery.of(context).size.height * .18,
-                    bottom: MediaQuery.of(context).size.height * .5,
-                    child: Container(
-                      alignment: Alignment.center,
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: viewPadding * 2),
-                      child: Text(
-                        counterModel.selectedItem?.key ?? '',
-                        key: ValueKey<int>(
-                          counterModel.selectedItem?.counter ?? 0,
-                        ),
-                        textAlign: TextAlign.center,
-                        textScaleFactor: settings.fontSize,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                          fontFamily: settings.fontType,
+          ),
+          child: Stack(
+            children: <Widget>[
+              SafeArea(
+                child: Padding(
+                  padding: const EdgeInsets.all(viewPadding),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      NoorIconButton(
+                        icon: NoorIcons.subhaList,
+                        onPressed: navigateToCounterList,
+                      ),
+                      NoorIconButton(
+                        icon: NoorIcons.subhaReset,
+                        onPressed: counterModel.resetSelectedItemCounter,
+                      )
+                    ],
+                  ),
+                ),
+              ),
+              Center(
+                child: Stack(
+                  alignment: Alignment.center,
+                  fit: StackFit.expand,
+                  children: <Widget>[
+                    Positioned.fill(
+                      top: MediaQuery.of(context).size.height * .18,
+                      bottom: MediaQuery.of(context).size.height * .5,
+                      child: Container(
+                        alignment: Alignment.center,
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: viewPadding * 2),
+                        child: Text(
+                          counterModel.selectedItem?.key ?? '',
+                          key: ValueKey<int>(
+                            counterModel.selectedItem?.counter ?? 0,
+                          ),
+                          textAlign: TextAlign.center,
+                          textScaleFactor: settings.fontSize,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            fontFamily: settings.fontType,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 40),
-                  AnimatedSwitcher(
-                    duration: const Duration(milliseconds: 250),
-                    child: Text(
-                      '${counterModel.selectedItem!.counter}'.arabicDigit(),
-                      key: ValueKey<int>(counterModel.selectedItem!.counter),
-                      style: Theme.of(context)
-                          .textTheme
-                          .subtitle2
-                          ?.copyWith(fontSize: 30, fontWeight: FontWeight.bold),
-                      textScaleFactor: settings.fontSize,
+                    const SizedBox(height: 40),
+                    AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 250),
+                      child: Text(
+                        '${counterModel.selectedItem!.counter}'.arabicDigit(),
+                        key: ValueKey<int>(counterModel.selectedItem!.counter),
+                        style: Theme.of(context).textTheme.subtitle2?.copyWith(
+                            fontSize: 30, fontWeight: FontWeight.bold),
+                        textScaleFactor: settings.fontSize,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
