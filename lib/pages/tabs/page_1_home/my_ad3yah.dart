@@ -80,7 +80,7 @@ class _MyAd3yahState extends State<MyAd3yah> with TickerProviderStateMixin {
   }
 
   //add dailog
-  addDoaa({id, data}) {
+  addDoaa({Doaa? data}) {
     if (data != null) {
       _firstController.text = data.text;
       _secondController.text = data.info;
@@ -91,8 +91,14 @@ class _MyAd3yahState extends State<MyAd3yah> with TickerProviderStateMixin {
       barrierColor: Colors.black.withOpacity(0.75),
       barrierLabel: '',
       context: context,
-      transitionBuilder: (context, a1, a2, widget) {
-        final curvedValue = Curves.easeInOutBack.transform(a1.value) - 1.0;
+      transitionBuilder: (
+        BuildContext context,
+        Animation<double> a1,
+        Animation<double> a2,
+        Widget widget,
+      ) {
+        final double curvedValue =
+            Curves.easeInOutBack.transform(a1.value) - 1.0;
         return Transform(
           transform: Matrix4.translationValues(0.0, curvedValue * 800, 0.0),
           child: Dialog(

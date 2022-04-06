@@ -37,7 +37,7 @@ class SharedPrefsService {
   }
 
   // get object7
-  static Map? getObject(String key) {
+  static Map<dynamic, dynamic>? getObject(String key) {
     if (_prefs == null) return null;
     String? _data = _prefs!.getString(key);
     return (_data == null || _data.isEmpty) ? null : json.decode(_data);
@@ -46,7 +46,7 @@ class SharedPrefsService {
   // put object list
   static Future<bool>? putObjectList(String key, List<Object> list) {
     if (_prefs == null) return null;
-    List<String> _dataList = list.map((value) {
+    List<String> _dataList = list.map((Object value) {
       return json.encode(value);
     }).toList();
     return _prefs!.setStringList(key, _dataList);
@@ -63,11 +63,11 @@ class SharedPrefsService {
   }
 
   // get object list
-  static List<Map?>? getObjectList(String key) {
+  static List<Map<dynamic, dynamic>?>? getObjectList(String key) {
     if (_prefs == null) return null;
     List<String>? dataLis = _prefs!.getStringList(key);
-    return dataLis?.map((value) {
-      Map? _dataMap = json.decode(value);
+    return dataLis?.map((String value) {
+      Map<dynamic, dynamic>? _dataMap = json.decode(value);
       return _dataMap;
     }).toList();
   }

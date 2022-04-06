@@ -119,8 +119,6 @@ class _SettingsState extends State<Settings>
   Widget switcherOption({
     required String icon,
     required String title,
-    option1,
-    option2,
     required Function(bool) onChanged,
     required bool value,
     String? image,
@@ -200,22 +198,22 @@ class _SettingsState extends State<Settings>
         : intl.DateFormat('h:mm a', 'ar').format(dateTime);
   }
 
-  changeTheme(value) async {
+  changeTheme(String value) async {
     context.read<SettingsModel>().theme = value;
     context.read<ThemeModel>().userTheme = value;
   }
 
-  Widget radioBtn(icon, title, value) {
+  Widget radioBtn(String icon, String title, String value) {
     return ListTileTheme(
       contentPadding: const EdgeInsets.only(right: 0, left: 20),
       dense: false,
-      child: RadioListTile(
+      child: RadioListTile<String>(
         controlAffinity: ListTileControlAffinity.trailing,
         title: subtitleWithIcon(title, icon),
         activeColor: Theme.of(context).primaryColor,
         groupValue: context.watch<SettingsModel>().theme,
         value: value,
-        onChanged: changeTheme,
+        onChanged: (String? theme) => changeTheme(theme!),
       ),
     );
   }
@@ -224,17 +222,20 @@ class _SettingsState extends State<Settings>
     Share.share(Strings.shareText, subject: Strings.shareSubject);
   }
 
-  void setDailyNotification(DateTime dateTime, period, id) async {
+  void setDailyNotification(DateTime dateTime, String period, int id) async {
     FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
         FlutterLocalNotificationsPlugin();
 
     var androidPlatformChannelSpecifics = AndroidNotificationDetails(
       '$id',
-      '$period',
+      period,
       showWhen: true,
     );
-    var platformChannelSpecifics =
-        NotificationDetails(android: androidPlatformChannelSpecifics);
+
+    NotificationDetails platformChannelSpecifics = NotificationDetails(
+      android: androidPlatformChannelSpecifics,
+    );
+
     await flutterLocalNotificationsPlugin.zonedSchedule(
       id,
       'أذكار $period',
@@ -249,13 +250,13 @@ class _SettingsState extends State<Settings>
     );
   }
 
-  void cancelNotification(id) async {
+  void cancelNotification(int id) async {
     FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
         FlutterLocalNotificationsPlugin();
     await flutterLocalNotificationsPlugin.cancel(id);
   }
 
-  launchURL(url) async {
+  launchURL(String url) async {
     await launch(url);
   }
 
@@ -368,7 +369,7 @@ class _SettingsState extends State<Settings>
                     icon: NoorIcons.jump,
                     title: 'الانتقال التلقائي إلى الذكر التالي',
                     value: settings.autoJump,
-                    onChanged: (value) => settings.autoJump = value,
+                    onChanged: (bool value) => settings.autoJump = value,
                   ),
                   const Divider(),
                   const VerticalSpace(),
@@ -539,7 +540,7 @@ class _SettingsState extends State<Settings>
                                   showModalBottomSheet(
                                     isDismissible: false,
                                     context: context,
-                                    builder: (context) => SizedBox(
+                                    builder: (BuildContext context) => SizedBox(
                                       height: 250,
                                       child: Column(
                                         children: <Widget>[
@@ -579,9 +580,10 @@ class _SettingsState extends State<Settings>
 
                                                         SharedPrefsService
                                                             .putString(
-                                                                'morningNotiTime',
-                                                                morningNotiTime
-                                                                    .toString());
+                                                          'morningNotiTime',
+                                                          morningNotiTime
+                                                              .toString(),
+                                                        );
 
                                                         setDailyNotification(
                                                             morningNotiTime!,
@@ -596,9 +598,10 @@ class _SettingsState extends State<Settings>
                                                         });
                                                         SharedPrefsService
                                                             .putString(
-                                                                'morningNotiTime',
-                                                                morningNotiTime
-                                                                    .toString());
+                                                          'morningNotiTime',
+                                                          morningNotiTime
+                                                              .toString(),
+                                                        );
                                                         setDailyNotification(
                                                             morningNotiTime!,
                                                             'الصباح',
@@ -702,7 +705,7 @@ class _SettingsState extends State<Settings>
                           child: Switch(
                             value: morningNotiEnabled,
                             activeColor: Theme.of(context).primaryColor,
-                            onChanged: (value) async {
+                            onChanged: (bool value) async {
                               morningNotiEnabled = !morningNotiEnabled;
                               SharedPrefsService.putBool(
                                   'morningNotiEnabled', value);
@@ -736,7 +739,7 @@ class _SettingsState extends State<Settings>
                                   showModalBottomSheet(
                                     isDismissible: false,
                                     context: context,
-                                    builder: (context) => SizedBox(
+                                    builder: (BuildContext context) => SizedBox(
                                       height: 250,
                                       child: Column(
                                         children: <Widget>[
@@ -775,9 +778,10 @@ class _SettingsState extends State<Settings>
                                                         });
                                                         SharedPrefsService
                                                             .putString(
-                                                                'nightNotiTime',
-                                                                nightNotiTime
-                                                                    .toString());
+                                                          'nightNotiTime',
+                                                          nightNotiTime
+                                                              .toString(),
+                                                        );
 
                                                         setDailyNotification(
                                                             nightNotiTime!,
@@ -792,9 +796,10 @@ class _SettingsState extends State<Settings>
                                                         });
                                                         SharedPrefsService
                                                             .putString(
-                                                                'nightNotiTime',
-                                                                nightNotiTime
-                                                                    .toString());
+                                                          'nightNotiTime',
+                                                          nightNotiTime
+                                                              .toString(),
+                                                        );
                                                         setDailyNotification(
                                                             nightNotiTime!,
                                                             'المساء',
@@ -904,7 +909,7 @@ class _SettingsState extends State<Settings>
                           child: Switch(
                             value: nightNotiEnabled,
                             activeColor: Theme.of(context).primaryColor,
-                            onChanged: (value) async {
+                            onChanged: (bool value) async {
                               nightNotiEnabled = !nightNotiEnabled;
 
                               SharedPrefsService.putBool(
@@ -1014,10 +1019,10 @@ class _SettingsState extends State<Settings>
                     width: MediaQuery.of(context).size.width,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
+                      children: <Widget>[
                         subtitleWithIcon('شبكات التواصل', NoorIcons.follow),
                         Row(
-                          children: [
+                          children: <Widget>[
                             GestureDetector(
                               onTap: () => launchURL(Links.twitter),
                               child:
