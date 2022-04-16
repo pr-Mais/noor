@@ -8,4 +8,8 @@ class Strings {
       'قال تعالى: ﴿فَاذكُروني أَذكُركُم ﴾ [البقرة: ١٥٢]';
   static const confirmDeleteContent = 'هل أنت مُتأكد من رغبتك في الحذف؟';
   static const confirmDeleteTitle = 'تأكيد الحذف';
+  static const addThekr = 'أضِف ذِكر..';
+  static const additionalText = 'نص إضافي..';
+  static const save = 'حفظ';
+  static const cancel = 'إلغاء';
 }

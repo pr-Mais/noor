@@ -233,7 +233,7 @@ class DataController {
     GetIt.I<DataModel>().myAd3yah = await DBService.db.get();
 
     //cleaning fav list
-    List<String> favList = SharedPrefsService.getStringList('fav');
+    List<String> favList = List.from(SharedPrefsService.getStringList('fav'));
     favList.remove(doaa.id);
     SharedPrefsService.putStringList('fav', favList);
 

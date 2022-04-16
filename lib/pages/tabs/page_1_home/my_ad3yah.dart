@@ -5,7 +5,8 @@ import 'package:provider/provider.dart';
 import 'package:reorderables/reorderables.dart';
 
 import 'package:noor/exports/controllers.dart' show ThemeModel, DataController;
-import 'package:noor/exports/constants.dart' show Images, Ribbon, viewPadding;
+import 'package:noor/exports/constants.dart'
+    show Images, Ribbon, Strings, viewPadding;
 import 'package:noor/exports/models.dart' show DataModel, Doaa;
 import 'package:noor/exports/components.dart'
     show
@@ -17,6 +18,10 @@ import 'package:noor/exports/components.dart'
         CopyAction,
         FavAction;
 
+import '../../../components/dialog_text_input.dart';
+
+enum SaveType { insert, update }
+
 class MyAd3yah extends StatefulWidget {
   const MyAd3yah({Key? key, this.index = 0}) : super(key: key);
   final int index;
@@ -25,11 +30,8 @@ class MyAd3yah extends StatefulWidget {
 }
 
 class _MyAd3yahState extends State<MyAd3yah> with TickerProviderStateMixin {
-  final _firstController = TextEditingController();
-  final _secondController = TextEditingController();
-  ScrollController? controller;
-  Widget? animatedWidget;
-  final GlobalKey<AnimatedListState> listKey = GlobalKey<AnimatedListState>();
+  late ScrollController controller;
+  final listKey = GlobalKey<AnimatedListState>();
 
   @override
   void initState() {
@@ -39,52 +41,12 @@ class _MyAd3yahState extends State<MyAd3yah> with TickerProviderStateMixin {
 
   @override
   void dispose() {
-    _firstController.dispose();
-    _secondController.dispose();
+    controller.dispose();
     super.dispose();
   }
 
-  //text input design (used in dialoges)
-  input(double maxHeight, double minHeight, String text,
-      TextEditingController controller) {
-    return ConstrainedBox(
-      constraints: BoxConstraints(maxHeight: maxHeight, minHeight: minHeight),
-      child: SingleChildScrollView(
-        child: TextField(
-          controller: controller,
-          style: Theme.of(context).textTheme.bodyText1,
-          decoration: InputDecoration(
-            filled: false,
-            contentPadding:
-                const EdgeInsets.symmetric(vertical: 12, horizontal: 10.0),
-            border: InputBorder.none,
-            hintText: text,
-          ),
-          keyboardType: TextInputType.multiline,
-          maxLines: 20,
-          minLines: 1,
-        ),
-      ),
-    );
-  }
-
-  //button design (used in dialoges)
-  button({required text, border, required radius, textColor, onPressed}) {
-    return DialogButton(
-      label: text,
-      border: border,
-      onPressed: onPressed,
-      radius: radius,
-      textColor: textColor,
-    );
-  }
-
-  //add dailog
-  addDoaa({Doaa? data}) {
-    if (data != null) {
-      _firstController.text = data.text;
-      _secondController.text = data.info;
-    }
+  /// Add/update dialog.
+  addDoaa({Doaa? doaa}) {
     showGeneralDialog(
       transitionDuration: const Duration(milliseconds: 600),
       barrierDismissible: false,
@@ -101,63 +63,14 @@ class _MyAd3yahState extends State<MyAd3yah> with TickerProviderStateMixin {
             Curves.easeInOutBack.transform(a1.value) - 1.0;
         return Transform(
           transform: Matrix4.translationValues(0.0, curvedValue * 800, 0.0),
-          child: Dialog(
-            elevation: 6.0,
-            child: Container(
-              decoration: BoxDecoration(
-                  color: Theme.of(context).brightness == Brightness.light
-                      ? Colors.white
-                      : const Color(0xff1B2349),
-                  borderRadius: BorderRadius.circular(15.0)),
-              constraints: const BoxConstraints(maxHeight: 360),
-              child: Stack(
-                children: <Widget>[
-                  SingleChildScrollView(
-                    child: Column(
-                      children: <Widget>[
-                        input(200.0, 200.0, 'أضِف ذِكر..', _firstController),
-                        const Divider(),
-                        input(100.0, 100.0, 'نص إضافي..', _secondController),
-                        const SizedBox(height: 40)
-                      ],
-                    ),
-                  ),
-                  Align(
-                      alignment: Alignment.bottomCenter,
-                      child: Container(
-                        constraints: const BoxConstraints.expand(height: 40),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            button(
-                              text: 'حفظ',
-                              border: const Border(
-                                  left: BorderSide(
-                                      width: 0.5, color: Colors.white)),
-                              radius: const BorderRadius.only(
-                                  bottomRight: Radius.circular(15)),
-                              textColor: Colors.lightBlue[100],
-                              onPressed: () => onSave(prevDoaa: data),
-                            ),
-                            button(
-                              text: 'إلغاء',
-                              border: const Border(
-                                  right: BorderSide(
-                                      width: 0.5, color: Colors.white)),
-                              radius: const BorderRadius.only(
-                                  bottomLeft: Radius.circular(15)),
-                              textColor: Colors.white,
-                              onPressed: onCancel,
-                            ),
-                          ],
-                        ),
-                      ))
-                ],
-              ),
-            ),
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(15.0)),
+          child: AddDoaaDialog(
+            doaa: doaa,
+            onSave: (value) async {
+              await onSave(
+                doaa: value,
+                type: doaa != null ? SaveType.update : SaveType.insert,
+              );
+            },
           ),
         );
       },
@@ -165,16 +78,13 @@ class _MyAd3yahState extends State<MyAd3yah> with TickerProviderStateMixin {
     );
   }
 
-  //delete dialog confirmation
-  deleteDialog(Doaa dataToDelete) async {
+  /// Delete confirmation.
+  deleteConfirmation(Doaa dataToDelete) async {
     final bool? result = await DeleteConfirmationDialog.of(context).show();
 
     if (result == true) {
       GetIt.I<DataController>().remove(dataToDelete);
     }
-
-    _firstController.clear();
-    _secondController.clear();
   }
 
   @override
@@ -271,58 +181,205 @@ class _MyAd3yahState extends State<MyAd3yah> with TickerProviderStateMixin {
     );
   }
 
-  onCancel() {
-    _firstController.clear();
-    _secondController.clear();
-    Navigator.of(context).pop();
-  }
-
-  onSave({Doaa? prevDoaa}) async {
-    Doaa doaa = Doaa.fromMap(
-      <String, dynamic>{
-        if (prevDoaa != null) 'id': prevDoaa.id,
-        'text': _firstController.text,
-        'info': _secondController.text,
-        'sectionName': 'أدعيتي',
-      },
-    );
-    if (prevDoaa != null) {
+  Future<void> onSave({
+    required Doaa doaa,
+    required SaveType type,
+  }) async {
+    if (type == SaveType.update) {
       GetIt.I<DataController>().update(doaa);
     } else {
       GetIt.I<DataController>().insert(doaa);
     }
 
-    _firstController.clear();
-    _secondController.clear();
-
     Navigator.of(context).pop();
   }
 
-  Widget card(Doaa item) {
+  Widget card(Doaa doaa) {
     return CardTemplate(
       height: 300,
       ribbon: Ribbon.ribbon5,
-      key: ValueKey<Doaa>(item),
+      key: ValueKey<Doaa>(doaa),
       actions: <Widget>[
-        FavAction(item),
+        FavAction(doaa),
         GestureDetector(
           child: Image.asset(Images.editeIcon),
-          onTap: () => addDoaa(data: item),
+          onTap: () => addDoaa(doaa: doaa),
         ),
         CopyAction(
-            item.text + (item.info.isNotEmpty ? ('. ' + item.info) : '')),
+          doaa.text + (doaa.info.isNotEmpty ? ('. ' + doaa.info) : ''),
+        ),
         GestureDetector(
           child: Image.asset(Images.eraseIcon),
-          onTap: () => deleteDialog(item),
+          onTap: () => deleteConfirmation(doaa),
         ),
       ],
-      child: CardText(text: item.text),
-      additionalContent: item.info.isEmpty
+      child: CardText(text: doaa.text),
+      additionalContent: doaa.info.isEmpty
           ? null
           : CardText(
-              text: item.info,
+              text: doaa.info,
               color: Theme.of(context).primaryColor,
             ),
+    );
+  }
+}
+
+class AddDoaaDialog extends StatefulWidget {
+  const AddDoaaDialog({
+    Key? key,
+    this.doaa,
+    required this.onSave,
+  }) : super(key: key);
+
+  final Doaa? doaa;
+  final void Function(Doaa) onSave;
+
+  @override
+  State<AddDoaaDialog> createState() => _AddDoaaDialogState();
+}
+
+class _AddDoaaDialogState extends State<AddDoaaDialog> {
+  final _firstController = TextEditingController();
+  final _secondController = TextEditingController();
+
+  bool canSave = false;
+
+  @override
+  void initState() {
+    _firstController.text = widget.doaa?.text ?? '';
+    _secondController.text = widget.doaa?.info ?? '';
+
+    _firstController.addListener(() {
+      setState(() {
+        if (_firstController.text.isNotEmpty) {
+          canSave = true;
+        } else {
+          canSave = false;
+        }
+      });
+    });
+
+    super.initState();
+  }
+
+  void onCancel() {
+    Navigator.of(context).pop();
+  }
+
+  void onSave() {
+    Doaa doaa = Doaa.fromMap(
+      <String, dynamic>{
+        if (widget.doaa != null) 'id': widget.doaa!.id,
+        'text': _firstController.text,
+        'info': _secondController.text,
+        'sectionName': 'أدعيتي',
+      },
+    );
+
+    widget.onSave(doaa);
+  }
+
+  @override
+  void dispose() {
+    _firstController.dispose();
+    _secondController.dispose();
+
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      elevation: 6.0,
+      child: Container(
+        decoration: BoxDecoration(
+            color: Theme.of(context).brightness == Brightness.light
+                ? Colors.white
+                : const Color(0xff1B2349),
+            borderRadius: BorderRadius.circular(15.0)),
+        constraints: const BoxConstraints(maxHeight: 360),
+        child: Stack(
+          children: <Widget>[
+            SingleChildScrollView(
+              child: Column(
+                children: <Widget>[
+                  DialogTextInput(
+                    maxHeight: 150.0,
+                    minHeight: 150.0,
+                    hintText: Strings.addThekr,
+                    controller: _firstController,
+                  ),
+                  const Divider(),
+                  DialogTextInput(
+                    maxHeight: 100.0,
+                    minHeight: 50.0,
+                    hintText: Strings.additionalText,
+                    controller: _secondController,
+                  ),
+                  const SizedBox(height: 40)
+                ],
+              ),
+            ),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Container(
+                constraints: const BoxConstraints.expand(height: 40),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    DialogButton(
+                      label: Strings.save,
+                      textColor: Colors.lightBlue[100],
+                      border: const Border(
+                        left: BorderSide(width: 0.5, color: Colors.white),
+                      ),
+                      onPressed: canSave ? onSave : null,
+                      radius: const BorderRadius.only(
+                        bottomRight: Radius.circular(15),
+                      ),
+                    ),
+                    DialogButton(
+                      label: Strings.cancel,
+                      textColor: Colors.white,
+                      border: const Border(
+                          right: BorderSide(width: 0.5, color: Colors.white)),
+                      radius: const BorderRadius.only(
+                          bottomLeft: Radius.circular(15)),
+                      onPressed: onCancel,
+                    ),
+                  ],
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
+    );
+  }
+
+  /// text input design (used in dialoges)
+  input(double maxHeight, double minHeight, String text,
+      TextEditingController controller) {
+    return ConstrainedBox(
+      constraints: BoxConstraints(maxHeight: maxHeight, minHeight: minHeight),
+      child: SingleChildScrollView(
+        child: TextField(
+          controller: controller,
+          style: Theme.of(context).textTheme.bodyText1,
+          decoration: InputDecoration(
+            filled: false,
+            contentPadding:
+                const EdgeInsets.symmetric(vertical: 12, horizontal: 10.0),
+            border: InputBorder.none,
+            hintText: text,
+          ),
+          keyboardType: TextInputType.multiline,
+          maxLines: 20,
+          minLines: 1,
+        ),
+      ),
     );
   }
 }
