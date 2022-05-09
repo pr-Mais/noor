@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 import 'package:noor/exports/models.dart' show AthkarCounter, DataModel, Thekr;
-import 'package:noor/exports/controllers.dart' show SettingsModel;
+import 'package:noor/exports/controllers.dart' show AppSettings;
 import 'package:noor/exports/components.dart'
     show NoorCloseButton, ThekrTitleCard, AthkarCard;
 import 'package:noor/exports/constants.dart' show viewPadding;
@@ -45,7 +45,7 @@ class _AthkarListState extends State<AthkarList>
   }
 
   onCardTap(int index, AthkarCounter counter) {
-    final SettingsModel settings = context.read<SettingsModel>();
+    final AppSettings settings = context.read<AppSettings>();
 
     counter.decrement();
 

@@ -6,7 +6,7 @@ import 'package:noor/exports/constants.dart' show Ribbon;
 import 'package:noor/exports/components.dart'
     show CardTemplate, CardText, CopyAction, FavAction;
 import 'package:noor/exports/utils.dart' show ToArabicNumbers;
-import 'package:noor/exports/controllers.dart' show SettingsModel;
+import 'package:noor/exports/controllers.dart' show AppSettings;
 
 class AthkarCard extends StatelessWidget {
   const AthkarCard({
@@ -20,7 +20,7 @@ class AthkarCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AthkarCounter counter = context.watch<AthkarCounter>();
-    final SettingsModel settings = context.watch<SettingsModel>();
+    final AppSettings settings = context.watch<AppSettings>();
 
     return Stack(
       children: <Widget>[

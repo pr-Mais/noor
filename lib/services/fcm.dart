@@ -27,14 +27,14 @@ class FCMService {
 
   Future<void> unsubscribe() async {
     SharedPrefsService.putBool('generalNotifications', false);
-    GetIt.I<SettingsModel>().generalNotification = false;
+    GetIt.I<AppSettings>().generalNotification = false;
 
     await _firebaseMessaging.unsubscribeFromTopic('general_notifications');
   }
 
   Future<void> subscribe() async {
     SharedPrefsService.putBool('generalNotifications', true);
-    GetIt.I<SettingsModel>().generalNotification = true;
+    GetIt.I<AppSettings>().generalNotification = true;
 
     await _firebaseMessaging.subscribeToTopic('general_notifications');
   }

@@ -8,7 +8,7 @@ import 'package:noor/pages/tabs/page_3_counter/counter_view_model.dart';
 import 'package:noor/pages/tabs/page_3_counter/counter_list_view.dart';
 
 import 'package:noor/exports/utils.dart' show ToArabicNumbers;
-import 'package:noor/exports/controllers.dart' show SettingsModel, ThemeModel;
+import 'package:noor/exports/controllers.dart' show AppSettings, ThemeModel;
 
 class CounterView extends StatefulWidget {
   const CounterView({Key? key}) : super(key: key);
@@ -18,7 +18,7 @@ class CounterView extends StatefulWidget {
 
 class _CounterViewState extends State<CounterView> {
   void incrementCounter() {
-    final settings = context.read<SettingsModel>();
+    final settings = context.read<AppSettings>();
     final counterModel = context.read<CounterViewModel>();
 
     counterModel.incrementSelectedItem();
@@ -66,7 +66,7 @@ class _CounterViewState extends State<CounterView> {
   @override
   Widget build(BuildContext context) {
     final counterModel = context.watch<CounterViewModel>();
-    final settings = context.watch<SettingsModel>();
+    final settings = context.watch<AppSettings>();
 
     return Scaffold(
       body: GestureDetector(

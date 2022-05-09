@@ -80,8 +80,10 @@ class _CounterListViewState extends State<CounterListView> {
         counterModel.deleteSubhaItem(item);
       }
     } else if (item.locked) {
-      NoorAlertDialog.of(context)
-          .show(title: 'عُــذراً', content: 'لا يمكن حذف الأذكار المُقترحة');
+      NoorAlertDialog.of(context).show(
+        title: 'عُــذراً',
+        content: 'لا يمكن حذف الأذكار المُقترحة',
+      );
     }
   }
 
@@ -95,6 +97,7 @@ class _CounterListViewState extends State<CounterListView> {
             context.read<ThemeModel>().images.subhaBg,
             fit: BoxFit.fill,
             height: double.infinity,
+            width: double.infinity,
           ),
           Column(
             children: <Widget>[
@@ -198,7 +201,7 @@ class SubhaListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final borderRadius = BorderRadius.circular(50);
-    final settings = context.watch<SettingsModel>();
+    final settings = context.watch<AppSettings>();
     final theme = context.watch<ThemeModel>();
 
     return Material(
@@ -236,7 +239,7 @@ class SubhaListItem extends StatelessWidget {
                   item.key,
                   textScaleFactor: settings.fontSize,
                   style: Theme.of(context).textTheme.bodyText1?.copyWith(
-                      fontFamily: context.read<SettingsModel>().fontType,
+                      fontFamily: context.read<AppSettings>().fontType,
                       height: 1.4),
                   overflow: TextOverflow.ellipsis,
                   maxLines: 2,

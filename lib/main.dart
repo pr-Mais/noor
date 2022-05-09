@@ -7,7 +7,7 @@ import 'package:noor/exports/controllers.dart' show DataController;
 import 'package:noor/exports/models.dart' show DataModel;
 import 'package:noor/exports/services.dart'
     show DBService, SharedPrefsService, FCMService;
-import 'package:noor/exports/models.dart' show SettingsModel;
+import 'package:noor/exports/models.dart' show AppSettings;
 import 'package:noor/pages/tabs/page_3_counter/counter_view_model.dart';
 
 void main() async {
@@ -19,7 +19,7 @@ void main() async {
   await DBService.db.initDB();
 
   GetIt.I.registerSingleton<DataModel>(DataModel());
-  GetIt.I.registerSingleton<SettingsModel>(SettingsModel());
+  GetIt.I.registerSingleton<AppSettings>(AppSettings());
   GetIt.I.registerSingletonAsync<DataController>(() => DataController.init());
   GetIt.I
       .registerSingletonAsync<CounterViewModel>(() => CounterViewModel.init());

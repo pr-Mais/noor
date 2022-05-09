@@ -14,8 +14,10 @@ import 'package:timezone/timezone.dart' as tz;
 
 import 'package:noor/exports/components.dart' show CardTemplate, CardText;
 import 'package:noor/exports/services.dart' show SharedPrefsService;
-import 'package:noor/exports/controllers.dart' show ThemeModel, SettingsModel;
-import '../../exports/constants.dart' show Images, Links, NoorIcons, Strings;
+import 'package:noor/exports/controllers.dart' show ThemeModel, AppSettings;
+import 'package:noor/exports/constants.dart'
+    show Images, Links, NoorIcons, Strings;
+import 'package:noor/exports/utils.dart' show ToArabicNumbers;
 
 class Settings extends StatefulWidget {
   const Settings({
@@ -55,7 +57,7 @@ class _SettingsState extends State<Settings>
 
   DateTime? morningTemp;
   DateTime? nightTemp;
-  List<String> fonts = <String>['١٦', '١٨', '٢٠', '٢٢'];
+  List<int> allowedFontSizes = <int>[16, 18, 20, 22, 24];
   TextStyle activeLabelStyle = const TextStyle(
     color: Color(0xff6db7e5),
     fontSize: 18,
@@ -199,7 +201,7 @@ class _SettingsState extends State<Settings>
   }
 
   changeTheme(String value) async {
-    context.read<SettingsModel>().theme = value;
+    context.read<AppSettings>().theme = value;
     context.read<ThemeModel>().userTheme = value;
   }
 
@@ -211,7 +213,7 @@ class _SettingsState extends State<Settings>
         controlAffinity: ListTileControlAffinity.trailing,
         title: subtitleWithIcon(title, icon),
         activeColor: Theme.of(context).primaryColor,
-        groupValue: context.watch<SettingsModel>().theme,
+        groupValue: context.watch<AppSettings>().theme,
         value: value,
         onChanged: (String? theme) => changeTheme(theme!),
       ),
@@ -265,7 +267,7 @@ class _SettingsState extends State<Settings>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    final SettingsModel settings = context.watch<SettingsModel>();
+    final AppSettings settings = context.watch<AppSettings>();
     final Images images = Provider.of<ThemeModel>(context).images;
 
     return Scaffold(
@@ -305,7 +307,8 @@ class _SettingsState extends State<Settings>
                                   animatedSizeText(0, 16),
                                   animatedSizeText(1, 18),
                                   animatedSizeText(2, 20),
-                                  animatedSizeText(3, 22)
+                                  animatedSizeText(3, 22),
+                                  animatedSizeText(4, 24)
                                 ],
                               ),
                             ),
@@ -324,12 +327,12 @@ class _SettingsState extends State<Settings>
                                 activeTickMarkColor: Colors.grey[400],
                               ),
                               child: Slider(
-                                divisions: 3,
+                                divisions: 4,
                                 onChanged: (double value) =>
                                     settings.fontSize = value,
                                 value: settings.fontSize,
                                 min: 1,
-                                max: 1.375,
+                                max: 1.5,
                               ),
                             ),
                           ),
@@ -1050,12 +1053,11 @@ class _SettingsState extends State<Settings>
   }
 
   Widget animatedSizeText(int i, int size) {
+    final selectedFontSize = SharedPrefsService.getDouble('fontSize') * 16;
     return AnimatedSize(
       child: Text(
-        fonts[i],
-        style: SharedPrefsService.getDouble('fontSize') * 16 == size
-            ? activeLabelStyle
-            : inactiveLabelStyle,
+        '${allowedFontSizes[i]}'.arabicDigit(),
+        style: selectedFontSize == size ? activeLabelStyle : inactiveLabelStyle,
       ),
       duration: const Duration(milliseconds: 500),
     );
@@ -1064,15 +1066,15 @@ class _SettingsState extends State<Settings>
   Widget fontTypeButton(String font) {
     // ignore: deprecated_member_use
     return FlatButton(
-      onPressed: () => context.read<SettingsModel>().fontType = font,
+      onPressed: () => context.read<AppSettings>().fontType = font,
       child: AnimatedDefaultTextStyle(
         style: TextStyle(
             fontFamily: font,
-            color: context.read<SettingsModel>().fontType == font
+            color: context.read<AppSettings>().fontType == font
                 ? Theme.of(context).primaryColor
                 : Colors.grey[400],
             height: 1,
-            fontSize: context.read<SettingsModel>().fontType == font ? 20 : 16),
+            fontSize: context.read<AppSettings>().fontType == font ? 20 : 16),
         duration: const Duration(milliseconds: 200),
         child: const Text('الحمدلله'),
       ),

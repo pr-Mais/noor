@@ -5,5 +5,5 @@ class Links {
       'https://play.google.com/store/apps/details?id=com.noor.sa';
   static String twitter = 'https://twitter.com/noorAthkar';
   static String ig = 'https://instagram.com/NoorAthkar';
-  static String allahNamesResource = 'https://allahsnames.net';
+  static String allahNamesResource = 'http://allahsnames.net/cms';
 }

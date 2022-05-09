@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:noor/exports/constants.dart' show Ribbon, viewPadding;
-import 'package:noor/exports/models.dart' show SettingsModel;
+import 'package:noor/exports/models.dart' show AppSettings;
 
 class CardTemplate extends StatelessWidget {
   CardTemplate({
@@ -26,7 +26,7 @@ class CardTemplate extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final SettingsModel settings = context.watch<SettingsModel>();
+    final AppSettings settings = context.watch<AppSettings>();
 
     return Container(
       width: MediaQuery.of(context).size.width,

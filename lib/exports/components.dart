@@ -17,3 +17,4 @@ export 'package:noor/components/card_text.dart';
 export 'package:noor/components/copy_action.dart';
 export 'package:noor/components/fav_action.dart';
 export 'package:noor/components/card_sliver_app_bar.dart';
+export 'package:noor/components/dialog_text_input.dart';

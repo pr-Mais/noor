@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:noor/exports/services.dart' show SharedPrefsService;
 import 'package:noor/exports/constants.dart' show DefaultSettings;
 
-class SettingsModel with ChangeNotifier {
+class AppSettings with ChangeNotifier {
   /// Font Size, the scale factor by which the font size is multiplied
   /// prefs key `fontSize`
   double _fontSize = SharedPrefsService.getDouble(

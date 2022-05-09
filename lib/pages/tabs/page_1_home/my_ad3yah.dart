@@ -16,9 +16,8 @@ import 'package:noor/exports/components.dart'
         ImageButton,
         CardText,
         CopyAction,
-        FavAction;
-
-import '../../../components/dialog_text_input.dart';
+        FavAction,
+        DialogTextInput;
 
 enum SaveType { insert, update }
 
@@ -46,7 +45,7 @@ class _MyAd3yahState extends State<MyAd3yah> with TickerProviderStateMixin {
   }
 
   /// Add/update dialog.
-  addDoaa({Doaa? doaa}) {
+  addDoaa([Doaa? doaa]) {
     showGeneralDialog(
       transitionDuration: const Duration(milliseconds: 600),
       barrierDismissible: false,
@@ -203,7 +202,7 @@ class _MyAd3yahState extends State<MyAd3yah> with TickerProviderStateMixin {
         FavAction(doaa),
         GestureDetector(
           child: Image.asset(Images.editeIcon),
-          onTap: () => addDoaa(doaa: doaa),
+          onTap: () => addDoaa(doaa),
         ),
         CopyAction(
           doaa.text + (doaa.info.isNotEmpty ? ('. ' + doaa.info) : ''),
