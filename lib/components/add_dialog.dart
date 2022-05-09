@@ -199,24 +199,31 @@ class _AddDialogState extends State<AddDialog>
                         label: 'حفظ',
                         border: Border(
                           left: BorderSide(
-                              width: 0.5, color: Theme.of(context).cardColor),
+                            width: 0.5,
+                            color: Theme.of(context).cardColor,
+                          ),
                         ),
                         radius: const BorderRadius.only(
-                            bottomRight: Radius.circular(15)),
+                          bottomRight: Radius.circular(15),
+                        ),
                         onPressed: !mainContentActive
                             ? null
                             : () =>
                                 widget.onSave?.call(mainContentController.text),
+                        textColor: Colors.lightBlue[100],
                       ),
                       DialogButton(
                         label: 'إلغاء',
                         border: Border(
                           right: BorderSide(
-                              width: 0.5, color: Theme.of(context).cardColor),
+                            width: 0.5,
+                            color: Theme.of(context).cardColor,
+                          ),
                         ),
                         onPressed: widget.onCancel,
                         radius: const BorderRadius.only(
-                            bottomLeft: Radius.circular(15)),
+                          bottomLeft: Radius.circular(15),
+                        ),
                         textColor: Colors.white,
                       )
                     ],
