@@ -1,7 +1,6 @@
 name: noor
 description: أذكار وأدعية من كتاب حصن المسلم
-
-version: 2.5.0+25004
+version: 2.5.0+25009
 
 environment:
   sdk: '>=2.15.0 <3.0.0'
@@ -38,10 +37,10 @@ dev_dependencies:
 flutter_icons:
   android: true
   ios: true
-  image_path_android: "assets/icons/launcher_icon_android.png"
-  image_path_ios: "assets/icons/launcher_icon_ios.png"
-  adaptive_icon_background: "#ffffff"
-  adaptive_icon_foreground: "assets/icons/launcher_icon_android.png"
+  image_path_android: 'assets/icons/launcher_icon_android.png'
+  image_path_ios: 'assets/icons/launcher_icon_ios.png'
+  adaptive_icon_background: '#ffffff'
+  adaptive_icon_foreground: 'assets/icons/launcher_icon_android.png'
 
 flutter:
   uses-material-design: true
@@ -81,6 +80,12 @@ flutter:
     - family: Geeza
       fonts:
         - asset: assets/fonts/Geeza-Pro-Regular.ttf
+    - family: Uthman
+      fonts:
+        - asset: assets/fonts/UthmanTN1.otf
+          weight: 500
+        - asset: assets/fonts/UthmanTN1B.otf
+          weight: 700
     - family: NoorIcons
       fonts:
         - asset: assets/fonts/NoorIcons.ttf
