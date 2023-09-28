@@ -37,7 +37,7 @@ class _AllahNamesListState extends State<AllahNamesList>
   void initState() {
     super.initState();
     pagePosition = ValueNotifier<int>(0);
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       listener.itemPositions.addListener(changeAppBar);
     });
 

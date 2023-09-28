@@ -6,7 +6,7 @@ import 'package:noor/components/adaptive_icon.dart';
 import 'package:noor/models/data.dart';
 import 'package:noor/services/fcm.dart';
 import 'package:provider/provider.dart';
-import 'package:share/share.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:timezone/data/latest.dart' as tz;
@@ -1064,8 +1064,7 @@ class _SettingsState extends State<Settings>
   }
 
   Widget fontTypeButton(String font) {
-    // ignore: deprecated_member_use
-    return FlatButton(
+    return OutlinedButton(
       onPressed: () => context.read<AppSettings>().fontType = font,
       child: AnimatedDefaultTextStyle(
         style: TextStyle(

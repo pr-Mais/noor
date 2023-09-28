@@ -24,7 +24,7 @@ class _RootHomeState extends State<RootHome>
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       final images = Provider.of<ThemeModel>(context, listen: false).images;
       precacheImage(AssetImage(images.subhaBg), context);
       precacheImage(AssetImage(images.myAd3yahBg), context);
@@ -34,12 +34,10 @@ class _RootHomeState extends State<RootHome>
 
     AndroidInitializationSettings initializationSettingsAndroid =
         const AndroidInitializationSettings('ic_notification');
-    IOSInitializationSettings initializationSettingsIOS =
-        const IOSInitializationSettings();
-    InitializationSettings initializationSettings = InitializationSettings(
-        android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
-    flutterLocalNotificationsPlugin.initialize(initializationSettings,
-        onSelectNotification: onSelectNotification);
+
+    InitializationSettings initializationSettings =
+        InitializationSettings(android: initializationSettingsAndroid);
+    flutterLocalNotificationsPlugin.initialize(initializationSettings);
   }
 
   Future<void> onSelectNotification(String? payload) async {
