@@ -17,6 +17,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   flutter_svg: ^2.0.7
+  freezed: ^2.4.3
   get_it: ^7.6.4
   intl: ^0.18.1
   path_provider: ^2.1.1

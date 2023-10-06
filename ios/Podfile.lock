@@ -1,97 +1,96 @@
 PODS:
-  - Firebase/CoreOnly (8.9.0):
-    - FirebaseCore (= 8.9.0)
-  - Firebase/Messaging (8.9.0):
+  - Firebase/CoreOnly (10.15.0):
+    - FirebaseCore (= 10.15.0)
+  - Firebase/Messaging (10.15.0):
     - Firebase/CoreOnly
-    - FirebaseMessaging (~> 8.9.0)
-  - Firebase/RemoteConfig (8.9.0):
+    - FirebaseMessaging (~> 10.15.0)
+  - Firebase/RemoteConfig (10.15.0):
     - Firebase/CoreOnly
-    - FirebaseRemoteConfig (~> 8.9.0)
-  - firebase_core (1.10.2):
-    - Firebase/CoreOnly (= 8.9.0)
+    - FirebaseRemoteConfig (~> 10.15.0)
+  - firebase_core (2.16.0):
+    - Firebase/CoreOnly (= 10.15.0)
     - Flutter
-  - firebase_messaging (11.2.0):
-    - Firebase/Messaging (= 8.9.0)
+  - firebase_messaging (14.6.8):
+    - Firebase/Messaging (= 10.15.0)
     - firebase_core
     - Flutter
-  - firebase_remote_config (1.0.0-dev.3):
-    - Firebase/RemoteConfig (= 8.9.0)
+  - firebase_remote_config (4.2.6):
+    - Firebase/RemoteConfig (= 10.15.0)
     - firebase_core
     - Flutter
-  - FirebaseABTesting (8.9.0):
-    - FirebaseCore (~> 8.0)
-  - FirebaseCore (8.9.0):
-    - FirebaseCoreDiagnostics (~> 8.0)
-    - GoogleUtilities/Environment (~> 7.6)
-    - GoogleUtilities/Logger (~> 7.6)
-  - FirebaseCoreDiagnostics (8.9.0):
-    - GoogleDataTransport (~> 9.1)
-    - GoogleUtilities/Environment (~> 7.6)
-    - GoogleUtilities/Logger (~> 7.6)
-    - nanopb (~> 2.30908.0)
-  - FirebaseInstallations (8.9.0):
-    - FirebaseCore (~> 8.0)
-    - GoogleUtilities/Environment (~> 7.6)
-    - GoogleUtilities/UserDefaults (~> 7.6)
-    - PromisesObjC (< 3.0, >= 1.2)
-  - FirebaseMessaging (8.9.0):
-    - FirebaseCore (~> 8.0)
-    - FirebaseInstallations (~> 8.0)
-    - GoogleDataTransport (~> 9.1)
-    - GoogleUtilities/AppDelegateSwizzler (~> 7.6)
-    - GoogleUtilities/Environment (~> 7.6)
-    - GoogleUtilities/Reachability (~> 7.6)
-    - GoogleUtilities/UserDefaults (~> 7.6)
-    - nanopb (~> 2.30908.0)
-  - FirebaseRemoteConfig (8.9.0):
-    - FirebaseABTesting (~> 8.0)
-    - FirebaseCore (~> 8.0)
-    - FirebaseInstallations (~> 8.0)
-    - GoogleUtilities/Environment (~> 7.6)
-    - "GoogleUtilities/NSData+zlib (~> 7.6)"
+  - FirebaseABTesting (10.16.0):
+    - FirebaseCore (~> 10.0)
+  - FirebaseCore (10.15.0):
+    - FirebaseCoreInternal (~> 10.0)
+    - GoogleUtilities/Environment (~> 7.8)
+    - GoogleUtilities/Logger (~> 7.8)
+  - FirebaseCoreInternal (10.16.0):
+    - "GoogleUtilities/NSData+zlib (~> 7.8)"
+  - FirebaseInstallations (10.16.0):
+    - FirebaseCore (~> 10.0)
+    - GoogleUtilities/Environment (~> 7.8)
+    - GoogleUtilities/UserDefaults (~> 7.8)
+    - PromisesObjC (~> 2.1)
+  - FirebaseMessaging (10.15.0):
+    - FirebaseCore (~> 10.0)
+    - FirebaseInstallations (~> 10.0)
+    - GoogleDataTransport (~> 9.2)
+    - GoogleUtilities/AppDelegateSwizzler (~> 7.8)
+    - GoogleUtilities/Environment (~> 7.8)
+    - GoogleUtilities/Reachability (~> 7.8)
+    - GoogleUtilities/UserDefaults (~> 7.8)
+    - nanopb (< 2.30910.0, >= 2.30908.0)
+  - FirebaseRemoteConfig (10.15.0):
+    - FirebaseABTesting (~> 10.0)
+    - FirebaseCore (~> 10.0)
+    - FirebaseInstallations (~> 10.0)
+    - GoogleUtilities/Environment (~> 7.8)
+    - "GoogleUtilities/NSData+zlib (~> 7.8)"
   - Flutter (1.0.0)
   - flutter_local_notifications (0.0.1):
     - Flutter
   - FMDB (2.7.5):
     - FMDB/standard (= 2.7.5)
   - FMDB/standard (2.7.5)
-  - GoogleDataTransport (9.1.2):
-    - GoogleUtilities/Environment (~> 7.2)
-    - nanopb (~> 2.30908.0)
+  - GoogleDataTransport (9.2.5):
+    - GoogleUtilities/Environment (~> 7.7)
+    - nanopb (< 2.30910.0, >= 2.30908.0)
     - PromisesObjC (< 3.0, >= 1.2)
-  - GoogleUtilities/AppDelegateSwizzler (7.6.0):
+  - GoogleUtilities/AppDelegateSwizzler (7.11.5):
     - GoogleUtilities/Environment
     - GoogleUtilities/Logger
     - GoogleUtilities/Network
-  - GoogleUtilities/Environment (7.6.0):
+  - GoogleUtilities/Environment (7.11.5):
     - PromisesObjC (< 3.0, >= 1.2)
-  - GoogleUtilities/Logger (7.6.0):
+  - GoogleUtilities/Logger (7.11.5):
     - GoogleUtilities/Environment
-  - GoogleUtilities/Network (7.6.0):
+  - GoogleUtilities/Network (7.11.5):
     - GoogleUtilities/Logger
     - "GoogleUtilities/NSData+zlib"
     - GoogleUtilities/Reachability
-  - "GoogleUtilities/NSData+zlib (7.6.0)"
-  - GoogleUtilities/Reachability (7.6.0):
+  - "GoogleUtilities/NSData+zlib (7.11.5)"
+  - GoogleUtilities/Reachability (7.11.5):
     - GoogleUtilities/Logger
-  - GoogleUtilities/UserDefaults (7.6.0):
+  - GoogleUtilities/UserDefaults (7.11.5):
     - GoogleUtilities/Logger
-  - nanopb (2.30908.0):
-    - nanopb/decode (= 2.30908.0)
-    - nanopb/encode (= 2.30908.0)
-  - nanopb/decode (2.30908.0)
-  - nanopb/encode (2.30908.0)
-  - path_provider_ios (0.0.1):
+  - nanopb (2.30909.0):
+    - nanopb/decode (= 2.30909.0)
+    - nanopb/encode (= 2.30909.0)
+  - nanopb/decode (2.30909.0)
+  - nanopb/encode (2.30909.0)
+  - path_provider_foundation (0.0.1):
     - Flutter
-  - PromisesObjC (2.0.0)
-  - share (0.0.1):
+    - FlutterMacOS
+  - PromisesObjC (2.3.1)
+  - share_plus (0.0.1):
     - Flutter
-  - shared_preferences (0.0.1):
+  - shared_preferences_foundation (0.0.1):
     - Flutter
-  - sqflite (0.0.2):
+    - FlutterMacOS
+  - sqflite (0.0.3):
     - Flutter
     - FMDB (>= 2.7.5)
-  - url_launcher (0.0.1):
+  - url_launcher_ios (0.0.1):
     - Flutter
 
 DEPENDENCIES:
@@ -100,18 +99,18 @@ DEPENDENCIES:
   - firebase_remote_config (from `.symlinks/plugins/firebase_remote_config/ios`)
   - Flutter (from `Flutter`)
   - flutter_local_notifications (from `.symlinks/plugins/flutter_local_notifications/ios`)
-  - path_provider_ios (from `.symlinks/plugins/path_provider_ios/ios`)
-  - share (from `.symlinks/plugins/share/ios`)
-  - shared_preferences (from `.symlinks/plugins/shared_preferences/ios`)
+  - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
+  - share_plus (from `.symlinks/plugins/share_plus/ios`)
+  - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/darwin`)
   - sqflite (from `.symlinks/plugins/sqflite/ios`)
-  - url_launcher (from `.symlinks/plugins/url_launcher/ios`)
+  - url_launcher_ios (from `.symlinks/plugins/url_launcher_ios/ios`)
 
 SPEC REPOS:
   trunk:
     - Firebase
     - FirebaseABTesting
     - FirebaseCore
-    - FirebaseCoreDiagnostics
+    - FirebaseCoreInternal
     - FirebaseInstallations
     - FirebaseMessaging
     - FirebaseRemoteConfig
@@ -132,41 +131,41 @@ EXTERNAL SOURCES:
     :path: Flutter
   flutter_local_notifications:
     :path: ".symlinks/plugins/flutter_local_notifications/ios"
-  path_provider_ios:
-    :path: ".symlinks/plugins/path_provider_ios/ios"
-  share:
-    :path: ".symlinks/plugins/share/ios"
-  shared_preferences:
-    :path: ".symlinks/plugins/shared_preferences/ios"
+  path_provider_foundation:
+    :path: ".symlinks/plugins/path_provider_foundation/darwin"
+  share_plus:
+    :path: ".symlinks/plugins/share_plus/ios"
+  shared_preferences_foundation:
+    :path: ".symlinks/plugins/shared_preferences_foundation/darwin"
   sqflite:
     :path: ".symlinks/plugins/sqflite/ios"
-  url_launcher:
-    :path: ".symlinks/plugins/url_launcher/ios"
+  url_launcher_ios:
+    :path: ".symlinks/plugins/url_launcher_ios/ios"
 
 SPEC CHECKSUMS:
-  Firebase: 13d8d96499e2635428d5bf0ec675df21f95d9a95
-  firebase_core: 6d1a5e12a83b6d9419ecb8f2a53d876e7b4695da
-  firebase_messaging: 4f7eab3f100c30d0544f5a6f6ca549f7f8c12705
-  firebase_remote_config: 387ba6e443177a276acfdcb24bce201c023e0d99
-  FirebaseABTesting: 9de50b34bf9eb4a07d4edb7af82c14152fd905aa
-  FirebaseCore: 599ee609343eaf4941bd188f85e3aa077ffe325b
-  FirebaseCoreDiagnostics: 5daa63f1c1409d981a2d5007daa100b36eac6a34
-  FirebaseInstallations: caa7c8e0d3e2345b8829d2fa9ca1b4dfbf2fcc85
-  FirebaseMessaging: 82c4a48638f53f7b184f3cc9f6cd2cbe533ab316
-  FirebaseRemoteConfig: a75c1bd44ebd3ed4ad3fa1ff09414a8b133be405
-  Flutter: 50d75fe2f02b26cc09d224853bb45737f8b3214a
+  Firebase: 66043bd4579e5b73811f96829c694c7af8d67435
+  firebase_core: 77172d0a9d8d19d07606e24406e4c2fc14d3265b
+  firebase_messaging: 6aff54d420b7ce7080c26dd131b08bc632666852
+  firebase_remote_config: 1c6248049dbcb610764f5ccf567674b2ebb20813
+  FirebaseABTesting: 03f0a8b88cf618350527f2c6a2234e29b9c65064
+  FirebaseCore: 2cec518b43635f96afe7ac3a9c513e47558abd2e
+  FirebaseCoreInternal: 26233f705cc4531236818a07ac84d20c333e505a
+  FirebaseInstallations: b822f91a61f7d1ba763e5ccc9d4f2e6f2ed3b3ee
+  FirebaseMessaging: 0c0ae1eb722ef0c07f7801e5ded8dccd1357d6d4
+  FirebaseRemoteConfig: 64b6ada098c649304114a817effd7e5f87229b11
+  Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
   flutter_local_notifications: 0c0b1ae97e741e1521e4c1629a459d04b9aec743
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
-  GoogleDataTransport: 629c20a4d363167143f30ea78320d5a7eb8bd940
-  GoogleUtilities: 684ee790a24f73ebb2d1d966e9711c203f2a4237
-  nanopb: a0ba3315591a9ae0a16a309ee504766e90db0c96
-  path_provider_ios: 7d7ce634493af4477d156294792024ec3485acd5
-  PromisesObjC: 68159ce6952d93e17b2dfe273b8c40907db5ba58
-  share: 0b2c3e82132f5888bccca3351c504d0003b3b410
-  shared_preferences: af6bfa751691cdc24be3045c43ec037377ada40d
-  sqflite: 6d358c025f5b867b29ed92fc697fd34924e11904
-  url_launcher: 6fef411d543ceb26efce54b05a0a40bfd74cbbef
+  GoogleDataTransport: 54dee9d48d14580407f8f5fbf2f496e92437a2f2
+  GoogleUtilities: 13e2c67ede716b8741c7989e26893d151b2b2084
+  nanopb: b552cce312b6c8484180ef47159bc0f65a1f0431
+  path_provider_foundation: 29f094ae23ebbca9d3d0cec13889cd9060c0e943
+  PromisesObjC: c50d2056b5253dadbd6c2bea79b0674bd5a52fa4
+  share_plus: 599aa54e4ea31d4b4c0e9c911bcc26c55e791028
+  shared_preferences_foundation: 5b919d13b803cadd15ed2dc053125c68730e5126
+  sqflite: 31f7eba61e3074736dff8807a9b41581e4f7f15a
+  url_launcher_ios: 839c58cdb4279282219f5e248c3321761ff3c4de
 
-PODFILE CHECKSUM: aafe91acc616949ddb318b77800a7f51bffa2a4c
+PODFILE CHECKSUM: 779af41b1bf7002fe3cf5887309d1d6f91642aaa
 
-COCOAPODS: 1.11.2
+COCOAPODS: 1.11.3

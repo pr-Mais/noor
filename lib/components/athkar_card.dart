@@ -5,7 +5,6 @@ import 'package:noor/exports/models.dart' show AthkarCounter, Thekr;
 import 'package:noor/exports/constants.dart' show Ribbon;
 import 'package:noor/exports/components.dart'
     show CardTemplate, CardText, CopyAction, FavAction;
-import 'package:noor/exports/utils.dart' show ToArabicNumbers;
 import 'package:noor/exports/controllers.dart' show AppSettings;
 
 class AthkarCard extends StatelessWidget {
@@ -66,7 +65,7 @@ class AthkarCard extends StatelessWidget {
                           child: AnimatedSwitcher(
                             duration: const Duration(milliseconds: 250),
                             child: Text(
-                              '${counter.position}'.arabicDigit(),
+                              '${counter.position}',
                               key: ValueKey<int?>(counter.position),
                               style: TextStyle(
                                 color: Theme.of(context).colorScheme.secondary,

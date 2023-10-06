@@ -17,7 +17,6 @@ import 'package:noor/exports/services.dart' show SharedPrefsService;
 import 'package:noor/exports/controllers.dart' show ThemeModel, AppSettings;
 import 'package:noor/exports/constants.dart'
     show Images, Links, NoorIcons, Strings;
-import 'package:noor/exports/utils.dart' show ToArabicNumbers;
 
 class Settings extends StatefulWidget {
   const Settings({
@@ -1056,7 +1055,7 @@ class _SettingsState extends State<Settings>
     final selectedFontSize = SharedPrefsService.getDouble('fontSize') * 16;
     return AnimatedSize(
       child: Text(
-        '${allowedFontSizes[i]}'.arabicDigit(),
+        '${allowedFontSizes[i]}',
         style: selectedFontSize == size ? activeLabelStyle : inactiveLabelStyle,
       ),
       duration: const Duration(milliseconds: 500),
