@@ -6,7 +6,7 @@ import 'package:noor/components/adaptive_icon.dart';
 import 'package:noor/models/data.dart';
 import 'package:noor/services/fcm.dart';
 import 'package:provider/provider.dart';
-import 'package:share/share.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:timezone/data/latest.dart' as tz;
@@ -17,7 +17,6 @@ import 'package:noor/exports/services.dart' show SharedPrefsService;
 import 'package:noor/exports/controllers.dart' show ThemeModel, AppSettings;
 import 'package:noor/exports/constants.dart'
     show Images, Links, NoorIcons, Strings;
-import 'package:noor/exports/utils.dart' show ToArabicNumbers;
 
 class Settings extends StatefulWidget {
   const Settings({
@@ -1056,7 +1055,7 @@ class _SettingsState extends State<Settings>
     final selectedFontSize = SharedPrefsService.getDouble('fontSize') * 16;
     return AnimatedSize(
       child: Text(
-        '${allowedFontSizes[i]}'.arabicDigit(),
+        '${allowedFontSizes[i]}',
         style: selectedFontSize == size ? activeLabelStyle : inactiveLabelStyle,
       ),
       duration: const Duration(milliseconds: 500),
@@ -1064,8 +1063,7 @@ class _SettingsState extends State<Settings>
   }
 
   Widget fontTypeButton(String font) {
-    // ignore: deprecated_member_use
-    return FlatButton(
+    return OutlinedButton(
       onPressed: () => context.read<AppSettings>().fontType = font,
       child: AnimatedDefaultTextStyle(
         style: TextStyle(

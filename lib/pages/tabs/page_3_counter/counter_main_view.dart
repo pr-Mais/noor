@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:noor/exports/models.dart';
 import 'package:provider/provider.dart';
 
 import 'package:noor/exports/constants.dart';
-import 'package:noor/pages/tabs/page_3_counter/counter_view_model.dart';
-import 'package:noor/pages/tabs/page_3_counter/counter_list_view.dart';
 
-import 'package:noor/exports/utils.dart' show ToArabicNumbers;
 import 'package:noor/exports/controllers.dart' show AppSettings, ThemeModel;
+
+import 'counter_list_view.dart';
 
 class CounterView extends StatefulWidget {
   const CounterView({Key? key}) : super(key: key);
@@ -132,7 +132,7 @@ class _CounterViewState extends State<CounterView> {
                     AnimatedSwitcher(
                       duration: const Duration(milliseconds: 250),
                       child: Text(
-                        '${counterModel.selectedItem!.counter}'.arabicDigit(),
+                        '${counterModel.selectedItem!.counter}',
                         key: ValueKey<int>(counterModel.selectedItem!.counter),
                         style: Theme.of(context).textTheme.subtitle2?.copyWith(
                             fontSize: 30, fontWeight: FontWeight.bold),

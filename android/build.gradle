@@ -1,14 +1,19 @@
 buildscript {
+    ext.kotlin_version = '1.9.10'
     repositories {
         google()
-        mavenCentral() 
+        mavenCentral()
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.1.0'
-        classpath 'com.google.gms:google-services:4.3.3'
+        classpath 'com.android.tools.build:gradle:7.4.2'
+        // START: FlutterFire Configuration
+        classpath 'com.google.gms:google-services:4.4.0'
+        // END: FlutterFire Configuration
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
+
 allprojects {
     repositories {
         google()
@@ -24,6 +29,6 @@ subprojects {
     project.evaluationDependsOn(':app')
 }
 
-task clean(type: Delete) {
+tasks.register("clean", Delete) {
     delete rootProject.buildDir
 }
