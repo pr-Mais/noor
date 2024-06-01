@@ -60,13 +60,11 @@ assets/icons/*
 /assets/icons/bottom-nav/*
 !/assets/icons/bottom-nav/p_*
 
-
 /assets/icons/fav/*
 !/assets/icons/fav/p_*
 
 /assets/icons/settings/*
 !/assets/icons/settings/p_*
-
 
 /assets/images/*
 !/assets/images/p_*
@@ -88,10 +86,12 @@ assets/icons/*
 !/assets/images/home-cards/light/p_*
 !/assets/images/home-cards/dark/p_*
 
-
 # Exclude some assets
 !assets/json/
 
 # Google Service File
 android/app/google-services.json
 GoogleService-Info.plist
+
+# FVM Version Cache
+.fvm/

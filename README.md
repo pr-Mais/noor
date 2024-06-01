@@ -26,8 +26,10 @@ This project contains the codebase for the Android version that is on Play Store
 
 ## How to run
 
-*Note: the assets were replaced by placeholders, so the version you will run locally is different in look than the version in stores.*
+_Note: the assets were replaced by placeholders, so the version you will run locally is different in look than the version in stores._
+
 ### 1. Firebase Setup
+
 It's important to put your own Firebase service file in order to run the app, as it uses Remote Config and Firebase Messaging.
 
 1. Create a [new Firebase project](https://console.firebase.google.com/).
@@ -37,7 +39,23 @@ It's important to put your own Firebase service file in order to run the app, as
 5. Go to Cloud Messaging page, and enable it for your project.
 6. To setup the cloud function that trigger a notification each time the Remote Config variable changes on the console, find the code in [this repo](https://github.com/Maryom/Noor_RemoteConfig).
 
-### 2. Run
+### 2. (optional) FVM Setup
+
+FVM is used to make sure everyone working on the project uses the same version. It is also easier to maintain since the `.fvmrc` file has the config you need to get started quickly.
+
+It also makes it easy for **Noor** to stay on an older version without needing to do lots of upgrades and downgrades, since developers usually work on projects with different versions.
+
+> FVM website: [https://fvm.app/](https://fvm.app/)
+
+Once FVM is installed, run the following command to get things ready:
+
+```
+fvm use 3.22.1
+```
+
+> Be sure to check `.fvmrc` for the correct version this project uses, in case the version above is old.
+
+### 3. Run
 
 1. Clone the project:
 
@@ -65,6 +83,6 @@ If you encounter any bug while using the apps in store, or running it locally, p
 For features request, contact us on [noorathkarapplication@gmail.com](mailto:noorathkarapplication@gmail.com?subject=%D8%A7%D9%82%D8%AA%D8%B1%D8%A7%D8%AD&body=%D8%A7%D9%84%D8%B3%D9%84%D8%A7%D9%85%20%D8%B9%D9%84%D9%8A%D9%83%D9%85%D8%8C)
 
 ## Credits
+
 Shout out to the amazing designer [Shaikha Alqahtani](https://twitter.com/Ishaiookh).
 <br/> The iOS version from Noor was made with native Swift by [Maryam Aljamea](https://twitter.com/0_1Mary).
-
