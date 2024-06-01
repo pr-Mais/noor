@@ -95,3 +95,7 @@ GoogleService-Info.plist
 
 # FVM Version Cache
 .fvm/
+
+# firebase stuff from flutterfire
+firebase.json
+lib/firebase_options.dart

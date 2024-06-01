@@ -33,11 +33,17 @@ _Note: the assets were replaced by placeholders, so the version you will run loc
 It's important to put your own Firebase service file in order to run the app, as it uses Remote Config and Firebase Messaging.
 
 1. Create a [new Firebase project](https://console.firebase.google.com/).
-2. Add a new Android or iOS app, depending on which device you want to use, and follow the configuration steps to connect Noor to your Firebase project.
+2. Add a new Android or iOS app, depending on which device you want to use, and follow the configuration steps to connect Noor to your Firebase project. This could help: https://firebase.google.com/docs/flutter/setup
 3. Go to Remote Config page.
 4. Add a new parameter with name `noorThker`, with any value of your choice.
 5. Go to Cloud Messaging page, and enable it for your project.
 6. To setup the cloud function that trigger a notification each time the Remote Config variable changes on the console, find the code in [this repo](https://github.com/Maryom/Noor_RemoteConfig).
+
+> **NOTE:** You can't really run the app without it, so make sure to set it up.
+>
+> The app needs some files generated the `flutterfire_cli`, specifically `lib/firebase_options.dart`, `android/app/google-services.json`, and `ios/Runner/GoogleService-Info.plist`.
+>
+> So make sure to follow the link in **step 2** if you haven't already.
 
 ### 2. (optional) FVM Setup
 

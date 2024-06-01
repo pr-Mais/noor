@@ -1,7 +1,7 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-
 import 'package:noor/exports/components.dart' show BottomNav;
 import 'package:noor/exports/controllers.dart' show ThemeModel;
 import 'package:noor/exports/pages.dart'
@@ -32,11 +32,16 @@ class _RootHomeState extends State<RootHome>
       precacheImage(AssetImage(images.noAd3yahFav), context);
     });
 
-    AndroidInitializationSettings initializationSettingsAndroid =
-        const AndroidInitializationSettings('ic_notification');
+    const androidInitializationSettings = AndroidInitializationSettings(
+      'ic_notification',
+    );
 
-    InitializationSettings initializationSettings =
-        InitializationSettings(android: initializationSettingsAndroid);
+    const darwinInitializationSettings = DarwinInitializationSettings();
+
+    const initializationSettings = InitializationSettings(
+      android: androidInitializationSettings,
+      iOS: darwinInitializationSettings,
+    );
     flutterLocalNotificationsPlugin.initialize(initializationSettings);
   }
 
