@@ -7,6 +7,7 @@ const kContentFontSize = 16.0;
 const viewPadding = 20.0;
 
 ThemeData lightTheme() => ThemeData(
+      useMaterial3: false,
       brightness: Brightness.light,
       appBarTheme:
           const AppBarTheme(systemOverlayStyle: SystemUiOverlayStyle.light),
@@ -111,6 +112,7 @@ ThemeData lightTheme() => ThemeData(
     );
 
 ThemeData darkTheme() => ThemeData(
+      useMaterial3: false,
       brightness: Brightness.dark,
       appBarTheme:
           const AppBarTheme(systemOverlayStyle: SystemUiOverlayStyle.dark),
