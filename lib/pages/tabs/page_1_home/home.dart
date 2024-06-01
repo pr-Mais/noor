@@ -122,111 +122,91 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
     }
   }
 
-  bool canPop() {
-    /// Clean the search then return `false` to not pop the app
-    /// if the user is in search mode
-    if (_focusNode.hasFocus || _searchController.text.isNotEmpty) {
-      _searchController.clear();
-      _focusNode.unfocus();
-      setState(() {
-        isWriting = false;
-      });
-
-      return false;
-    }
-
-    /// Return `true` to allow for android's back button to pop the app
-    return true;
-  }
-
   @override
   Widget build(BuildContext context) {
     super.build(context);
 
     final Images images = context.watch<ThemeModel>().images;
 
-    return PopScope(
-      canPop: canPop(),
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        body: Column(
-          children: <Widget>[
-            AnimatedHeader(
-              focusNode: _focusNode,
-              isWriting: isWriting,
-            ),
-            Expanded(
-              flex: isWriting ? 0 : 1,
-              child: SingleChildScrollView(
-                child: Column(
-                  children: <Widget>[
-                    if (_focusNode.hasFocus) const SizedBox(height: 10),
-                    searchBar(),
-                    const SizedBox(height: 10),
-                    if (!isWriting)
-                      Stack(
-                        children: <Widget>[
-                          if (!isWriting)
-                            Column(
-                              children: <Widget>[
-                                HomeCard(
-                                  page: const AthkarPage(),
-                                  image: images.athkarCard,
-                                  tag: 'athkar',
-                                ),
-                                HomeCard(
-                                  page: const Ad3yah(),
-                                  image: images.ad3yahCard,
-                                  tag: 'ad3yah',
-                                ),
-                                HomeCard(
-                                  page: const AllahNames(),
-                                  image: images.allahNamesCard,
-                                  tag: 'allah names',
-                                ),
-                              ],
-                            ),
-                          Visibility(
-                            visible: !isWriting && _focusNode.hasFocus,
-                            child: AnimatedOpacity(
-                              duration: const Duration(milliseconds: 400),
-                              opacity: _focusNode.hasFocus ? 1.0 : 0.0,
-                              child: GestureDetector(
-                                onTap: () {
-                                  if (_focusNode.hasFocus) {
-                                    _searchController.clear();
-                                    FocusScope.of(context)
-                                        .requestFocus(FocusNode());
-                                    setState(() {
-                                      isWriting = false;
-                                    });
-                                  }
-                                },
-                                child: Container(
-                                  color: Colors.transparent,
-                                  height: _focusNode.hasFocus && !isWriting
-                                      ? MediaQuery.of(context).size.height
-                                      : 0,
-                                ),
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      body: Column(
+        children: <Widget>[
+          AnimatedHeader(
+            focusNode: _focusNode,
+            isWriting: isWriting,
+          ),
+          Expanded(
+            flex: isWriting ? 0 : 1,
+            child: SingleChildScrollView(
+              child: Column(
+                children: <Widget>[
+                  if (_focusNode.hasFocus) const SizedBox(height: 10),
+                  searchBar(),
+                  const SizedBox(height: 10),
+                  if (!isWriting)
+                    Stack(
+                      children: <Widget>[
+                        if (!isWriting)
+                          Column(
+                            children: <Widget>[
+                              HomeCard(
+                                page: const AthkarPage(),
+                                image: images.athkarCard,
+                                tag: 'athkar',
+                              ),
+                              HomeCard(
+                                page: const Ad3yah(),
+                                image: images.ad3yahCard,
+                                tag: 'ad3yah',
+                              ),
+                              HomeCard(
+                                page: const AllahNames(),
+                                image: images.allahNamesCard,
+                                tag: 'allah names',
+                              ),
+                            ],
+                          ),
+                        Visibility(
+                          visible: !isWriting && _focusNode.hasFocus,
+                          child: AnimatedOpacity(
+                            duration: const Duration(milliseconds: 400),
+                            opacity: _focusNode.hasFocus ? 1.0 : 0.0,
+                            child: GestureDetector(
+                              onTap: () {
+                                if (_focusNode.hasFocus) {
+                                  _searchController.clear();
+                                  FocusScope.of(context)
+                                      .requestFocus(FocusNode());
+                                  setState(() {
+                                    isWriting = false;
+                                  });
+                                }
+                              },
+                              child: Container(
+                                color: Colors.transparent,
+                                height: _focusNode.hasFocus && !isWriting
+                                    ? MediaQuery.of(context).size.height
+                                    : 0,
                               ),
                             ),
                           ),
-                        ],
-                      ),
-                  ],
-                ),
+                        ),
+                      ],
+                    ),
+                ],
               ),
             ),
-            if (isWriting)
-              Expanded(
-                child: SearchResults(
-                  query: searchWord,
-                  results: results,
-                  title: title,
-                ),
+          ),
+          if (isWriting)
+            Expanded(
+              child: SearchResults(
+                query: searchWord,
+                results: results,
+                title: title,
               ),
-          ],
-        ),
+            ),
+        ],
       ),
     );
   }
