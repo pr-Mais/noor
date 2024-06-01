@@ -51,7 +51,7 @@ class NoorAlertDialog extends StatelessWidget {
         child: TextField(
           autofocus: true,
           controller: controller,
-          style: Theme.of(context).textTheme.bodyText1,
+          style: Theme.of(context).textTheme.bodyLarge,
           decoration: InputDecoration(
             filled: false,
             contentPadding:

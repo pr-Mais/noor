@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:noor/exports/controllers.dart' show AppSettings;
+import 'package:noor/exports/utils.dart' show Tashkeel;
 import 'package:noor/models/allah_name.dart';
 import 'package:provider/provider.dart';
-
-import 'package:noor/exports/utils.dart' show Tashkeel;
-import 'package:noor/exports/controllers.dart' show AppSettings;
 
 extension RegExpExtension on RegExp {
   List<String> allMatchesWithSep(String input, [int start = 0]) {
@@ -164,11 +163,11 @@ class CardText extends StatelessWidget {
       child: DefaultTextStyle.merge(
         textAlign: TextAlign.justify,
         style: color != null
-            ? Theme.of(context).textTheme.bodyText1!.copyWith(
+            ? Theme.of(context).textTheme.bodyLarge!.copyWith(
                   color: color,
                   fontFamily: settings.fontType,
                 )
-            : Theme.of(context).textTheme.bodyText1!.copyWith(
+            : Theme.of(context).textTheme.bodyLarge!.copyWith(
                   fontFamily: settings.fontType,
                 ),
         child: Builder(
@@ -177,7 +176,7 @@ class CardText extends StatelessWidget {
               duration: const Duration(milliseconds: 200),
               child: item is AllahName
                   ? RichText(
-                      textScaleFactor: settings.fontSize,
+                      textScaler: TextScaler.linear(settings.fontSize),
                       textAlign: TextAlign.justify,
                       text: TextSpan(
                         children: highlightOccurrences(
@@ -196,7 +195,7 @@ class CardText extends StatelessWidget {
                   : Text(
                       settings.tashkeel ? text : Tashkeel.remove(text),
                       key: ValueKey<bool>(settings.tashkeel),
-                      textScaleFactor: settings.fontSize,
+                      textScaler: TextScaler.linear(settings.fontSize),
                     ),
             );
           },

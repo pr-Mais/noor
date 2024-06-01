@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:provider/provider.dart';
-import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
-
-import 'package:noor/exports/models.dart' show AthkarCounter, DataModel, Thekr;
-import 'package:noor/exports/controllers.dart' show AppSettings;
 import 'package:noor/exports/components.dart'
     show NoorCloseButton, ThekrTitleCard, AthkarCard;
 import 'package:noor/exports/constants.dart' show viewPadding;
+import 'package:noor/exports/controllers.dart' show AppSettings;
+import 'package:noor/exports/models.dart' show AthkarCounter, DataModel, Thekr;
+import 'package:provider/provider.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 class AthkarList extends StatefulWidget {
   const AthkarList({Key? key, required this.index}) : super(key: key);
@@ -31,7 +30,7 @@ class _AthkarListState extends State<AthkarList>
     pagePosition = widget.index;
 
     controller = ItemScrollController();
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       listener.itemPositions.addListener(changeAppBar);
     });
   }
@@ -114,7 +113,7 @@ class _AthkarListState extends State<AthkarList>
                             key: ValueKey<String?>(
                               model.athkar[pagePosition].sectionName,
                             ),
-                            style: Theme.of(context).textTheme.headline1,
+                            style: Theme.of(context).textTheme.displayLarge,
                           ),
                           duration: const Duration(milliseconds: 250),
                         );

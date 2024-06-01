@@ -1,9 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
-
-import 'package:noor/exports/models.dart' show DataModel, AllahName;
-import 'package:noor/exports/constants.dart' show Images, Ribbon;
 import 'package:noor/exports/components.dart'
     show
         NoorCloseButton,
@@ -12,6 +7,10 @@ import 'package:noor/exports/components.dart'
         FavAction,
         CopyAction,
         CardText;
+import 'package:noor/exports/constants.dart' show Images, Ribbon;
+import 'package:noor/exports/models.dart' show DataModel, AllahName;
+import 'package:provider/provider.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 class AllahNamesList extends StatefulWidget {
   const AllahNamesList({
@@ -66,8 +65,8 @@ class _AllahNamesListState extends State<AllahNamesList>
         icon: Image.asset(Images.referenceIcon),
         label: Text(
           'ذُكِرَ في',
-          style: Theme.of(context).textTheme.button,
-          textScaleFactor: 1,
+          style: Theme.of(context).textTheme.labelLarge,
+          textScaler: const TextScaler.linear(1),
         ),
         onPressed: () {
           Navigator.of(context).push(
@@ -112,7 +111,7 @@ class _AllahNamesListState extends State<AllahNamesList>
                             key: ValueKey<String?>(
                               allahNames[position.value].name,
                             ),
-                            style: Theme.of(context).textTheme.headline1,
+                            style: Theme.of(context).textTheme.displayLarge,
                           ),
                         );
                       },
@@ -222,7 +221,7 @@ class ReferenceList extends StatelessWidget {
                   Text(
                     name.name,
                     textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.headline1,
+                    style: Theme.of(context).textTheme.displayLarge,
                   ),
                   NoorCloseButton(
                       color: Theme.of(context).colorScheme.secondary),

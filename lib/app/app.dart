@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
-import 'package:provider/provider.dart';
-import 'package:provider/single_child_widget.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-
-import 'package:noor/exports/pages.dart' show SplashScreen;
+import 'package:get_it/get_it.dart';
+import 'package:noor/exports/constants.dart' show lightTheme, darkTheme;
+import 'package:noor/exports/controllers.dart' show ThemeModel;
 import 'package:noor/exports/models.dart'
     show DataModel, AppSettings, CounterViewModel;
-import 'package:noor/exports/components.dart' show CustomScrollBehavior;
-import 'package:noor/exports/controllers.dart' show ThemeModel;
-import 'package:noor/exports/constants.dart' show lightTheme, darkTheme;
+import 'package:noor/exports/pages.dart' show SplashScreen;
+import 'package:provider/provider.dart';
+import 'package:provider/single_child_widget.dart';
 
 class NoorApp extends StatelessWidget {
   const NoorApp({Key? key}) : super(key: key);
@@ -62,9 +60,11 @@ class MaterialAppWithTheme extends StatelessWidget {
       builder: (BuildContext context, Widget? child) {
         final MediaQueryData data = MediaQuery.of(context);
         return MediaQuery(
-          data: data.copyWith(textScaleFactor: 1.0),
+          data: data.copyWith(
+            textScaler: const TextScaler.linear(1),
+          ),
           child: ScrollConfiguration(
-            behavior: CustomScrollBehavior(),
+            behavior: const ScrollBehavior(),
             child: child!,
           ),
         );

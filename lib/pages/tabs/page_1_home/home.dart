@@ -1,21 +1,20 @@
 import 'dart:async';
+
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get_it/get_it.dart';
 import 'package:noor/env_config.dart';
-import 'package:noor/services/remote_config.dart';
-
-import 'package:provider/provider.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-
-import 'package:noor/exports/constants.dart' show Images;
-import 'package:noor/exports/pages.dart' show AllahNames, AthkarPage, Ad3yah;
 import 'package:noor/exports/components.dart' show GlowingStars, HomeCard;
-import 'package:noor/exports/utils.dart' show backToExactLocation, Tashkeel;
+import 'package:noor/exports/constants.dart' show Images;
 import 'package:noor/exports/controllers.dart' show ThemeModel;
-import 'package:noor/exports/services.dart' show SharedPrefsService;
 import 'package:noor/exports/models.dart' show AllahName, DataModel;
+import 'package:noor/exports/pages.dart' show AllahNames, AthkarPage, Ad3yah;
+import 'package:noor/exports/services.dart' show SharedPrefsService;
+import 'package:noor/exports/utils.dart' show backToExactLocation, Tashkeel;
+import 'package:noor/services/remote_config.dart';
+import 'package:provider/provider.dart';
 
 export 'package:noor/pages/tabs/page_1_home/ad3yah_expanded.dart';
 export 'package:noor/pages/tabs/page_1_home/allah_names_expanded.dart';
@@ -123,29 +122,31 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
     }
   }
 
+  bool canPop() {
+    /// Clean the search then return `false` to not pop the app
+    /// if the user is in search mode
+    if (_focusNode.hasFocus || _searchController.text.isNotEmpty) {
+      _searchController.clear();
+      _focusNode.unfocus();
+      setState(() {
+        isWriting = false;
+      });
+
+      return false;
+    }
+
+    /// Return `true` to allow for android's back button to pop the app
+    return true;
+  }
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
 
     final Images images = context.watch<ThemeModel>().images;
 
-    return WillPopScope(
-      onWillPop: () async {
-        /// Clean the search then return `false` to not pop the app
-        /// if the user is in search mode
-        if (_focusNode.hasFocus || _searchController.text.isNotEmpty) {
-          _searchController.clear();
-          _focusNode.unfocus();
-          setState(() {
-            isWriting = false;
-          });
-
-          return false;
-        }
-
-        /// Return `true` to allow for android's back button to pop the app
-        return true;
-      },
+    return PopScope(
+      canPop: canPop(),
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         body: Column(
@@ -244,7 +245,7 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
         },
         style: TextStyle(
           fontSize: 14,
-          color: Theme.of(context).textTheme.bodyText1!.color,
+          color: Theme.of(context).textTheme.bodyLarge!.color,
           fontWeight: FontWeight.normal,
         ),
         decoration: InputDecoration(

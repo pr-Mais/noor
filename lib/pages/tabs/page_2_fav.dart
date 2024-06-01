@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:noor/exports/components.dart'
+    show CardTemplate, DeleteConfirmationDialog, ImageButton;
+import 'package:noor/exports/components.dart' show CardText;
+import 'package:noor/exports/constants.dart' show Images, NoorCategory;
+import 'package:noor/exports/controllers.dart' show DataController, ThemeModel;
+import 'package:noor/exports/models.dart' show AllahName;
+import 'package:noor/exports/pages.dart'
+    show Ad3yahList, AllahNamesList, AthkarList, MyAd3yah;
+import 'package:noor/exports/utils.dart' show backToExactLocation;
 import 'package:noor/models/data.dart';
 import 'package:provider/provider.dart';
 import 'package:reorderables/reorderables.dart';
-
-import 'package:noor/exports/components.dart'
-    show CardTemplate, DeleteConfirmationDialog, ImageButton;
-import 'package:noor/exports/models.dart' show AllahName;
-import 'package:noor/exports/constants.dart' show Images, NoorCategory;
-import 'package:noor/exports/pages.dart'
-    show Ad3yahList, AllahNamesList, AthkarList, MyAd3yah;
-import 'package:noor/exports/controllers.dart' show DataController, ThemeModel;
-import 'package:noor/exports/utils.dart' show backToExactLocation;
-import 'package:noor/exports/components.dart' show CardText;
 
 class Favorite extends StatefulWidget {
   const Favorite({
@@ -296,8 +295,8 @@ class FavCard extends StatelessWidget {
         icon: Image.asset(Images.referenceIcon),
         label: Text(
           item is AllahName ? item.name : item.sectionName,
-          textScaleFactor: 1,
-          style: Theme.of(context).textTheme.button,
+          textScaler: const TextScaler.linear(1),
+          style: Theme.of(context).textTheme.labelLarge,
         ),
         onPressed: backToLocation,
       ),

@@ -13,8 +13,8 @@ class GlowingStars extends StatelessWidget {
     return SizedBox(
       height: 140,
       width: width,
-      child: Stack(
-        children: const <Widget>[
+      child: const Stack(
+        children: <Widget>[
           //star 0
           Positioned(
             top: 10,

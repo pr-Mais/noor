@@ -8,8 +8,9 @@ class ThemeModel with ChangeNotifier {
   String _userTheme = SharedPrefsService.getString('theme');
 
   String get userTheme => _userTheme;
-  get brightness => MediaQueryData.fromWindow(WidgetsBinding.instance!.window)
-      .platformBrightness;
+  Brightness get brightness =>
+      MediaQueryData.fromView(WidgetsBinding.instance.window)
+          .platformBrightness;
 
   set userTheme(String value) {
     _userTheme = value;

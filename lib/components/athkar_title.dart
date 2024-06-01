@@ -22,7 +22,7 @@ class ThekrTitleCard extends StatelessWidget {
                     title!,
                     textAlign: TextAlign.center,
                     overflow: TextOverflow.clip,
-                    style: Theme.of(context).textTheme.headline2,
+                    style: Theme.of(context).textTheme.displayMedium,
                   ),
                   alignment: Alignment.center,
                   padding: const EdgeInsets.only(
