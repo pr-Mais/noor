@@ -75,7 +75,18 @@ git clone https://github.com/pr-Mais/noor.git
 flutter pub get
 ```
 
-4. Run:
+3. (for android only) Edit the `android/app/build.gradle`:
+
+This will allow you to sign the app with the debug keystore, no need to make a keystore just for development :D
+
+```diff
+- // signingConfig signingConfigs.debug
+- signingConfig signingConfigs.release
++ signingConfig signingConfigs.debug
++ // signingConfig signingConfigs.release
+```
+
+1. Run:
 
 ```bash
 flutter run
