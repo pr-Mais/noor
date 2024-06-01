@@ -33,7 +33,7 @@ if (flutterVersionName == null) {
 
 android {
     namespace 'com.noor.sa'
-    compileSdkVersion 33
+    compileSdkVersion 34
     ndkVersion flutter.ndkVersion
 
     compileOptions {
