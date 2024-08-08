@@ -8,7 +8,6 @@ import 'package:noor/exports/controllers.dart';
 import 'package:noor/exports/pages.dart';
 import 'package:noor/pages/tabs/page_3_counter/counter_view_model.dart';
 import 'package:noor/utils/build_context.dart';
-import 'package:noor/utils/to_arabic.dart';
 import 'package:provider/provider.dart';
 
 const kMaxLength = 75;
