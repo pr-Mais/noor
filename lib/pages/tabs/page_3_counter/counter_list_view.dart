@@ -298,7 +298,7 @@ class SubhaListItem extends StatelessWidget {
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 8.0),
                                       child: Text(
-                                        '${item.counter}'.arabicDigit(),
+                                        '${item.counter}',
                                         overflow: TextOverflow.ellipsis,
                                         style: Theme.of(context)
                                             .textTheme
