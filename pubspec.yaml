@@ -7,9 +7,9 @@ environment:
 
 dependencies:
   animations: ^2.0.11
-  firebase_core: ^2.32.0
-  firebase_messaging: ^14.9.4
-  firebase_remote_config: ^4.4.7
+  firebase_core: ^3.3.0
+  firebase_messaging: ^15.0.4
+  firebase_remote_config: ^5.0.4
   flutter:
     sdk: flutter
   flutter_datetime_picker: ^1.5.1
@@ -27,7 +27,7 @@ dependencies:
   share_plus: ^9.0.0
   shared_preferences: ^2.2.3
   sqflite: ^2.3.3+1
-  url_launcher: ^6.2.6
+  url_launcher: ^6.3.0
 
 dev_dependencies:
   flutter_launcher_icons: ^0.13.1
