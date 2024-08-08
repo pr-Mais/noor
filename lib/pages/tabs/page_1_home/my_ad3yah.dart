@@ -1,13 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:noor/components/dialog_button.dart';
-import 'package:provider/provider.dart';
-import 'package:reorderables/reorderables.dart';
-
-import 'package:noor/exports/controllers.dart' show ThemeModel, DataController;
-import 'package:noor/exports/constants.dart'
-    show Images, Ribbon, Strings, viewPadding;
-import 'package:noor/exports/models.dart' show DataModel, Doaa;
 import 'package:noor/exports/components.dart'
     show
         CardTemplate,
@@ -18,6 +11,12 @@ import 'package:noor/exports/components.dart'
         CopyAction,
         FavAction,
         DialogTextInput;
+import 'package:noor/exports/constants.dart'
+    show Images, Ribbon, Strings, viewPadding;
+import 'package:noor/exports/controllers.dart' show ThemeModel, DataController;
+import 'package:noor/exports/models.dart' show DataModel, Doaa;
+import 'package:provider/provider.dart';
+import 'package:reorderables/reorderables.dart';
 
 enum SaveType { insert, update }
 
@@ -366,7 +365,7 @@ class _AddDoaaDialogState extends State<AddDoaaDialog> {
       child: SingleChildScrollView(
         child: TextField(
           controller: controller,
-          style: Theme.of(context).textTheme.bodyText1,
+          style: Theme.of(context).textTheme.bodyLarge,
           decoration: InputDecoration(
             filled: false,
             contentPadding:

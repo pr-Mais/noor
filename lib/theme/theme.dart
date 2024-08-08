@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:noor/constants/colors.dart';
+import 'package:noor/theme/custom_colors.dart';
 
 const kContentFontSize = 16.0;
 const viewPadding = 20.0;
 
 ThemeData lightTheme() => ThemeData(
+      useMaterial3: false,
       brightness: Brightness.light,
       appBarTheme:
           const AppBarTheme(systemOverlayStyle: SystemUiOverlayStyle.light),
@@ -22,37 +24,36 @@ ThemeData lightTheme() => ThemeData(
       dialogTheme: const DialogTheme(backgroundColor: Colors.white),
       highlightColor: Colors.black.withOpacity(0.1),
       splashColor: Colors.black.withOpacity(0.1),
-      selectedRowColor: const Color(0xffB3B3FF),
       textTheme: TextTheme(
-        bodyText1: const TextStyle(
+        bodyLarge: const TextStyle(
           fontSize: 16,
           height: 1.6,
           color: Colors.black,
           fontWeight: FontWeight.normal,
         ),
-        subtitle1: const TextStyle(
+        titleMedium: const TextStyle(
           color: Color(0xff6f85d5),
           fontWeight: FontWeight.bold,
           fontSize: 14,
         ),
-        subtitle2: TextStyle(
+        titleSmall: TextStyle(
           fontSize: 16,
           height: 1.5,
           color: Colors.lightBlue[100],
           fontWeight: FontWeight.bold,
         ),
-        headline1: const TextStyle(
+        displayLarge: const TextStyle(
           fontSize: 16,
           height: 1.5,
           color: Color(0xff6f85d5),
           fontWeight: FontWeight.bold,
         ),
-        headline2: const TextStyle(
+        displayMedium: const TextStyle(
           fontSize: 16,
           height: 1.5,
           color: Colors.white,
         ),
-        button: const TextStyle(
+        labelLarge: const TextStyle(
           fontSize: 14,
           color: Color(0xff6f85d5),
           height: 1,
@@ -60,23 +61,23 @@ ThemeData lightTheme() => ThemeData(
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ButtonStyle(
-          elevation: MaterialStateProperty.all<double>(0.0),
-          backgroundColor: MaterialStateProperty.resolveWith<Color?>(
-            (Set<MaterialState> states) {
-              if (states.contains(MaterialState.disabled)) {
+          elevation: WidgetStateProperty.all<double>(0.0),
+          backgroundColor: WidgetStateProperty.resolveWith<Color?>(
+            (Set<WidgetState> states) {
+              if (states.contains(WidgetState.disabled)) {
                 return const Color(0xff6f85d5).withOpacity(0.7);
               }
               return const Color(0xff6f85d5);
             },
           ),
-          foregroundColor: MaterialStateProperty.resolveWith<Color?>(
-            (Set<MaterialState> states) {
-              return (states.contains(MaterialState.disabled))
+          foregroundColor: WidgetStateProperty.resolveWith<Color?>(
+            (Set<WidgetState> states) {
+              return (states.contains(WidgetState.disabled))
                   ? Colors.white30
                   : Colors.lightBlue[100];
             },
           ),
-          textStyle: MaterialStateProperty.all<TextStyle>(
+          textStyle: WidgetStateProperty.all<TextStyle>(
             const TextStyle(
               fontFamily: 'SST Arabic',
               fontWeight: FontWeight.w600,
@@ -84,12 +85,12 @@ ThemeData lightTheme() => ThemeData(
               height: 1,
             ),
           ),
-          overlayColor: MaterialStateProperty.all<Color>(Colors.white24),
+          overlayColor: WidgetStateProperty.all<Color>(Colors.white24),
         ),
       ),
       scrollbarTheme: ScrollbarThemeData(
         radius: const Radius.circular(5),
-        thumbColor: MaterialStateProperty.all(Colors.grey[300]),
+        thumbColor: WidgetStateProperty.all(Colors.grey[300]),
       ),
       iconTheme: IconThemeData(color: Colors.grey[400], size: 30),
       inputDecorationTheme: InputDecorationTheme(
@@ -103,15 +104,20 @@ ThemeData lightTheme() => ThemeData(
         brightness: Brightness.light,
         outline: const Color(0xff6f85d5),
       ),
+      extensions: const <ThemeExtension<dynamic>>[
+        CustomColors(
+          selectedRowColor: Color(0xffB3B3FF),
+        ),
+      ],
     );
 
 ThemeData darkTheme() => ThemeData(
+      useMaterial3: false,
       brightness: Brightness.dark,
       appBarTheme:
           const AppBarTheme(systemOverlayStyle: SystemUiOverlayStyle.dark),
       fontFamily: 'SST Arabic',
       primaryColor: Color(NoorColors.dark.primary),
-      selectedRowColor: const Color(0xff33477F),
       pageTransitionsTheme: const PageTransitionsTheme(
         builders: <TargetPlatform, PageTransitionsBuilder>{
           TargetPlatform.android: FadeUpwardsPageTransitionsBuilder(),
@@ -127,35 +133,35 @@ ThemeData darkTheme() => ThemeData(
         hintStyle: TextStyle(color: Colors.white38),
       ),
       textTheme: const TextTheme(
-        bodyText1: TextStyle(
+        bodyLarge: TextStyle(
           fontSize: 16,
           height: 1.6,
           color: Colors.white,
           fontWeight: FontWeight.normal,
         ),
-        subtitle1: TextStyle(
+        titleMedium: TextStyle(
           color: Colors.white,
           fontWeight: FontWeight.bold,
           fontSize: 14,
         ),
-        subtitle2: TextStyle(
+        titleSmall: TextStyle(
           fontSize: 16,
           height: 1.5,
           color: Color(0xff6f85d5),
           fontWeight: FontWeight.bold,
         ),
-        headline1: TextStyle(
+        displayLarge: TextStyle(
           fontSize: 16,
           height: 1.5,
           color: Colors.white,
           fontWeight: FontWeight.bold,
         ),
-        headline2: TextStyle(
+        displayMedium: TextStyle(
           fontSize: 16,
           height: 1.5,
           color: Colors.white,
         ),
-        button: TextStyle(
+        labelLarge: TextStyle(
           fontSize: 14,
           color: Color(0xff6f85d5),
           height: 1,
@@ -163,23 +169,23 @@ ThemeData darkTheme() => ThemeData(
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ButtonStyle(
-          elevation: MaterialStateProperty.all<double>(0.0),
-          backgroundColor: MaterialStateProperty.resolveWith<Color?>(
-            (Set<MaterialState> states) {
-              if (states.contains(MaterialState.disabled)) {
+          elevation: WidgetStateProperty.all<double>(0.0),
+          backgroundColor: WidgetStateProperty.resolveWith<Color?>(
+            (Set<WidgetState> states) {
+              if (states.contains(WidgetState.disabled)) {
                 return const Color(0xff6f85d5).withOpacity(0.6);
               }
               return const Color(0xff6f85d5);
             },
           ),
-          foregroundColor: MaterialStateProperty.resolveWith<Color?>(
-            (Set<MaterialState> states) {
-              return (states.contains(MaterialState.disabled))
+          foregroundColor: WidgetStateProperty.resolveWith<Color?>(
+            (Set<WidgetState> states) {
+              return (states.contains(WidgetState.disabled))
                   ? Colors.white30
                   : Colors.lightBlue[100];
             },
           ),
-          textStyle: MaterialStateProperty.all<TextStyle>(
+          textStyle: WidgetStateProperty.all<TextStyle>(
             const TextStyle(
               fontFamily: 'SST Arabic',
               fontWeight: FontWeight.w600,
@@ -187,7 +193,7 @@ ThemeData darkTheme() => ThemeData(
               height: 1,
             ),
           ),
-          overlayColor: MaterialStateProperty.all<Color>(Colors.white10),
+          overlayColor: WidgetStateProperty.all<Color>(Colors.white10),
         ),
       ),
       splashColor: Colors.black.withOpacity(0.1),
@@ -196,7 +202,7 @@ ThemeData darkTheme() => ThemeData(
       cardColor: const Color(0xff10122C),
       scrollbarTheme: ScrollbarThemeData(
         radius: const Radius.circular(5),
-        thumbColor: MaterialStateProperty.all(
+        thumbColor: WidgetStateProperty.all(
           const Color(0xff3C387B).withOpacity(0.5),
         ),
       ),
@@ -205,4 +211,9 @@ ThemeData darkTheme() => ThemeData(
         brightness: Brightness.dark,
         outline: const Color(0xff6f85d5),
       ),
+      extensions: const <ThemeExtension<dynamic>>[
+        CustomColors(
+          selectedRowColor: Color(0xff33477F),
+        ),
+      ],
     );

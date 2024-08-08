@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-
 import 'package:noor/exports/constants.dart' show Ribbon, viewPadding;
 import 'package:noor/exports/models.dart' show AppSettings;
+import 'package:provider/provider.dart';
 
 class CardTemplate extends StatelessWidget {
   CardTemplate({
@@ -105,7 +104,7 @@ class CardTemplate extends StatelessWidget {
                   child: SingleChildScrollView(
                     child: DefaultTextStyle.merge(
                       textAlign: TextAlign.justify,
-                      style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                      style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                             fontFamily: settings.fontType,
                             color: Theme.of(context).primaryColor,
                           ),

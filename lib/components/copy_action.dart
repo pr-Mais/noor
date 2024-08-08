@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
 import 'package:noor/exports/constants.dart' show Images;
 
 class CopyAction extends StatelessWidget {
@@ -33,7 +32,7 @@ class CopyAction extends StatelessWidget {
               textDirection: TextDirection.rtl,
               style: Theme.of(context)
                   .textTheme
-                  .bodyText1
+                  .bodyLarge
                   ?.copyWith(color: Colors.white),
             ),
             margin: const EdgeInsets.only(bottom: 30, left: 30, right: 30),

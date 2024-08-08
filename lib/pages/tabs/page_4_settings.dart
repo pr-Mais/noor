@@ -2,21 +2,20 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:intl/intl.dart' as intl;
 import 'package:noor/components/adaptive_icon.dart';
+import 'package:noor/exports/components.dart' show CardTemplate, CardText;
+import 'package:noor/exports/constants.dart'
+    show Images, Links, NoorIcons, Strings;
+import 'package:noor/exports/controllers.dart' show ThemeModel, AppSettings;
+import 'package:noor/exports/services.dart' show SharedPrefsService;
 import 'package:noor/models/data.dart';
 import 'package:noor/services/fcm.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:intl/intl.dart' as intl;
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
-
-import 'package:noor/exports/components.dart' show CardTemplate, CardText;
-import 'package:noor/exports/services.dart' show SharedPrefsService;
-import 'package:noor/exports/controllers.dart' show ThemeModel, AppSettings;
-import 'package:noor/exports/constants.dart'
-    show Images, Links, NoorIcons, Strings;
+import 'package:url_launcher/url_launcher.dart' as url_launcher;
 
 class Settings extends StatefulWidget {
   const Settings({
@@ -74,8 +73,8 @@ class _SettingsState extends State<Settings>
       child: Text(
         text,
         textAlign: TextAlign.start,
-        style: Theme.of(context).textTheme.subtitle1,
-        textScaleFactor: 1,
+        style: Theme.of(context).textTheme.titleMedium,
+        textScaler: const TextScaler.linear(1),
       ),
     );
   }
@@ -88,12 +87,12 @@ class _SettingsState extends State<Settings>
       child: Text(
         text,
         textAlign: TextAlign.start,
-        style: Theme.of(context).textTheme.bodyText1?.copyWith(
+        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
               height: 1,
               fontSize: 12,
               fontWeight: FontWeight.bold,
             ),
-        textScaleFactor: 1,
+        textScaler: const TextScaler.linear(1),
       ),
     );
   }
@@ -107,7 +106,7 @@ class _SettingsState extends State<Settings>
           AdaptiveIcon(icon),
           Text(
             text,
-            style: Theme.of(context).textTheme.bodyText1?.copyWith(
+            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                   height: 1,
                   fontSize: 12,
                 ),
@@ -247,7 +246,7 @@ class _SettingsState extends State<Settings>
       matchDateTimeComponents: DateTimeComponents.time,
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.absoluteTime,
-      androidAllowWhileIdle: true,
+      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
     );
   }
 
@@ -258,7 +257,10 @@ class _SettingsState extends State<Settings>
   }
 
   launchURL(String url) async {
-    await launch(url);
+    final uri = Uri.tryParse(url);
+    if (uri != null) {
+      await url_launcher.launchUrl(uri);
+    }
   }
 
   final ScrollController _scrollController = ScrollController();
@@ -560,7 +562,7 @@ class _SettingsState extends State<Settings>
                                                       'حفظ',
                                                       style: Theme.of(context)
                                                           .textTheme
-                                                          .bodyText1!
+                                                          .bodyLarge!
                                                           .copyWith(
                                                               fontWeight:
                                                                   FontWeight
@@ -619,7 +621,7 @@ class _SettingsState extends State<Settings>
                                                       'إلغاء',
                                                       style: Theme.of(context)
                                                           .textTheme
-                                                          .bodyText1!
+                                                          .bodyLarge!
                                                           .copyWith(
                                                               fontWeight:
                                                                   FontWeight
@@ -652,7 +654,7 @@ class _SettingsState extends State<Settings>
                                                     dateTimePickerTextStyle:
                                                         Theme.of(context)
                                                             .textTheme
-                                                            .bodyText1,
+                                                            .bodyLarge,
                                                   ),
                                                 ),
                                                 child: CupertinoDatePicker(
@@ -693,7 +695,7 @@ class _SettingsState extends State<Settings>
                                     formatTime(morningNotiTime),
                                     style: Theme.of(context)
                                         .textTheme
-                                        .bodyText1!
+                                        .bodyLarge!
                                         .copyWith(fontSize: 12),
                                   ),
                                 ),
@@ -759,7 +761,7 @@ class _SettingsState extends State<Settings>
                                                       'حفظ',
                                                       style: Theme.of(context)
                                                           .textTheme
-                                                          .bodyText1!
+                                                          .bodyLarge!
                                                           .copyWith(
                                                               fontWeight:
                                                                   FontWeight
@@ -817,7 +819,7 @@ class _SettingsState extends State<Settings>
                                                       'إلغاء',
                                                       style: Theme.of(context)
                                                           .textTheme
-                                                          .bodyText1!
+                                                          .bodyLarge!
                                                           .copyWith(
                                                               fontWeight:
                                                                   FontWeight
@@ -855,7 +857,7 @@ class _SettingsState extends State<Settings>
                                                       fontSize: 16,
                                                       color: Theme.of(context)
                                                           .textTheme
-                                                          .bodyText1!
+                                                          .bodyLarge!
                                                           .color,
                                                     ),
                                                   ),
@@ -897,7 +899,7 @@ class _SettingsState extends State<Settings>
                                     formatTime(nightNotiTime),
                                     style: Theme.of(context)
                                         .textTheme
-                                        .bodyText1!
+                                        .bodyLarge!
                                         .copyWith(fontSize: 12),
                                   ),
                                 ),

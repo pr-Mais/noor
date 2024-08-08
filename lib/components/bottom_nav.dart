@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:noor/exports/constants.dart' show NoorIcons;
+import 'package:noor/utils/to_color_filter.dart';
 
 class BottomNav extends StatefulWidget {
   const BottomNav({
@@ -163,7 +164,8 @@ class _BottomItemState extends State<BottomItem>
                     height: 50,
                     child: SvgPicture.asset(
                       widget.icon,
-                      color: Theme.of(context).iconTheme.color,
+                      colorFilter:
+                          Theme.of(context).iconTheme.color.toColorFilter(),
                       height: 35,
                     ),
                   ),

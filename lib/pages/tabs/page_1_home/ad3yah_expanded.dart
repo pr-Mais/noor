@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:noor/constants/categories.dart';
-import 'package:noor/constants/theme.dart';
-import 'package:provider/provider.dart';
-import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
-
 import 'package:noor/exports/components.dart'
     show NoorCloseButton, CardTemplate, FavAction, CardText, CopyAction;
 import 'package:noor/exports/models.dart' show Doaa, DataModel;
+import 'package:noor/theme/theme.dart';
+import 'package:provider/provider.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 class Ad3yahList extends StatefulWidget {
   const Ad3yahList({
@@ -56,7 +55,7 @@ class _Ad3yahListState extends State<Ad3yahList> {
                   Text(
                     categoryTitle[widget.category] ?? '',
                     textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.headline1,
+                    style: Theme.of(context).textTheme.displayLarge,
                   ),
                   NoorCloseButton(
                       color: Theme.of(context).colorScheme.secondary),

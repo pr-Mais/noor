@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:noor/exports/models.dart';
-import 'package:provider/provider.dart';
-
 import 'package:noor/exports/constants.dart';
-
 import 'package:noor/exports/controllers.dart' show AppSettings, ThemeModel;
+import 'package:noor/exports/models.dart';
+import 'package:noor/utils/to_color_filter.dart';
+import 'package:provider/provider.dart';
 
 import 'counter_list_view.dart';
 
@@ -118,7 +117,7 @@ class _CounterViewState extends State<CounterView> {
                             counterModel.selectedItem?.counter ?? 0,
                           ),
                           textAlign: TextAlign.center,
-                          textScaleFactor: settings.fontSize,
+                          textScaler: TextScaler.linear(settings.fontSize),
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 16,
@@ -134,9 +133,11 @@ class _CounterViewState extends State<CounterView> {
                       child: Text(
                         '${counterModel.selectedItem!.counter}',
                         key: ValueKey<int>(counterModel.selectedItem!.counter),
-                        style: Theme.of(context).textTheme.subtitle2?.copyWith(
-                            fontSize: 30, fontWeight: FontWeight.bold),
-                        textScaleFactor: settings.fontSize,
+                        style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                              fontSize: 30,
+                              fontWeight: FontWeight.bold,
+                            ),
+                        textScaler: TextScaler.linear(settings.fontSize),
                       ),
                     ),
                   ],
@@ -185,7 +186,7 @@ class NoorIconButton extends StatelessWidget {
                         icon,
                         width: 30,
                         height: 30,
-                        color: Colors.white,
+                        colorFilter: Colors.white.toColorFilter(),
                       )
                 : Icon(
                     icon,

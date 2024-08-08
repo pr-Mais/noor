@@ -32,7 +32,7 @@ class DialogButton extends StatelessWidget {
           child: DefaultTextStyle.merge(
             child: Text(
               label,
-              textScaleFactor: 1,
+              textScaler: const TextScaler.linear(1),
               style: TextStyle(color: textColor),
             ),
           ),

@@ -16,7 +16,7 @@ class NameTitleCard extends StatelessWidget {
                 title!,
                 overflow: TextOverflow.clip,
                 textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.headline2,
+                style: Theme.of(context).textTheme.displayMedium,
               ),
               margin: const EdgeInsets.symmetric(
                   horizontal: viewPadding, vertical: 10.0),

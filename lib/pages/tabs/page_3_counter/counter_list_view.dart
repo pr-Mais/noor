@@ -7,8 +7,9 @@ import 'package:noor/exports/constants.dart';
 import 'package:noor/exports/controllers.dart';
 import 'package:noor/exports/pages.dart';
 import 'package:noor/pages/tabs/page_3_counter/counter_view_model.dart';
-import 'package:provider/provider.dart';
+import 'package:noor/utils/build_context.dart';
 import 'package:noor/utils/to_arabic.dart';
+import 'package:provider/provider.dart';
 
 const kMaxLength = 75;
 
@@ -162,7 +163,7 @@ class _CounterListViewState extends State<CounterListView> {
               'قائمة الأذكار',
               style: Theme.of(context)
                   .textTheme
-                  .headline2!
+                  .displayMedium!
                   .copyWith(fontWeight: FontWeight.bold),
             ),
             NoorIconButton(
@@ -213,7 +214,7 @@ class SubhaListItem extends StatelessWidget {
         onTap: isEditMode ? null : () => onTap(item),
         borderRadius: BorderRadius.circular(8.0),
         splashColor: Colors.transparent,
-        highlightColor: Theme.of(context).selectedRowColor,
+        highlightColor: context.customColors?.selectedRowColor,
         child: Container(
           constraints: const BoxConstraints(minHeight: 80),
           margin: const EdgeInsets.all(5.0),
@@ -225,7 +226,7 @@ class SubhaListItem extends StatelessWidget {
             boxShadow: [
               BoxShadow(
                 color: item.selected
-                    ? Theme.of(context).selectedRowColor
+                    ? context.customColors?.selectedRowColor ?? Colors.black
                     : Colors.transparent,
                 spreadRadius: 6,
               )
@@ -237,8 +238,8 @@ class SubhaListItem extends StatelessWidget {
               Expanded(
                 child: Text(
                   item.key,
-                  textScaleFactor: settings.fontSize,
-                  style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                  textScaler: TextScaler.linear(settings.fontSize),
+                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                       fontFamily: context.read<AppSettings>().fontType,
                       height: 1.4),
                   overflow: TextOverflow.ellipsis,
@@ -301,7 +302,7 @@ class SubhaListItem extends StatelessWidget {
                                         overflow: TextOverflow.ellipsis,
                                         style: Theme.of(context)
                                             .textTheme
-                                            .headline2
+                                            .displayMedium
                                             ?.copyWith(
                                                 fontWeight: FontWeight.bold),
                                       ),

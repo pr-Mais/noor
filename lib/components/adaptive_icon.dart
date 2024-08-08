@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:noor/utils/to_color_filter.dart';
 
 class AdaptiveIcon extends StatelessWidget {
   const AdaptiveIcon(this.icon, {Key? key}) : super(key: key);
@@ -12,7 +13,7 @@ class AdaptiveIcon extends StatelessWidget {
       height: 40,
       child: SvgPicture.asset(
         icon,
-        color: Theme.of(context).iconTheme.color,
+        colorFilter: Theme.of(context).iconTheme.color.toColorFilter(),
       ),
     );
   }
