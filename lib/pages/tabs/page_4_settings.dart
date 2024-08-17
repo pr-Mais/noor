@@ -226,7 +226,12 @@ class _SettingsState extends State<Settings>
     FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
         FlutterLocalNotificationsPlugin();
 
-    var androidPlatformChannelSpecifics = AndroidNotificationDetails(
+    flutterLocalNotificationsPlugin
+        .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>()
+        ?.requestNotificationsPermission();
+
+    final androidPlatformChannelSpecifics = AndroidNotificationDetails(
       '$id',
       period,
       showWhen: true,

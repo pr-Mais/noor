@@ -60,6 +60,19 @@ class _RootHomeState extends State<RootHome>
     );
   }
 
+  @override
+  void didChangeDependencies() async {
+    super.didChangeDependencies();
+    final notificationAppLaunchDetails =
+        await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
+
+    if (notificationAppLaunchDetails?.didNotificationLaunchApp ?? false) {
+      onSelectNotification(
+        notificationAppLaunchDetails?.notificationResponse?.payload,
+      );
+    }
+  }
+
   PageController controller = PageController();
 
   @override
