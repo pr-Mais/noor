@@ -25,6 +25,30 @@
             </intent-filter>
         </receiver>
 
+<receiver
+          android:name="HomeScreenSmallWidgetProvider"
+          android:label="أدعية وأذكار"
+          android:exported="true">
+          <intent-filter>
+          <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+          </intent-filter>
+          <meta-data
+          android:name="android.appwidget.provider"
+          android:resource="@xml/widget_info_small" /> 
+       </receiver>
+
+       <receiver
+            android:name=".HomeScreenMediumWidgetProvider"
+            android:label="أدعية وأذكار"
+            android:exported="true">
+            <intent-filter>
+            <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+            android:name="android.appwidget.provider"
+            android:resource="@xml/widget_info_medium" />
+       </receiver>
+
         <activity
             android:name=".MainActivity"
             android:exported="true"
